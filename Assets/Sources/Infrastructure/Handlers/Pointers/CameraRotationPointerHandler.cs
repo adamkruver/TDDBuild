@@ -22,17 +22,11 @@ namespace Sources.Infrastructure.Handlers.Pointers
         {
             _startPosition = position;
             _startAngles = _gameplayCameraService.Angles;
-            
-            Debug.Log(_startPosition);
-            Debug.Log(_startAngles);
         }
 
         public void OnTouchMove(Vector3 position)
         {
             Vector3 delta = (position - _startPosition) * _rotationStrength;
-            
-            Debug.Log(delta);
-            
             Vector3 angles = new Vector3(delta.y, delta.x) + _startAngles;
 
             _gameplayCameraService.Rotate(angles);

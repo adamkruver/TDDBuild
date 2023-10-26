@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sources.InfrastructureInterfaces.Handlers;
 using Sources.InfrastructureInterfaces.Services;
 using UnityEngine;
@@ -9,12 +10,21 @@ namespace Sources.Infrastructure.Services.Pointers
     {
         private readonly Dictionary<int, IPointerHandler> _handlers = new Dictionary<int, IPointerHandler>();
         private readonly Dictionary<int, bool> _startedTouches = new Dictionary<int, bool>();
+        private IUntouchablePointerHandler _untouchablePointerHandler;
+
+        private bool IsTouched => _startedTouches.Values.FirstOrDefault(isStartedTouch => isStartedTouch);
 
         public void RegisterHandler(int pointerId, IPointerHandler handler) =>
             _handlers[pointerId] = handler;
 
         public void UnregisterHandler(int pointerId) =>
             _handlers.Remove(pointerId);
+
+        public void RegisterUntouchableHandler(IUntouchablePointerHandler handler) =>
+            _untouchablePointerHandler = handler;
+
+        public void UnregisterUntouchableHandler() =>
+            _untouchablePointerHandler = null;
 
         public void UnregisterAll() =>
             _handlers.Clear();
@@ -49,6 +59,9 @@ namespace Sources.Infrastructure.Services.Pointers
                     }
                 }
             }
+
+            if (IsTouched == false) 
+                _untouchablePointerHandler?.OnMove(pointerPosition);
         }
     }
 }

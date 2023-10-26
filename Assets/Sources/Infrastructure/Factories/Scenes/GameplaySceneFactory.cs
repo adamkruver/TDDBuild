@@ -1,12 +1,12 @@
 ﻿using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
 using Sources.Infrastructure.Handlers.Pointers;
+using Sources.Infrastructure.Handlers.Pointers.Untouchable;
 using Sources.Infrastructure.Services.Cameras;
 using Sources.Infrastructure.Services.Pointers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.Presentation.Views.Cameras;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Sources.Infrastructure.Factories.Scenes
 {
@@ -20,6 +20,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             GameplayCameraService gameplayCameraService = new GameplayCameraService(gameplayCamera);
             
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
+            pointerService.RegisterUntouchableHandler(new TilemapUntouchablePointerHandler(gameplayCamera));
 
             return new GameplayScene(pointerService, gameplayCameraService);
         }
