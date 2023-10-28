@@ -13,9 +13,9 @@ namespace Sources.Presentation.Views.Tilemaps
             _gameObject = gameObject;
         }
 
-        public void Show(Vector3Int position)
+        public void Show(Vector3 position)
         {
-            _transform.position = new Vector3(position.x, 0, position.y) * 2 + new Vector3(1, 0, 1);
+            _transform.position = position;
             _gameObject.SetActive(true);
         }
 

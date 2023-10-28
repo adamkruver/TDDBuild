@@ -1,6 +1,6 @@
 ﻿using Sources.Domain.Constructs;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
-using Sources.Presentation.Views.Constructs;
+using Sources.Presentation.Ui.Constructs;
 using UnityEngine;
 
 namespace Sources.Infrastructure.Factories.Presentation.Ui

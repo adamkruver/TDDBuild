@@ -1,4 +1,5 @@
-﻿using Sources.Extensions.Fabs;
+﻿using Sources.Attributes;
+using Sources.Extensions.Fabs;
 using UnityEngine;
 
 namespace Sources.Domain.Constructs
@@ -9,5 +10,8 @@ namespace Sources.Domain.Constructs
         [field: SerializeField] public Sprite IconSprite { get; private set; }
         [field: SerializeField] public string Title { get; private set; }
         [field: SerializeField] public int Price { get; private set; }
+
+        [TypedPopup(typeof(IConstructable))] [SerializeField]
+        public string Type;
     }
 }

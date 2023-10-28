@@ -1,71 +1,66 @@
 ﻿using System;
 using Sources.Domain.Constructs;
-using Sources.Infrastructure.Listeners.Pointers;
-using Sources.Infrastructure.Listeners.Pointers.Untouchable;
-using Sources.InfrastructureInterfaces.Services.Pointers;
+using Sources.Infrastructure.Factories.Services;
+using Sources.Infrastructure.Services.Payments;
 using Sources.PresentationInterfaces.Views.Constructs;
+using UnityEngine;
 
 namespace Sources.Controllers.Constructs
 {
-    public class ConstructButtonPresenter
+    public class ConstructButtonPresenter : PresenterBase
     {
         private readonly IConstructButtonUi _ui;
         private readonly ConstructButton _constructButton;
-        private readonly IPointerService _pointerService;
-        private readonly GameplayInteractPointerHandler _constructPointerHandler;
-        private readonly TilemapUntouchablePointerHandler _constructUntouchablePointerHandler;
-
-        private bool _isEnabled = false;
+        private readonly PaymentService _paymentService;
+        private readonly ConstructService _constructService;
+        private readonly Action<Vector2Int> _onClickAction;
 
         public ConstructButtonPresenter(
             IConstructButtonUi ui,
             ConstructButton constructButton,
-            IPointerService pointerService,
-            GameplayInteractPointerHandler constructPointerHandler,
-            TilemapUntouchablePointerHandler constructUntouchablePointerHandler
+            PaymentService paymentService,
+            ConstructService constructService,
+            Action<Vector2Int> onClickAction
         )
         {
             _ui = ui;
             _constructButton = constructButton;
-            _pointerService = pointerService;
-            _constructPointerHandler = constructPointerHandler;
-            _constructUntouchablePointerHandler = constructUntouchablePointerHandler;
+            _paymentService = paymentService;
+            _constructService = constructService;
+            _onClickAction = onClickAction;
             
+            _ui.SetPrice(_constructButton.Price.ToString());
+            _ui.SetTitle(_constructButton.Title);
+            _ui.SetIconSprite(_constructButton.IconSprite);
+        }
+
+        public override void Enable()
+        {
+            _paymentService.MoneyChanged += UpdateView;
             UpdateView();
+            _ui.AddClickListener(OnButtonClick);        
         }
 
-        public void Enable()
+        public override void Disable()
         {
-            if (_isEnabled)
-                return;
-
-            _pointerService.RegisterHandler(0, _constructPointerHandler);
-            _pointerService.RegisterUntouchableHandler(_constructUntouchablePointerHandler);
-
-            _isEnabled = true;
-        }
-
-        public void Disable()
-        {
-            if (_isEnabled == false)
-                return;
-
-            _pointerService.UnregisterHandler(0);
-            _pointerService.UnregisterUntouchableHandler();
-
-            _isEnabled = false;
-        }
-
-        public void Build(Action callback)
-        {
-            Enable();
+            _paymentService.MoneyChanged -= UpdateView;
+            _ui.RemoveClickListener(OnButtonClick);        
         }
 
         private void UpdateView()
         {
-            _ui.SetPrice(_constructButton.Price.ToString());
-            _ui.SetTitle(_constructButton.Title);
-            _ui.SetIconSprite(_constructButton.IconSprite);
+            Debug.Log(_paymentService.IsEnough(_constructButton.Price));
+            
+            if (_paymentService.IsEnough(_constructButton.Price))
+                _ui.Enable();
+            else
+                _ui.Disable();
+        }
+
+        private void OnButtonClick()
+        {
+            if (_paymentService.IsEnough(_constructButton.Price))
+                _constructService.Enable(_onClickAction, _constructButton.Price);
         }
     }
 }

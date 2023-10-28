@@ -1,6 +1,8 @@
-﻿namespace Sources.Domain.Weapons
+﻿using Sources.Domain.Constructs;
+
+namespace Sources.Domain.Weapons
 {
-    public class RocketGun : IWeapon
+    public class RocketGun : IWeapon, IConstructable        
     {
     }
 }

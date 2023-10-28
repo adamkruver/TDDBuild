@@ -166,10 +166,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a857823852c64483aab7aaa874324646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _background: {fileID: 3135681580841198481}
+  _frame: {fileID: 8092397797410824139}
   _button: {fileID: 4309879760032115294}
-  _title: {fileID: 8092397797039388675}
-  _price: {fileID: 8092397797066446607}
+  _title: {fileID: 1416394001428012049}
+  _price: {fileID: 4667860710304106465}
   _icon: {fileID: 8092397796057453388}
+  _activeColor:
+    serializedVersion: 2
+    rgba: 2938204070
+  _inactiveColor:
+    serializedVersion: 2
+    rgba: 3078454131
 --- !u!222 &5451629751549955583
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -416,6 +424,7 @@ GameObject:
   - component: {fileID: 8092397797039388672}
   - component: {fileID: 8092397797039388675}
   - component: {fileID: 8092397797039388674}
+  - component: {fileID: 1416394001428012049}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -482,8 +491,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282288067
-  m_fontColor: {r: 0.764151, g: 0.5300884, b: 0.24150053, a: 1}
+    rgba: 4290371031
+  m_fontColor: {r: 0.84407043, g: 0.8679245, b: 0.72463506, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -556,6 +565,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &1416394001428012049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092397797039388676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31b92da7a2c435bb3a56b0d659729c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 8092397797039388675}
+  _activeColor:
+    serializedVersion: 2
+    rgba: 4282288067
+  _inactiveColor:
+    serializedVersion: 2
+    rgba: 4279966695
 --- !u!1 &8092397797066446576
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +596,7 @@ GameObject:
   - component: {fileID: 8092397797066446604}
   - component: {fileID: 8092397797066446607}
   - component: {fileID: 8092397797066446606}
+  - component: {fileID: 4667860710304106465}
   m_Layer: 5
   m_Name: Price
   m_TagString: Untagged
@@ -632,8 +661,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4280864626
-  m_fontColor: {r: 0.4477572, g: 0.8113208, b: 0.15690637, a: 1}
+    rgba: 4289451214
+  m_fontColor: {r: 0.8080712, g: 0.8301887, b: 0.6696333, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -706,6 +735,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &4667860710304106465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092397797066446576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31b92da7a2c435bb3a56b0d659729c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 8092397797066446607}
+  _activeColor:
+    serializedVersion: 2
+    rgba: 4280864626
+  _inactiveColor:
+    serializedVersion: 2
+    rgba: 4278198233
 --- !u!1 &8092397797410824140
 GameObject:
   m_ObjectHideFlags: 0

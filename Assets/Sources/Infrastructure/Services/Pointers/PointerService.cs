@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sources.InfrastructureInterfaces.Listeners;
 using Sources.InfrastructureInterfaces.Services;
@@ -34,9 +35,9 @@ namespace Sources.Infrastructure.Services.Pointers
         public void Update(float deltaTime)
         {
             Vector3 pointerPosition = Input.mousePosition;
-
             bool isPointerOverUi = _pointerUIService.IsPointerOverUI;
-
+            List<Action<Vector3, bool>> actions = new List<Action<Vector3, bool>>();
+            
             foreach (int pointerId in _handlers.Keys)
             {
                 if (_startedTouches.ContainsKey(pointerId) == false)
@@ -48,7 +49,7 @@ namespace Sources.Infrastructure.Services.Pointers
                     {
                         if (Input.GetMouseButtonDown(pointerId))
                         {
-                            _handlers[pointerId].OnTouchStart(pointerPosition);
+                            actions.Add(_handlers[pointerId].OnTouchStart);
                             _startedTouches[pointerId] = true;
                         }
                     }
@@ -57,15 +58,18 @@ namespace Sources.Infrastructure.Services.Pointers
                 {
                     if (Input.GetMouseButtonUp(pointerId))
                     {
-                        _handlers[pointerId].OnTouchEnd(pointerPosition);
+                        actions.Add(_handlers[pointerId].OnTouchEnd);
                         _startedTouches[pointerId] = false;
                     }
                     else
                     {
-                        _handlers[pointerId].OnTouchMove(pointerPosition, isPointerOverUi);
+                        actions.Add(_handlers[pointerId].OnTouchMove);
                     }
                 }
             }
+
+            foreach (Action<Vector3, bool> action in actions) 
+                action.Invoke(pointerPosition, isPointerOverUi);
 
             if (IsTouched == false)
                 _untouchablePointerHandler?.OnMove(pointerPosition, isPointerOverUi);

@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sources.Controllers.Constructs;
+using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
 using Sources.Domain.Constructs;
+using Sources.Domain.Credits;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
-using Sources.Infrastructure.Factories.Controllers.Turrets;
-using Sources.Infrastructure.Factories.Controllers.Weapons;
+using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Ui;
-using Sources.Infrastructure.Factories.Presentation.Views;
-using Sources.Infrastructure.Listeners.Pointers;
-using Sources.Infrastructure.Listeners.Pointers.Untouchable;
+using Sources.Infrastructure.Handlers.Pointers;
 using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Services.Cameras;
+using Sources.Infrastructure.Services.Payments;
 using Sources.Infrastructure.Services.Pointers;
+using Sources.Infrastructure.Services.Raycasts;
+using Sources.Infrastructure.Services.Tilemaps;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
-using Sources.Presentation.Uis;
+using Sources.Presentation.Ui;
 using Sources.Presentation.Views.Cameras;
+using Sources.Presentation.Views.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Object = UnityEngine.Object;
@@ -28,6 +30,8 @@ namespace Sources.Infrastructure.Factories.Scenes
     {
         public IScene Create(object payload)
         {
+            Money money = new Money(120);
+
             Dictionary<Type, string> weapons = new Dictionary<Type, string>()
             {
                 [typeof(LaserGun)] = "Views/Weapons/LaserGunView",
@@ -35,18 +39,38 @@ namespace Sources.Infrastructure.Factories.Scenes
             };
 
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
-            FooterUi footerUi = Object.FindObjectOfType<FooterUi>();
+            Hud hud = Object.FindObjectOfType<Hud>();
+            ActiveTilemapCellView activeTilemapCell = Object.FindObjectOfType<ActiveTilemapCellView>();
+            TileMapCellUi tileMapCellUi = Object.FindObjectOfType<TileMapCellUi>(true);
 
             GridRepository gridRepository = new GridRepository(tilemap);
 
             GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
+
+            PaymentService paymentService = new PaymentService(money);
+            RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
+            TilemapService tilemapService = new TilemapService(tilemap, activeTilemapCell, tileMapCellUi);
+            tilemapService.HideTileInfo();
+
+            TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory =
+                new TilemapUntouchablePointerHandlerFactory(
+                    raycastService,
+                    tilemapService
+                );
 
             GameplayCameraService gameplayCameraService = new GameplayCameraService(gameplayCamera);
 
             PointerService pointerService = new PointerService();
 
             ConstructButtonPresenterFactory constructButtonPresenterFactory =
-                new ConstructButtonPresenterFactory(pointerService, gameplayCamera, weapons);
+                new ConstructButtonPresenterFactory(
+                    tilemapUntouchablePointerHandlerFactory,
+                    paymentService,
+                    pointerService,
+                    tilemapService,
+                    gameplayCamera,
+                    weapons
+                );
 
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
 
@@ -57,7 +81,9 @@ namespace Sources.Infrastructure.Factories.Scenes
                 Resources.Load<ConstructButtonCollection>("Fabs/Buttons/Constructs/CollectionFab");
 
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
-                footerUi.AddChild(constructButtonUiFactory.Create(constructButton).gameObject);
+                hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton).gameObject);
+
+            hud.Header.AddChild(new MoneyUiFactory().Create(money).gameObject);
 
             return new GameplayScene(pointerService, gameplayCameraService);
         }

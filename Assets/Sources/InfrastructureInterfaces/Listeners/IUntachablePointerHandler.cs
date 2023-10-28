@@ -4,6 +4,6 @@ namespace Sources.InfrastructureInterfaces.Listeners
 {
     public interface IUntouchablePointerHandler
     {
-        void OnMove(Vector3 position, bool isPointerOverUI);
+        void OnMove(Vector3 screenPosition, bool isPointerOverUI);
     }
 }

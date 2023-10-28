@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace Sources.PresentationInterfaces.Views.Constructs
 {
@@ -7,5 +8,9 @@ namespace Sources.PresentationInterfaces.Views.Constructs
         void SetIconSprite(Sprite sprite);
         void SetPrice(string price);
         void SetTitle(string title);
+        void AddClickListener(UnityAction onClick);
+        void RemoveClickListener(UnityAction onClick);
+        void Enable();
+        void Disable();
     }
 }
