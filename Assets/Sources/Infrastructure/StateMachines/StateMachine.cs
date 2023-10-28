@@ -1,49 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
-using Sources.InfrastructureInterfaces.Services;
+﻿using Sources.InfrastructureInterfaces.Services;
 using Sources.InfrastructureInterfaces.StateMachines;
 
 namespace Sources.Infrastructure.StateMachines
 {
-    public class StateMachine : IUpdatable, ILateUpdatable, IFixedUpdatable
+    public class StateMachine<T> : IUpdatable, ILateUpdatable, IFixedUpdatable where T: IState
     {
-        private readonly List<Func<string, UniTask>> _enteringHandlers = new List<Func<string, UniTask>>();
-        private readonly List<Func<UniTask>> _exitingHandlers = new List<Func<UniTask>>();
+        private T _currentState;
 
-        private readonly Dictionary<string, IState> _states;
-
-        private IState _currentState;
-
-        public StateMachine(Dictionary<string, IState> states) =>
-            _states = states ?? throw new ArgumentNullException(nameof(states));
-
-        public void AddEnterHandler(Func<string, UniTask> handler) =>
-            _enteringHandlers.Add(handler);
-
-        public void AddExitHandler(Func<UniTask> handler) =>
-            _exitingHandlers.Add(handler);
-
-        public void RemoveEnterHandler(Func<string, UniTask> handler) =>
-            _enteringHandlers.Remove(handler);
-
-        public void RemoveExitHandler(Func<UniTask> handler) =>
-            _exitingHandlers.Remove(handler);
-
-        public async UniTask ChangeStateAsync(string stateName, object payload = null)
+        public void ChangeState(T state, object payload = null)
         {
-            if (HasState(stateName) == false)
-                throw new InvalidOperationException(nameof(stateName));
+            ExitState();
+            EnterState(state, payload);
+        }
 
-            foreach (Func<string, UniTask> enteringHandler in _enteringHandlers)
-                await enteringHandler.Invoke(stateName);
-
+        public void ExitState()
+        {
             _currentState?.Exit();
-            _currentState = _states[stateName];
-            _currentState?.Enter(payload);
+            _currentState = default;
+        }
 
-            foreach (Func<UniTask> exitingHandler in _exitingHandlers)
-                await exitingHandler.Invoke();
+        public void EnterState(T state, object payload = null)
+        {
+            _currentState = state;
+            _currentState?.Enter(payload);
         }
 
         public void Update(float deltaTime) =>
@@ -54,8 +33,5 @@ namespace Sources.Infrastructure.StateMachines
 
         public void UpdateFixed(float fixedDeltaTime) =>
             _currentState?.UpdateFixed(fixedDeltaTime);
-
-        private bool HasState(string stateName) =>
-            _states.ContainsKey(stateName);
     }
 }

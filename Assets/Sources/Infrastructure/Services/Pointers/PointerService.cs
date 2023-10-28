@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Sources.InfrastructureInterfaces.Handlers;
+using Sources.InfrastructureInterfaces.Listeners;
 using Sources.InfrastructureInterfaces.Services;
 using UnityEngine;
 
@@ -8,23 +8,23 @@ namespace Sources.Infrastructure.Services.Pointers
 {
     public class PointerService : IUpdatable
     {
-        private readonly Dictionary<int, IPointerHandler> _handlers = new Dictionary<int, IPointerHandler>();
+        private readonly Dictionary<int, IPointerListener> _handlers = new Dictionary<int, IPointerListener>();
         private readonly Dictionary<int, bool> _startedTouches = new Dictionary<int, bool>();
-        private IUntouchablePointerHandler _untouchablePointerHandler;
+        private IUntouchablePointerListener _untouchablePointerListener;
 
         private bool IsTouched => _startedTouches.Values.FirstOrDefault(isStartedTouch => isStartedTouch);
 
-        public void RegisterHandler(int pointerId, IPointerHandler handler) =>
-            _handlers[pointerId] = handler;
+        public void RegisterHandler(int pointerId, IPointerListener listener) =>
+            _handlers[pointerId] = listener;
 
         public void UnregisterHandler(int pointerId) =>
             _handlers.Remove(pointerId);
 
-        public void RegisterUntouchableHandler(IUntouchablePointerHandler handler) =>
-            _untouchablePointerHandler = handler;
+        public void RegisterUntouchableHandler(IUntouchablePointerListener listener) =>
+            _untouchablePointerListener = listener;
 
         public void UnregisterUntouchableHandler() =>
-            _untouchablePointerHandler = null;
+            _untouchablePointerListener = null;
 
         public void UnregisterAll() =>
             _handlers.Clear();
@@ -61,7 +61,7 @@ namespace Sources.Infrastructure.Services.Pointers
             }
 
             if (IsTouched == false) 
-                _untouchablePointerHandler?.OnMove(pointerPosition);
+                _untouchablePointerListener?.OnMove(pointerPosition);
         }
     }
 }

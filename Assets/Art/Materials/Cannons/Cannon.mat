@@ -139,7 +139,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffTint: {r: 0.7, g: 0.8, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 7.9066987, b: 6.913187, a: 1}
+    - _EmissionColor: {r: 0, g: 0.52963686, b: 0.46308562, a: 1}
     - _HColor: {r: 0.6282484, g: 0.69861746, b: 0.735849, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.44852942, g: 0, b: 0, a: 0.734}

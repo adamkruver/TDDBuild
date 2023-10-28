@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Sources.App.Core;
-using Sources.Controllers.Scenes;
-using Sources.Infrastructure.Factories.Scenes;
-using Sources.Infrastructure.Services.SceneLoaders;
-using Sources.Infrastructure.StateMachines;
-using Sources.InfrastructureInterfaces.StateMachines;
+using Sources.Infrastructure.Factories.Services;
+using Sources.Infrastructure.Services.Scenes;
+using Sources.Infrastructure.Services.Scenes.Events;
+using Sources.Infrastructure.Services.Scenes.Loaders;
 using Sources.Presentation.Views.Bootstrap;
 using UnityEngine;
 
@@ -18,26 +16,18 @@ namespace Sources.Infrastructure.Factories.App
             AppCore appCore = new GameObject(nameof(AppCore))
                 .AddComponent<AppCore>();
 
-            MainMenuSceneFactory mainMenuSceneFactory = new MainMenuSceneFactory();
-            GameplaySceneFactory gameplaySceneFactory = new GameplaySceneFactory();
+            SceneService sceneService = new SceneServiceFactory().Create();
             
-            Dictionary<string, IState> sceneStates = new Dictionary<string, IState>()
-            {
-                ["MainMenu"] = new SceneState(mainMenuSceneFactory),
-                ["Gameplay"] = new SceneState(gameplaySceneFactory),
-            };
-
-            StateMachine sceneStateMachine = new StateMachine(sceneStates);
+            SceneLoaderService sceneLoaderService = new SceneLoaderService();
 
             CurtainView curtainView = Object.Instantiate(Resources.Load<CurtainView>("Views/Bootstrap/CurtainView"));
             
-            sceneStateMachine.AddEnterHandler(sceneName => curtainView.Show());
-            sceneStateMachine.AddEnterHandler(sceneName => new SceneLoaderService().Load(sceneName));
-            sceneStateMachine.AddExitHandler(() => UniTask.CompletedTask);
-            sceneStateMachine.AddExitHandler(() => UniTask.Delay(2000));
-            sceneStateMachine.AddExitHandler(curtainView.Hide);
+            sceneService.AddEventListener(new BeforeExitSceneEventHandler(sceneName => curtainView.Show()));
+            sceneService.AddEventListener(new AfterExitSceneEventHandler(sceneLoaderService.Load));
+            sceneService.AddEventListener(new AfterEnterSceneEventHandler(sceneName => UniTask.Delay(2000)));
+            sceneService.AddEventListener(new AfterEnterSceneEventHandler(sceneName => curtainView.Hide()));
             
-            appCore.Construct(sceneStateMachine);
+            appCore.Construct(sceneService);
 
             return appCore;
         }
