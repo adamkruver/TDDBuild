@@ -49,8 +49,6 @@ namespace Sources.Controllers.Constructs
 
         private void UpdateView()
         {
-            Debug.Log(_paymentService.IsEnough(_constructButton.Price));
-            
             if (_paymentService.IsEnough(_constructButton.Price))
                 _ui.Enable();
             else

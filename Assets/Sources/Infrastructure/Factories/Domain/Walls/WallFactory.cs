@@ -1,11 +1,25 @@
-﻿using Sources.Domain.Walls;
+﻿using Sources.Domain.Grids;
+using Sources.Domain.Walls;
+using Sources.Infrastructure.Repositories;
+using UnityEngine;
 
 namespace Sources.Infrastructure.Factories.Domain.Walls
 {
     public class WallFactory
     {
-        public Wall Create()
+        private readonly TileRepository _tileRepository;
+
+        public WallFactory(TileRepository tileRepository)
         {
+            _tileRepository = tileRepository;
+        }
+
+        public Wall Create(Vector2Int position)
+        {
+            Wall wall = new Wall();
+            TileModel model = new TileModel(position.x, position.y, wall);
+            _tileRepository.Set(model);
+            
             return new Wall();
         }
     }

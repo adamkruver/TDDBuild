@@ -7,8 +7,10 @@ using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
+using Sources.Infrastructure.Factories.Controllers.Tilemaps;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Ui;
+using Sources.Infrastructure.Factories.Presentation.Views;
 using Sources.Infrastructure.Handlers.Pointers;
 using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Services.Cameras;
@@ -30,7 +32,7 @@ namespace Sources.Infrastructure.Factories.Scenes
     {
         public IScene Create(object payload)
         {
-            Money money = new Money(120);
+            Money money = new Money(220);
 
             Dictionary<Type, string> weapons = new Dictionary<Type, string>()
             {
@@ -40,16 +42,23 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
             Hud hud = Object.FindObjectOfType<Hud>();
-            ActiveTilemapCellView activeTilemapCell = Object.FindObjectOfType<ActiveTilemapCellView>();
             TileMapCellUi tileMapCellUi = Object.FindObjectOfType<TileMapCellUi>(true);
 
-            GridRepository gridRepository = new GridRepository(tilemap);
+            TileRepository tileRepository = new TileRepository(tilemap);
 
+            
             GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
 
             PaymentService paymentService = new PaymentService(money);
             RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
-            TilemapService tilemapService = new TilemapService(tilemap, activeTilemapCell, tileMapCellUi);
+            TilemapService tilemapService = new TilemapService(tilemap, tileMapCellUi);
+
+            ActiveTilePresenterFactory activeTilePresenterFactory = new ActiveTilePresenterFactory(tileRepository, tilemapService);
+            ActiveTileViewFactory activeTileViewFactory = new ActiveTileViewFactory(activeTilePresenterFactory);
+
+            ActiveTileView activeTile = activeTileViewFactory.Create();
+            
+            tilemapService.SetActiveTileView(activeTile);
             tilemapService.HideTileInfo();
 
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory =
@@ -65,6 +74,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             ConstructButtonPresenterFactory constructButtonPresenterFactory =
                 new ConstructButtonPresenterFactory(
                     tilemapUntouchablePointerHandlerFactory,
+                    tileRepository,
                     paymentService,
                     pointerService,
                     tilemapService,

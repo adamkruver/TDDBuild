@@ -1,8 +1,8 @@
 ﻿namespace Sources.Domain.Grids
 {
-    public class GridCell
+    public class TileModel
     {
-        public GridCell(int x, int y, object @object)
+        public TileModel(int x, int y, object @object)
         {
             X = x;
             Y = y;

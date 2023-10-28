@@ -9,21 +9,23 @@ namespace Sources.Infrastructure.Services.Tilemaps
     {
         private readonly Vector3 _offset = new Vector3(1, 0, 1);
         private readonly Tilemap _tilemap;
-        private readonly ActiveTilemapCellView _activeTilemapCellView;
         private readonly TileMapCellUi _tileMapCellUi;
 
+        private ActiveTileView _activeTileView;
+        
         public TilemapService(
             Tilemap tilemap,
-            ActiveTilemapCellView activeTilemapCellView,
             TileMapCellUi tileMapCellUi
         )
         {
             _tilemap = tilemap;
-            _activeTilemapCellView = activeTilemapCellView;
             _tileMapCellUi = tileMapCellUi;
         }
-
-        public bool TryGetPosition(Vector3 worldPosition, out Vector2Int tilePosition)
+        
+        public void SetActiveTileView(ActiveTileView activeTileView) =>
+            _activeTileView = activeTileView;
+        
+        public bool TryGetTilePosition(Vector3 worldPosition, out Vector2Int tilePosition)
         {
             Vector3Int position = _tilemap.WorldToCell(worldPosition);
 
@@ -44,13 +46,13 @@ namespace Sources.Infrastructure.Services.Tilemaps
 
         public void ShowTileInfo(Vector3 position)
         {
-            _activeTilemapCellView.Show(position);
+            _activeTileView.Show(position);
             _tileMapCellUi.Show(position);
         }
 
         public void HideTileInfo()
         {
-            _activeTilemapCellView.Hide();
+            _activeTileView.Hide();
             _tileMapCellUi.Hide();
         }
     }

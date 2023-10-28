@@ -7,20 +7,20 @@ using UnityEngine.Tilemaps;
 
 namespace Sources.Infrastructure.Repositories
 {
-    public class GridRepository
+    public class TileRepository
     {
-        private readonly List<GridCell> _gridCells = new List<GridCell>();
+        private readonly List<TileModel> _gridCells = new List<TileModel>();
 
-        public GridRepository(Tilemap tilemap) =>
+        public TileRepository(Tilemap tilemap) =>
             new GridDataSource(this).Load(tilemap);
 
-        public GridCell Get(int x, int y) =>
+        public TileModel Get(int x, int y) =>
             _gridCells.FirstOrDefault(cell => cell.X == x && cell.Y == y);
 
-        public void Set(GridCell gridCell) =>
-            _gridCells.Replace(Get(gridCell.X, gridCell.Y), gridCell);
+        public void Set(TileModel tileModel) =>
+            _gridCells.Replace(Get(tileModel.X, tileModel.Y), tileModel);
 
-        public GridCell[] GetAll() =>
+        public TileModel[] GetAll() =>
             _gridCells.ToArray();
     }
 }

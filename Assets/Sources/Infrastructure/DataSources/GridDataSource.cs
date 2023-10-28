@@ -7,11 +7,11 @@ namespace Sources.Infrastructure.DataSources
 {
     public class GridDataSource
     {
-        private readonly GridRepository _gridRepository;
+        private readonly TileRepository _tileRepository;
 
-        public GridDataSource(GridRepository gridRepository)
+        public GridDataSource(TileRepository tileRepository)
         {
-            _gridRepository = gridRepository;
+            _tileRepository = tileRepository;
         }
 
         public void Load(Tilemap tilemap)
@@ -26,7 +26,7 @@ namespace Sources.Infrastructure.DataSources
                     TileBase tile = tiles[x + y * tilemapBounds.size.x];
 
                     if (tile is not null)
-                        _gridRepository.Set( new GridCell(tilemapBounds.position.x + x, tilemapBounds.position.y + y, null));
+                        _tileRepository.Set( new TileModel(tilemapBounds.position.x + x, tilemapBounds.position.y + y, null));
                 }
             }
         }

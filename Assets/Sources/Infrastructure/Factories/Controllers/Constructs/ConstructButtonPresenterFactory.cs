@@ -12,6 +12,7 @@ using Sources.Infrastructure.Factories.Domain.Walls;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Views;
 using Sources.Infrastructure.Factories.Services;
+using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Services.Payments;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.InfrastructureInterfaces.Services.Pointers;
@@ -30,6 +31,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
 
         public ConstructButtonPresenterFactory(
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory,
+            TileRepository tileRepository,
             PaymentService paymentService,
             IPointerService pointerService,
             TilemapService tilemapService,
@@ -38,8 +40,8 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
         )
         {
             _paymentService = paymentService;
-            TurretFactory turretFactory = new TurretFactory();
-            WallFactory wallFactory = new WallFactory();
+            TurretFactory turretFactory = new TurretFactory(tileRepository);
+            WallFactory wallFactory = new WallFactory(tileRepository);
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
             WeaponPresenterFactory weaponPresenterFactory = new WeaponPresenterFactory();
 
@@ -62,16 +64,16 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             _constructActions = new Dictionary<string, Action<Vector2Int>>()
             {
                 [nameof(LaserGun)] = position => turretViewFactory
-                    .Create(turretFactory.Create(new LaserGun()), position),
+                    .Create(turretFactory.Create(new LaserGun(), position), position),
 
                 [nameof(RocketGun)] = position => turretViewFactory
-                    .Create(turretFactory.Create(new RocketGun()), position),
+                    .Create(turretFactory.Create(new RocketGun(), position), position),
                 
                 [nameof(MiniGun)] = position => turretViewFactory
-                    .Create(turretFactory.Create(new RocketGun()), position),
+                    .Create(turretFactory.Create(new RocketGun(), position), position),
 
                 [nameof(Wall)] = position => wallViewFactory
-                    .Create(wallFactory.Create(), position),
+                    .Create(wallFactory.Create(position), position),
             };
         }
 

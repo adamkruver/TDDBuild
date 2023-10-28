@@ -1,4 +1,7 @@
-﻿using Sources.Infrastructure.Services.Scenes;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Sources.Infrastructure.Services.Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,8 +14,8 @@ namespace Sources.App.Core
         private void Awake() =>
             DontDestroyOnLoad(this);
 
-        private void Start() =>
-            _sceneService.ChangeStateAsync(SceneManager.GetActiveScene().name);
+        private IEnumerator Start() =>
+            _sceneService.ChangeStateAsync(SceneManager.GetActiveScene().name).ToCoroutine();
 
         private void Update() =>
             _sceneService?.Update(Time.deltaTime);

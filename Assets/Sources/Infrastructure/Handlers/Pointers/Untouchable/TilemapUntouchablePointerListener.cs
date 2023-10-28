@@ -36,7 +36,7 @@ namespace Sources.Infrastructure.Handlers.Pointers.Untouchable
         private bool TryGetTileWorldPosition(Vector3 screenPosition, out Vector3 tileWorldPosition)
         {
             if (_raycastService.TryRaycastFromScreen(screenPosition, out RaycastHit hit) == false
-                || _tilemapService.TryGetPosition(hit.point, out Vector2Int tilePosition) == false)
+                || _tilemapService.TryGetTilePosition(hit.point, out Vector2Int tilePosition) == false)
             {
                 tileWorldPosition = default;
 
