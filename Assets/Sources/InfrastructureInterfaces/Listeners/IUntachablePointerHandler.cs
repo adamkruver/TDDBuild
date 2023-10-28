@@ -2,8 +2,8 @@
 
 namespace Sources.InfrastructureInterfaces.Listeners
 {
-    public interface IUntouchablePointerListener
+    public interface IUntouchablePointerHandler
     {
-        void OnMove(Vector3 position);
+        void OnMove(Vector3 position, bool isPointerOverUI);
     }
 }

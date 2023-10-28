@@ -7,14 +7,14 @@ using UnityEngine.Tilemaps;
 
 namespace Sources.Infrastructure.Listeners.Pointers.Untouchable
 {
-    public class TilemapUntouchablePointerListener : IUntouchablePointerListener
+    public class TilemapUntouchablePointerHandler : IUntouchablePointerHandler
     {
         private readonly GameplayCamera _gameplayCamera;
         private readonly Tilemap _tilemap;
         private readonly ActiveTilemapCellView _activeTilemapCell;
         private readonly TileMapCellUi _tileMapCellUi;
 
-        public TilemapUntouchablePointerListener(GameplayCamera gameplayCamera)
+        public TilemapUntouchablePointerHandler(GameplayCamera gameplayCamera)
         {
             _gameplayCamera = gameplayCamera;
             _tilemap = Object.FindObjectOfType<Tilemap>();
@@ -22,14 +22,21 @@ namespace Sources.Infrastructure.Listeners.Pointers.Untouchable
             _tileMapCellUi = Object.FindObjectOfType<TileMapCellUi>(true);
         }
 
-        public void OnMove(Vector3 position)
+        public void OnMove(Vector3 position, bool isPointerOverUI)
         {
+            if (isPointerOverUI)
+            {
+                Hide();
+                
+                return;
+            }
+            
             Ray ray = _gameplayCamera.Camera.ScreenPointToRay(position);
             int layer = 1 << LayerMask.NameToLayer("GameplayGrid");
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer) == false)
             {
-                _activeTilemapCell.Hide();
+                Hide();
                 
                 return;
             }
@@ -38,13 +45,24 @@ namespace Sources.Infrastructure.Listeners.Pointers.Untouchable
 
             if (_tilemap.HasTile(gridPosition) == false)
             {
-                _activeTilemapCell.Hide();
+                Hide();
                 
                 return;
             }
 
+            Show(gridPosition);
+        }
+
+        private void Show(Vector3Int gridPosition)
+        {
             _activeTilemapCell.Show(gridPosition);
             _tileMapCellUi.Show(gridPosition);
+        }
+
+        private void Hide()
+        {
+            _activeTilemapCell.Hide();
+            _tileMapCellUi.Hide();
         }
     }
 }

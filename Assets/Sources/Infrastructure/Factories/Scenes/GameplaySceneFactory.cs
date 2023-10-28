@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sources.Controllers.Constructs;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
+using Sources.Domain.Constructs;
 using Sources.Domain.Weapons;
+using Sources.Infrastructure.Factories.Controllers.Constructs;
 using Sources.Infrastructure.Factories.Controllers.Turrets;
 using Sources.Infrastructure.Factories.Controllers.Weapons;
+using Sources.Infrastructure.Factories.Presentation.Ui;
 using Sources.Infrastructure.Factories.Presentation.Views;
 using Sources.Infrastructure.Listeners.Pointers;
 using Sources.Infrastructure.Listeners.Pointers.Untouchable;
@@ -12,7 +16,9 @@ using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Services.Cameras;
 using Sources.Infrastructure.Services.Pointers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
+using Sources.Presentation.Uis;
 using Sources.Presentation.Views.Cameras;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 using Object = UnityEngine.Object;
 
@@ -29,26 +35,31 @@ namespace Sources.Infrastructure.Factories.Scenes
             };
 
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
+            FooterUi footerUi = Object.FindObjectOfType<FooterUi>();
+
             GridRepository gridRepository = new GridRepository(tilemap);
-            
-            PointerService pointerService = new PointerService();
+
             GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
 
             GameplayCameraService gameplayCameraService = new GameplayCameraService(gameplayCamera);
-            
-            TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
-            WeaponPresenterFactory weaponPresenterFactory = new WeaponPresenterFactory();
-            
-            WeaponViewFactory weaponViewFactory = new WeaponViewFactory(weaponPresenterFactory, weapons);
 
-            TurretViewFactory turretViewFactory = new TurretViewFactory(turretPresenterFactory, weaponViewFactory);
-            
-            pointerService.RegisterHandler(1, new CameraRotationPointerListener(gameplayCameraService));
-            pointerService.RegisterUntouchableHandler(new TilemapUntouchablePointerListener(gameplayCamera));
-            pointerService.RegisterHandler(0, new GameplayInteractPointerListener(turretViewFactory,gameplayCamera));
+            PointerService pointerService = new PointerService();
 
+            ConstructButtonPresenterFactory constructButtonPresenterFactory =
+                new ConstructButtonPresenterFactory(pointerService, gameplayCamera, weapons);
 
-            return new GameplayScene(pointerService, gameplayCameraService, turretViewFactory);
+            pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
+
+            ConstructButtonUiFactory constructButtonUiFactory =
+                new ConstructButtonUiFactory(constructButtonPresenterFactory);
+
+            ConstructButtonCollection constructButtonCollection =
+                Resources.Load<ConstructButtonCollection>("Fabs/Buttons/Constructs/CollectionFab");
+
+            foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
+                footerUi.AddChild(constructButtonUiFactory.Create(constructButton).gameObject);
+
+            return new GameplayScene(pointerService, gameplayCameraService);
         }
     }
 }

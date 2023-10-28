@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Sources.Infrastructure.Listeners.Pointers
 {
-    public class CameraRotationPointerListener : IPointerListener
+    public class CameraRotationPointerHandler : IPointerHandler
     {
         private readonly GameplayCameraService _gameplayCameraService;
 
@@ -13,7 +13,7 @@ namespace Sources.Infrastructure.Listeners.Pointers
 
         private float _rotationStrength = .2f;
 
-        public CameraRotationPointerListener(GameplayCameraService gameplayCameraService)
+        public CameraRotationPointerHandler(GameplayCameraService gameplayCameraService)
         {
             _gameplayCameraService = gameplayCameraService;
         }
@@ -24,7 +24,7 @@ namespace Sources.Infrastructure.Listeners.Pointers
             _startAngles = _gameplayCameraService.Angles;
         }
 
-        public void OnTouchMove(Vector3 position)
+        public void OnTouchMove(Vector3 position, bool isPointerOverUI)
         {
             Vector3 delta = (position - _startPosition) * _rotationStrength;
             Vector3 angles = new Vector3(delta.y, delta.x) + _startAngles;

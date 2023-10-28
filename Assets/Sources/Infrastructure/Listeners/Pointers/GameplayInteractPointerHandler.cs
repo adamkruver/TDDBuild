@@ -8,13 +8,13 @@ using UnityEngine.Tilemaps;
 
 namespace Sources.Infrastructure.Listeners.Pointers
 {
-    public class GameplayInteractPointerListener : IPointerListener
+    public class GameplayInteractPointerHandler : IPointerHandler
     {
         private readonly TurretViewFactory _turretViewFactory;
         private readonly GameplayCamera _gameplayCamera;
         private readonly Tilemap _tilemap;
 
-        public GameplayInteractPointerListener(
+        public GameplayInteractPointerHandler(
             TurretViewFactory turretViewFactory,
             GameplayCamera gameplayCamera
         )
@@ -40,7 +40,7 @@ namespace Sources.Infrastructure.Listeners.Pointers
             _turretViewFactory.Create(new Turret(new RocketGun()), new Vector2Int(gridPosition.x, gridPosition.y));
         }
 
-        public void OnTouchMove(Vector3 position)
+        public void OnTouchMove(Vector3 position, bool isPointerOverUI)
         {
         }
 

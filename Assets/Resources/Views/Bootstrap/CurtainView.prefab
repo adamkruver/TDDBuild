@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2411460532810782853}
   - component: {fileID: 6509639073700359261}
   - component: {fileID: 883258698539816799}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: CurtainView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 2411460533315025602}
   - component: {fileID: 2411460533315025604}
   - component: {fileID: 2411460533315025605}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 9002746893373409980}
   - component: {fileID: 2155982294293741238}
   - component: {fileID: 3751944772452121136}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

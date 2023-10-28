@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a02c741a8442bcb6eac4e42585297b, type: 3}
+  m_Name: CollectionFab
+  m_EditorClassIdentifier: 
+  <ConstructButtons>k__BackingField:
+  - {fileID: 11400000, guid: cfa56304ead047a45b99fa3bdacc0209, type: 2}
+  - {fileID: 11400000, guid: 5c01474bdf95a844f826c00c35fbb29b, type: 2}
+  - {fileID: 11400000, guid: 77bc92bcd2158bc4bbd4f301c6cc40ea, type: 2}
