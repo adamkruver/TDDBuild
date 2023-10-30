@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
-using Sources.Controllers.Systems;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
+using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Weapons;
+using Sources.Domain.Zombies;
+using Sources.Infrastructure.Assessors;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
 using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Tilemaps;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
+using Sources.Infrastructure.Factories.Domain.Systems;
+using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Systems;
 using Sources.Infrastructure.Factories.Presentation.Ui;
@@ -36,6 +40,20 @@ namespace Sources.Infrastructure.Factories.Scenes
     {
         public IScene Create(object payload)
         {
+            Dictionary<Type, int> enemyDeathAccessors = new Dictionary<Type, int>()
+            {
+                [typeof(Zombie)] = 50,
+            };
+
+            AggressiveLevelCollection aggressiveLevelCollection =
+                Resources.Load<AggressiveLevelCollection>("Fabs/Systems/Aggressive/AggressiveLevelCollectionFab");
+
+            EnemyRepository enemyRepository = new EnemyRepository();
+            AggressiveSystemFactory aggressiveSystemFactory = new AggressiveSystemFactory();
+            EnemyDeathAssessor enemyDeathAssessor = new EnemyDeathAssessor(enemyDeathAccessors);
+
+            AggressiveSystem aggressiveSystem = aggressiveSystemFactory.Create(aggressiveLevelCollection);
+
             Money money = new Money(220);
 
             Dictionary<Type, string> weapons = new Dictionary<Type, string>()
@@ -47,21 +65,21 @@ namespace Sources.Infrastructure.Factories.Scenes
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
             Hud hud = Object.FindObjectOfType<Hud>();
             TileMapCellUi tileMapCellUi = Object.FindObjectOfType<TileMapCellUi>(true);
+            GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
+            BaseView baseView = Object.FindObjectOfType<BaseView>();
 
             TileRepository tileRepository = new TileRepository(tilemap);
-
-            
-            GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
 
             PaymentService paymentService = new PaymentService(money);
             RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
             TilemapService tilemapService = new TilemapService(tilemap, tileMapCellUi);
 
-            ActiveTilePresenterFactory activeTilePresenterFactory = new ActiveTilePresenterFactory(tileRepository, tilemapService);
+            ActiveTilePresenterFactory activeTilePresenterFactory =
+                new ActiveTilePresenterFactory(tileRepository, tilemapService);
             ActiveTileViewFactory activeTileViewFactory = new ActiveTileViewFactory(activeTilePresenterFactory);
 
             ActiveTileView activeTile = activeTileViewFactory.Create();
-            
+
             tilemapService.SetActiveTileView(activeTile);
             tilemapService.HideTileInfo();
 
@@ -94,24 +112,36 @@ namespace Sources.Infrastructure.Factories.Scenes
             ConstructButtonCollection constructButtonCollection =
                 Resources.Load<ConstructButtonCollection>("Fabs/Buttons/Constructs/CollectionFab");
 
+
+            AggressiveSystemPresenterFactory aggressiveSystemPresenterFactory =
+                new AggressiveSystemPresenterFactory(enemyRepository);
+
+            AggressiveSystemViewFactory aggressiveSystemViewFactory =
+                new AggressiveSystemViewFactory(aggressiveSystemPresenterFactory);
+
+            hud.TopCenter.AddChild(new MoneyUiFactory().Create(money));
+            hud.TopRight.AddChild(aggressiveSystemViewFactory.Create(aggressiveSystem));
+
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
-                hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton).gameObject);
+                hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton));
 
-            hud.Header.AddChild(new MoneyUiFactory().Create(money).gameObject);
-
-            ZombiePresenterFactory zombiePresenterFactory = new ZombiePresenterFactory();
+            ZombiePresenterFactory zombiePresenterFactory = new ZombiePresenterFactory(
+                aggressiveSystem, enemyRepository, enemyDeathAssessor
+            );
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
 
             MovementSystemViewFactory movementSystemViewFactory =
                 new MovementSystemViewFactory(movementSystemPresenterFactory);
 
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
-                zombiePresenterFactory, movementSystemViewFactory
+                zombiePresenterFactory, movementSystemViewFactory, baseView
             );
-            
-            
 
-            return new GameplayScene(pointerService, gameplayCameraService, zombieViewFactory);
+            ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);
+
+            return new GameplayScene(
+                pointerService, gameplayCameraService, zombieViewFactory, aggressiveSystem, zombieFactory
+            );
         }
     }
 }

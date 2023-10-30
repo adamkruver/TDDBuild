@@ -21,7 +21,8 @@ namespace Sources.Infrastructure.Factories.Presentation.Systems
             MovementSystemView view = gameObject.GetComponentInChildren<MovementSystemView>()
                                                     ?? throw new NullReferenceException(nameof(MovementSystemView));
             
-            MovementSystemPresenter movementSystemPresenter = _movementSystemPresenterFactory.Create(view, system);
+            MovementSystemPresenter presenter = _movementSystemPresenterFactory.Create(view, system);
+            view.Construct(presenter);
 
             return view;
         }

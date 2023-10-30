@@ -9,7 +9,7 @@ namespace Sources.Presentation.Ui
         private void Awake() => 
             _transform = GetComponent<Transform>();
 
-        public void AddChild(GameObject child) =>
+        public void AddChild(MonoBehaviour child) =>
             child.transform.SetParent(_transform, false);
     }
 }

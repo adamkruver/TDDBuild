@@ -2,6 +2,6 @@
 {
     public interface IZombieView
     {
-        
+        void Die();
     }
 }

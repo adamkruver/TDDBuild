@@ -5,7 +5,7 @@ namespace Sources.Domain.Systems
 {
     public class MovementSystem
     {
-        private const float MaxValue = 3;
+        private const float MaxValue = 5;
         
         private readonly MutableLiveData<float> _speed = new MutableLiveData<float>(0);
         private readonly float _maxValue;
