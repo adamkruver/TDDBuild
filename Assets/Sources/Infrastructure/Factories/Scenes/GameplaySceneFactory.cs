@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
+using Sources.Controllers.Systems;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
+using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Tilemaps;
+using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
+using Sources.Infrastructure.Factories.Presentation.Systems;
 using Sources.Infrastructure.Factories.Presentation.Ui;
 using Sources.Infrastructure.Factories.Presentation.Views;
 using Sources.Infrastructure.Handlers.Pointers;
@@ -95,7 +99,19 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             hud.Header.AddChild(new MoneyUiFactory().Create(money).gameObject);
 
-            return new GameplayScene(pointerService, gameplayCameraService);
+            ZombiePresenterFactory zombiePresenterFactory = new ZombiePresenterFactory();
+            MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
+
+            MovementSystemViewFactory movementSystemViewFactory =
+                new MovementSystemViewFactory(movementSystemPresenterFactory);
+
+            ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
+                zombiePresenterFactory, movementSystemViewFactory
+            );
+            
+            
+
+            return new GameplayScene(pointerService, gameplayCameraService, zombieViewFactory);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Sources.Domain.Grids;
+using Sources.Domain.Tiles;
 using Sources.Extensions.Lists;
 using Sources.Infrastructure.DataSources;
 using UnityEngine.Tilemaps;

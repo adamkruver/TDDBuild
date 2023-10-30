@@ -18,7 +18,7 @@ namespace Sources.Frameworks.LiveDatas
         
         public T Value => _liveData.Value;
 
-        public void Observe(Action<T> callback)
+        public void AddListener(Action<T> callback)
         {
             if (_callbacks.Contains(callback))
                 return;
@@ -27,7 +27,7 @@ namespace Sources.Frameworks.LiveDatas
             callback.Invoke(_liveData.Value);
         }
 
-        public void Unobserve(Action<T> callback)
+        public void RemoveListener(Action<T> callback)
         {
             _callbacks.Remove(callback);
         }

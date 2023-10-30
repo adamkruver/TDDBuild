@@ -1,4 +1,4 @@
-﻿namespace Sources.Domain.Grids
+﻿namespace Sources.Domain.Tiles
 {
     public class TileModel
     {

@@ -10,7 +10,7 @@ namespace Sources.Controllers.Credits
         public MoneyPresenter(TextUi textUi, Money money)
         {
             _textUi = textUi;
-            money.Value.Observe(UpdateView);
+            money.Value.AddListener(UpdateView);
         }
 
         private void UpdateView(int value) =>

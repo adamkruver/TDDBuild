@@ -1,4 +1,4 @@
-﻿using Sources.Domain.Grids;
+﻿using Sources.Domain.Tiles;
 using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.PresentationInterfaces.Views;
