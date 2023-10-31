@@ -1,16 +1,22 @@
-﻿using Sources.PresentationInterfaces.Views.Weapons;
+﻿using Sources.Controllers.Weapons;
+using Sources.Presentation.Views.Systems.TargetTrackers;
+using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
 
 namespace Sources.Presentation.Views.Weapons
 {
-    public class WeaponView : MonoBehaviour, IWeaponView
+    public class WeaponView : PresentationViewBase<WeaponPresenter>, IWeaponView
     {
-        private Transform _transform;
+        [SerializeField] private WeaponRotationSystem _rotationSystem;
 
-        private void Awake() =>
-            _transform = GetComponent<Transform>();
+        [field: SerializeField] public TargetTrackerSystem TargetTrackerSystem { get; private set; }
+
+        public IWeaponRotationSystem RotationSystem => _rotationSystem;
 
         public void SetParent(Transform parent) =>
-            _transform.SetParent(parent, true);
+            Transform.SetParent(parent, true);
+
+        private void Update() =>
+            Presenter?.Update(Time.deltaTime);
     }
 }

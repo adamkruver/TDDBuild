@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sources.Controllers.Weapons;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Weapons;
 using Sources.Presentation.Views.Weapons;
@@ -23,7 +24,10 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         {
             string prefabPath = _prefabPaths[weapon.GetType()];
             WeaponView weaponView = Object.Instantiate(Resources.Load<WeaponView>(prefabPath));
-            _weaponPresenterFactory.Create(weaponView, weapon);
+            WeaponPresenter presenter = _weaponPresenterFactory.Create(
+                weaponView, weapon, weaponView.TargetTrackerSystem
+            );
+            weaponView.Construct(presenter);
 
             return weaponView;
         }

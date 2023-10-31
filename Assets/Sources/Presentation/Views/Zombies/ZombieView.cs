@@ -1,22 +1,15 @@
 ﻿using Sources.Controllers.Zombies;
+using Sources.Presentation.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Zombies;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Sources.Presentation.Views.Zombies
 {
-    public class ZombieView : MonoBehaviour, IZombieView
+    public class ZombieView : EnemyView<ZombiePresenter>, IZombieView
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
-
-        private ZombiePresenter _presenter;
-
-        private void OnEnable() =>
-            _presenter?.Enable();
-
-        private void OnDisable() =>
-            _presenter?.Disable();
-
+        
         public void Update()
         {
             if (_navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
@@ -30,13 +23,6 @@ namespace Sources.Presentation.Views.Zombies
         {
             gameObject.SetActive(false);
             Debug.Log("Zombie Died");
-        }
-
-        public void Construct(ZombiePresenter presenter)
-        {
-            gameObject.SetActive(false);
-            _presenter = presenter;
-            gameObject.SetActive(true);
         }
     }
 }

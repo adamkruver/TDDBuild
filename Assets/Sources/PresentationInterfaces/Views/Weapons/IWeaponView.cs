@@ -2,5 +2,6 @@
 {
     public interface IWeaponView
     {
+        IWeaponRotationSystem RotationSystem { get; }
     }
 }

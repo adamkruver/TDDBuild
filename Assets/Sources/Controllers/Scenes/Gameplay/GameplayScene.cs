@@ -37,7 +37,7 @@ namespace Sources.Controllers.Scenes.Gameplay
             _pointerService.Update(deltaTime);
 
             if (Input.GetKeyDown(KeyCode.A)) 
-                _aggressiveSystem.AddProgress(50);
+                _aggressiveSystem.AddProgress(7);
         }
 
         public void UpdateFixed(float fixedDeltaTime)

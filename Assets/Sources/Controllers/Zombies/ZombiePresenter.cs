@@ -2,12 +2,11 @@
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
 using Sources.Infrastructure.Repositories;
-using Sources.Presentation.Views.Zombies;
 using Sources.PresentationInterfaces.Views.Zombies;
 
 namespace Sources.Controllers.Zombies
 {
-    public class ZombiePresenter
+    public class ZombiePresenter : PresenterBase
     {
         private readonly IZombieView _view;
         private readonly Zombie _zombie;
@@ -30,10 +29,10 @@ namespace Sources.Controllers.Zombies
             _enemyDeathAssessor = enemyDeathAssessor;
         }
 
-        public void Enable() =>
+        public override void Enable() =>
             _zombie.Died += OnDied;
 
-        public void Disable() =>
+        public override void Disable() =>
             _zombie.Died -= OnDied;
 
         private void OnDied()

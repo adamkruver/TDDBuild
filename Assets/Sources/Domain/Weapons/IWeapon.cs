@@ -2,6 +2,7 @@
 {
     public interface IWeapon
     {
-        
+        float BulletSpeed { get; }
+        float FireDistance { get;}
     }
 }
