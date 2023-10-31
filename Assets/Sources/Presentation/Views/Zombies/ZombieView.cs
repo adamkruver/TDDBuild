@@ -9,7 +9,7 @@ namespace Sources.Presentation.Views.Zombies
     public class ZombieView : EnemyView<ZombiePresenter>, IZombieView
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
-        
+
         public void Update()
         {
             if (_navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)

@@ -2,6 +2,7 @@
 using Sources.Controllers.Zombies;
 using Sources.Domain.Systems;
 using Sources.Domain.Zombies;
+using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Presentation.Systems;
 using Sources.Presentation.Views.Zombies;
@@ -14,16 +15,19 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
     {
         private readonly ZombiePresenterFactory _zombiePresenterFactory;
         private readonly MovementSystemViewFactory _movementSystemViewFactory;
+        private readonly DamageableSystemViewFactory _damageableSystemViewFactory;
         private readonly BaseView _baseView;
 
         public ZombieViewFactory(
             ZombiePresenterFactory zombiePresenterFactory,
             MovementSystemViewFactory movementSystemViewFactory,
+            DamageableSystemViewFactory damageableSystemViewFactory,
             BaseView baseView
         )
         {
             _zombiePresenterFactory = zombiePresenterFactory;
             _movementSystemViewFactory = movementSystemViewFactory;
+            _damageableSystemViewFactory = damageableSystemViewFactory;
             _baseView = baseView;
         }
 
@@ -34,6 +38,7 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
             view.Construct(presenter);
 
             _movementSystemViewFactory.Create(view.gameObject, zombie.MovementSystem);
+            _damageableSystemViewFactory.Create(view.DamageableSystemView, zombie.Health);
             
             view.SetDestination(_baseView.DoorsPosition);
             

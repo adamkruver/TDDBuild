@@ -4,7 +4,6 @@ using Sources.Infrastructure.Services.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
 using Sources.PresentationInterfaces.Views.Weapons;
-using UnityEngine;
 
 namespace Sources.Controllers.Weapons
 {

@@ -18,9 +18,11 @@ namespace Sources.Infrastructure.Factories.Domain.Zombies
 
         public Zombie Create()
         {
+            float zombieMaxHealthPoints = 100;
+            
             MovementSystem movementSystem = new MovementSystem();
 
-            Zombie zombie = new Zombie(movementSystem);
+            Zombie zombie = new Zombie(zombieMaxHealthPoints, movementSystem);
 
             _enemyRepository.Add(zombie);
             movementSystem.SetSpeed(_aggressiveSystem.EnemySpeed.Value);

@@ -133,8 +133,12 @@ namespace Sources.Infrastructure.Factories.Scenes
             MovementSystemViewFactory movementSystemViewFactory =
                 new MovementSystemViewFactory(movementSystemPresenterFactory);
 
+            DamageableSystemPresenterFactory damageableSystemPresenterFactory = new DamageableSystemPresenterFactory();
+            DamageableSystemViewFactory damageableSystemViewFactory =
+                new DamageableSystemViewFactory(damageableSystemPresenterFactory);
+
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
-                zombiePresenterFactory, movementSystemViewFactory, baseView
+                zombiePresenterFactory, movementSystemViewFactory, damageableSystemViewFactory, baseView
             );
 
             ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);

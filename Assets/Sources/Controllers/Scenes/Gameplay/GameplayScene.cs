@@ -16,6 +16,7 @@ namespace Sources.Controllers.Scenes.Gameplay
         private readonly ZombieViewFactory _zombieViewFactory;
         private readonly AggressiveSystem _aggressiveSystem;
         private readonly ZombieFactory _zombieFactory;
+        private Zombie _zombie;
 
         public GameplayScene(
             PointerService pointerService,
@@ -37,7 +38,7 @@ namespace Sources.Controllers.Scenes.Gameplay
             _pointerService.Update(deltaTime);
 
             if (Input.GetKeyDown(KeyCode.A)) 
-                _aggressiveSystem.AddProgress(7);
+                _zombie.Health.TakeDamage(45);
         }
 
         public void UpdateFixed(float fixedDeltaTime)
@@ -51,7 +52,8 @@ namespace Sources.Controllers.Scenes.Gameplay
 
         public void Enter(object payload)
         {
-            _zombieViewFactory.Create(_zombieFactory.Create());
+            _zombie = _zombieFactory.Create(); 
+                _zombieViewFactory.Create(_zombie);
             _zombieViewFactory.Create(_zombieFactory.Create());
             _zombieViewFactory.Create(_zombieFactory.Create());
             _zombieViewFactory.Create(_zombieFactory.Create());
