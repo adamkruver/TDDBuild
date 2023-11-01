@@ -20,7 +20,6 @@ namespace Sources.Presentation.Views.Weapons
         public IWeaponRotationSystem RotationSystem => _rotationSystem;
         public IWeaponAnimation Animation => _weaponAnimation;
 
-
         public void SetParent(Transform parent) =>
             Transform.SetParent(parent, true);
 
