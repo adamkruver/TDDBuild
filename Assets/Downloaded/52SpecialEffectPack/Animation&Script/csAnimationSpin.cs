@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class csAnimationSpin : MonoBehaviour {
+namespace Downloaded._52SpecialEffectPack.Animation_Script
+{
+	public class csAnimationSpin : MonoBehaviour {
 
-    Animation an;
+		Animation an;
 
-	void Update () {
-        an = gameObject.GetComponent<Animation>();
-        an.Play();
+		void Update () {
+			an = gameObject.GetComponent<Animation>();
+			an.Play();
+		}
 	}
 }
