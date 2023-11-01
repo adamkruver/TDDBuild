@@ -6,6 +6,7 @@ using Sources.Controllers.Scenes.Gameplay;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
+using Sources.Domain.Systems.EnemySpawn;
 using Sources.Domain.Weapons;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
@@ -30,7 +31,9 @@ using Sources.Infrastructure.Services.Times;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Views.Cameras;
+using Sources.Presentation.Views.Systems.Spawn;
 using Sources.Presentation.Views.Tilemaps;
+using Sources.PresentationInterfaces.Views.Enemies;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Object = UnityEngine.Object;
@@ -146,9 +149,24 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);
 
-            return new GameplayScene(
-                pointerService, gameplayCameraService, zombieViewFactory, aggressiveSystem, zombieFactory
-            );
+            Dictionary<string, Func<Vector3, IEnemyView>> enemyViewFactories =
+                new Dictionary<string, Func<Vector3, IEnemyView>>()
+                {
+                    ["Zombie"] = position => zombieViewFactory.Create(zombieFactory.Create(), position),
+                };
+
+            EnemyViewFactory enemyViewFactory = new EnemyViewFactory(enemyViewFactories);
+
+            SpawnSystemPresenterFactory spawnSystemPresenterFactory = new SpawnSystemPresenterFactory(enemyViewFactory);
+            SpawnSystemViewFactory spawnSystemViewFactory = new SpawnSystemViewFactory(spawnSystemPresenterFactory);
+
+            SpawnSystemView spawnSystemView = Object.FindObjectOfType<SpawnSystemView>();
+            EnemySpawnWaveCollectionFab enemySpawnWaveCollectionFab =
+                Resources.Load<EnemySpawnWaveCollectionFab>("Fabs/Systems/Spawn/EnemySpawnWaveCollectionFab");
+
+            spawnSystemViewFactory.Create(spawnSystemView, enemySpawnWaveCollectionFab);
+
+            return new GameplayScene(pointerService, gameplayCameraService, aggressiveSystem);
         }
     }
 }
