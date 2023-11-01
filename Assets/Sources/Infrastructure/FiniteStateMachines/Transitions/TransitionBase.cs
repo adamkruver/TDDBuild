@@ -9,9 +9,13 @@ namespace Sources.Infrastructure.FiniteStateMachines.Transitions
         protected TransitionBase(IFiniteState nextState) =>
             _nextState = nextState;
 
-        public abstract void Enable();
+        public virtual void Enable()
+        {
+        }
 
-        public abstract void Disable();
+        public virtual void Disable()
+        {
+        }
 
         public void Update(float deltaTime) =>
             OnUpdate(deltaTime);

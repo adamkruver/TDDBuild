@@ -6,8 +6,9 @@ namespace Sources.PresentationInterfaces.Views.Weapons
     {
         Vector3 Position { get; }
 
-        void SetBaseLookDirection(Vector3 lookDirection);
+        void UpdateRotationBase(Vector3 lookDirection, float rotationSpeed);
 
         void SetXAngle(float angle);
+        bool HasTargetAtLook(Vector3 getDirectionToEnemy);
     }
 }

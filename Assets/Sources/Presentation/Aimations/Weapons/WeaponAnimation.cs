@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Sources.Presentation.Aimations.Weapons
 {
-    public class WeaponAnimation : IWeaponAnimation
+    public class WeaponAnimation : MonoBehaviour, IWeaponAnimation
     {
         [SerializeField] private Animator _animator;
 
         private static readonly int s_shootHash = Animator.StringToHash("Shoot");
 
-        public void Fire() =>
+        public void Shoot() =>
             _animator.SetTrigger(s_shootHash);
     }
 }

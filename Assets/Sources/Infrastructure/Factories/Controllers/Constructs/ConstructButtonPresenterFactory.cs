@@ -18,9 +18,11 @@ using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Services.Payments;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.InfrastructureInterfaces.Services.Pointers;
+using Sources.InfrastructureInterfaces.Services.Times;
 using Sources.Presentation.Views.Cameras;
 using Sources.PresentationInterfaces.Views.Constructs;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Sources.Infrastructure.Factories.Controllers.Constructs
 {
@@ -32,6 +34,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
         private readonly Dictionary<string, Action<Vector2Int>> _constructActions;
 
         public ConstructButtonPresenterFactory(
+            ITimeService timeService,
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory,
             TileRepository tileRepository,
             PaymentService paymentService,
@@ -44,8 +47,8 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             _paymentService = paymentService;
             TurretFactory turretFactory = new TurretFactory(tileRepository);
             WallFactory wallFactory = new WallFactory(tileRepository);
-            LaserGunFactory laserGunFactory = new LaserGunFactory();
-            RocketGunFactory rocketGunFactory = new RocketGunFactory();
+            LaserGunFactory laserGunFactory = new LaserGunFactory(timeService);
+            RocketGunFactory rocketGunFactory = new RocketGunFactory(timeService);
 
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
             WeaponStateMachineFactory weaponStateMachineFactory = new WeaponStateMachineFactory();
@@ -70,17 +73,20 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             );
 
             _constructService.Disable();
+            
+            WeaponFab laserGunFab = Resources.Load<WeaponFab>("Fabs/Weapons/LaserGunFab");
+            WeaponFab rocketGunFab = Resources.Load<WeaponFab>("Fabs/Weapons/RocketGunFab");
 
             _constructActions = new Dictionary<string, Action<Vector2Int>>()
             {
                 [nameof(LaserGun)] = position => turretViewFactory
-                    .Create(turretFactory.Create(laserGunFactory.Create(), position), position),
+                    .Create(turretFactory.Create(laserGunFactory.Create(laserGunFab), position), position),
 
                 [nameof(RocketGun)] = position => turretViewFactory
-                    .Create(turretFactory.Create(rocketGunFactory.Create(), position), position),
+                    .Create(turretFactory.Create(rocketGunFactory.Create(rocketGunFab), position), position),
 
                 [nameof(MiniGun)] = position => turretViewFactory
-                    .Create(turretFactory.Create(rocketGunFactory.Create(), position), position),
+                    .Create(turretFactory.Create(rocketGunFactory.Create(rocketGunFab), position), position),
 
                 [nameof(Wall)] = position => wallViewFactory
                     .Create(wallFactory.Create(position), position),

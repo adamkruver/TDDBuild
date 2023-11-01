@@ -2,6 +2,6 @@
 {
     public interface IWeaponAnimation
     {
-        public void Fire();
+        public void Shoot();
     }
 }

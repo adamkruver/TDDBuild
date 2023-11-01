@@ -1,6 +1,5 @@
 ﻿using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Zombies;
-using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Presentation.Views;
 using Sources.Infrastructure.Services.Cameras;
@@ -37,8 +36,8 @@ namespace Sources.Controllers.Scenes.Gameplay
         {
             _pointerService.Update(deltaTime);
 
-            if (Input.GetKeyDown(KeyCode.A)) 
-                _zombie.Health.TakeDamage(45);
+            if (Input.GetKeyDown(KeyCode.A))
+                _aggressiveSystem.AddProgress(10);
         }
 
         public void UpdateFixed(float fixedDeltaTime)
@@ -52,8 +51,8 @@ namespace Sources.Controllers.Scenes.Gameplay
 
         public void Enter(object payload)
         {
-            _zombie = _zombieFactory.Create(); 
-                _zombieViewFactory.Create(_zombie);
+            _zombie = _zombieFactory.Create();
+            _zombieViewFactory.Create(_zombie);
             _zombieViewFactory.Create(_zombieFactory.Create());
             _zombieViewFactory.Create(_zombieFactory.Create());
             _zombieViewFactory.Create(_zombieFactory.Create());

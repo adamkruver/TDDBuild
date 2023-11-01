@@ -10,10 +10,22 @@ namespace Sources.Presentation.Views.Weapons
 
         public Vector3 Position => _base.position;
 
-        public void SetBaseLookDirection(Vector3 lookDirection) =>
-            _base.forward = lookDirection;
-
         public void SetXAngle(float angle) =>
             _head.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));
+
+        public bool HasTargetAtLook(Vector3 lookDirection) =>
+            Vector3.Angle(_base.forward, lookDirection) < 1;
+
+        public void UpdateRotationBase(Vector3 lookDirection, float rotationSpeed)
+        {
+            if (Vector3.Angle(_base.forward, lookDirection) < 3)
+            {
+                _base.forward = lookDirection;
+
+                return;
+            }
+
+            _base.forward = Vector3.MoveTowards(_base.forward, lookDirection, Time.deltaTime / rotationSpeed);
+        }
     }
 }

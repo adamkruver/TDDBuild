@@ -10,10 +10,10 @@ namespace Sources.Infrastructure.FiniteStateMachines.States
 
         public void AddTransition(ITransition transition) =>
             _transitions.Add(transition);
-        
+
         public void RemoveTransition(ITransition transition) =>
             _transitions.Remove(transition);
-        
+
         public void Enter(IFiniteStateChangeService service)
         {
             _service = service;
@@ -41,8 +41,13 @@ namespace Sources.Infrastructure.FiniteStateMachines.States
         public void UpdateLate(float deltaTime) =>
             OnLateUpdate(deltaTime);
 
-        protected abstract void OnExit();
-        protected abstract void OnEnter();
+        protected virtual void OnEnter()
+        {
+        }
+
+        protected virtual void OnExit()
+        {
+        }
 
         protected virtual void OnUpdate(float deltaTime)
         {

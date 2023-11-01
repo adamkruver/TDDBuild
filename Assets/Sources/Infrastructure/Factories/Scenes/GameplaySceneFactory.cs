@@ -26,6 +26,7 @@ using Sources.Infrastructure.Services.Payments;
 using Sources.Infrastructure.Services.Pointers;
 using Sources.Infrastructure.Services.Raycasts;
 using Sources.Infrastructure.Services.Tilemaps;
+using Sources.Infrastructure.Services.Times;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Views.Cameras;
@@ -92,9 +93,11 @@ namespace Sources.Infrastructure.Factories.Scenes
             GameplayCameraService gameplayCameraService = new GameplayCameraService(gameplayCamera);
 
             PointerService pointerService = new PointerService();
+            TimeService timeService = new TimeService();
 
             ConstructButtonPresenterFactory constructButtonPresenterFactory =
                 new ConstructButtonPresenterFactory(
+                    timeService,
                     tilemapUntouchablePointerHandlerFactory,
                     tileRepository,
                     paymentService,

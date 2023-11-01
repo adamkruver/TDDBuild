@@ -19,14 +19,20 @@ namespace Sources.Infrastructure.Services.Weapons
                 weaponRotationSystem ?? throw new ArgumentNullException(nameof(weaponRotationSystem));
         }
 
-        public void LookWithPredict(IEnemyView enemy)
+        public void UpdateLookDirectionWithPredict(IEnemyView enemy, float rotationSpeed) => 
+            _weaponRotationSystem.UpdateRotationBase(GetDirectionToEnemy(enemy), rotationSpeed);
+
+        public bool HasLockedTarget(IEnemyView enemyView) => 
+            _weaponRotationSystem.HasTargetAtLook(GetDirectionToEnemy(enemyView));
+
+        private Vector3 GetDirectionToEnemy(IEnemyView enemy)
         {
             Vector3 directionToEnemyNormalized = (enemy.Position - _weaponRotationSystem.Position).normalized;
             Vector3 enemyForward = enemy.Forward;
 
             Vector3 enemyOrthogonal =
                 Vector3.Dot(directionToEnemyNormalized, enemyForward) * directionToEnemyNormalized;
-            
+
             Vector3 enemyTangent = enemyForward - enemyOrthogonal;
             float sqrBulletSpeed = _weapon.Bullet.Speed * _weapon.Bullet.Speed;
             Vector3 weaponTangent = directionToEnemyNormalized * Mathf.Sqrt(sqrBulletSpeed - enemyTangent.sqrMagnitude);
@@ -34,7 +40,7 @@ namespace Sources.Infrastructure.Services.Weapons
 
             direction.y = 0;
 
-            _weaponRotationSystem.SetBaseLookDirection(direction);
+            return direction;
         }
     }
 }

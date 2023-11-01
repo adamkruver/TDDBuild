@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5934686523049895069}
   - component: {fileID: 8990116113355438891}
   - component: {fileID: 1212930038589972185}
+  - component: {fileID: 3038828784500526902}
   m_Layer: 0
   m_Name: LaserGunView
   m_TagString: Untagged
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationSystem: {fileID: 8990116113355438891}
+  _weaponAnimation: {fileID: 3038828784500526902}
   _particleSystem: {fileID: 7736458533350920283}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
   <Bullet>k__BackingField: {fileID: 3655695986082532635}
@@ -81,6 +83,19 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3038828784500526902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143574402138706927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e9af560010443b8db762ae34bc77d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 7411375947557169899}
 --- !u!1001 &2347489802029944726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -275,6 +290,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 5f57daf66e29c524ea0ccce8927c37eb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5ceca2fab4f06f49aa235f4f428275a, type: 3}
+--- !u!95 &7411375947557169899 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95000012794672780, guid: b5ceca2fab4f06f49aa235f4f428275a, type: 3}
+  m_PrefabInstance: {fileID: 7461335564957801575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7459589183932975009 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010650229702, guid: b5ceca2fab4f06f49aa235f4f428275a, type: 3}

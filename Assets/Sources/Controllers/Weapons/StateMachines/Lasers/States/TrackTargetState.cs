@@ -7,13 +7,13 @@ using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
 
 namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 {
-    public class RotateToTargetState : FiniteStateBase
+    public class TrackTargetState : FiniteStateBase
     {
         private readonly IWeapon _weapon;
         private readonly ITargetTrackerSystem _targetTrackerSystem;
         private readonly WeaponService _weaponService;
 
-        public RotateToTargetState(
+        public TrackTargetState(
             IWeapon weapon,
             ITargetTrackerSystem targetTrackerSystem,
             WeaponService weaponService
@@ -24,18 +24,14 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
             _weaponService = weaponService ?? throw new ArgumentNullException(nameof(weaponService));
         }
 
-        protected override void OnEnter()
-        {
-        }
-
-        protected override void OnExit()
-        {
-        }
-
         protected override void OnUpdate(float deltaTime)
         {
-            IEnemyView enemyView = _targetTrackerSystem.Track(_weapon.FireDistance);
-            _weaponService.LookWithPredict(enemyView);
+            IEnemyView enemyView = _targetTrackerSystem.Track(_weapon.MaxFireDistance);
+
+            if (enemyView == null)
+                return;
+
+            _weaponService.UpdateLookDirectionWithPredict(enemyView, _weapon.HorizontalRotationSpeed);
         }
     }
 }
