@@ -6,11 +6,14 @@ namespace Sources.Infrastructure.FiniteStateMachines
     {
         private IFiniteState _currentState;
 
+        public void SetFirstState(IFiniteState state) =>
+            _currentState = state;
+
         public void ChangeState(IFiniteState nextState)
         {
-            _currentState?.Exit();
+            ExitState();
             _currentState = nextState;
-            _currentState?.Enter(this);
+            EnterState();
         }
 
         public void Update(float deltaTime) =>
@@ -21,5 +24,17 @@ namespace Sources.Infrastructure.FiniteStateMachines
 
         public void UpdateLate(float deltaTime) =>
             _currentState?.UpdateLate(deltaTime);
+
+        public void Run() =>
+            EnterState();
+
+        public void Stop() =>
+            ExitState();
+
+        private void EnterState() =>
+            _currentState?.Enter(this);
+
+        private void ExitState() =>
+            _currentState?.Exit();
     }
 }

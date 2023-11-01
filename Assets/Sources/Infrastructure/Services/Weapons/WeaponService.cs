@@ -26,11 +26,10 @@ namespace Sources.Infrastructure.Services.Weapons
 
             Vector3 enemyOrthogonal =
                 Vector3.Dot(directionToEnemyNormalized, enemyForward) * directionToEnemyNormalized;
+            
             Vector3 enemyTangent = enemyForward - enemyOrthogonal;
-
-            Vector3 weaponTangent = directionToEnemyNormalized *
-                                    Mathf.Sqrt(_weapon.BulletSpeed * _weapon.BulletSpeed - enemyTangent.sqrMagnitude);
-
+            float sqrBulletSpeed = _weapon.Bullet.Speed * _weapon.Bullet.Speed;
+            Vector3 weaponTangent = directionToEnemyNormalized * Mathf.Sqrt(sqrBulletSpeed - enemyTangent.sqrMagnitude);
             Vector3 direction = enemyTangent + weaponTangent;
 
             direction.y = 0;

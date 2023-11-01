@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Sources.Presentation.Views
 {
-    public abstract class PresentationViewBase<T> : MonoBehaviour where T : PresenterBase
+    public abstract class PresentationViewBase<T> : MonoBehaviour where T : IPresenter
     {
         protected T Presenter;
         protected Transform Transform;

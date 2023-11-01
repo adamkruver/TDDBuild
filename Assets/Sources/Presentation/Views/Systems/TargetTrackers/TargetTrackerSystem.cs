@@ -22,8 +22,6 @@ namespace Sources.Presentation.Views.Systems.TargetTrackers
         {
             int colliders = Physics.OverlapSphereNonAlloc(_transform.position, radius, _colliders, _layerMask);
 
-            Debug.Log(colliders);
-            
             if (colliders == 0)
                 return null;
             

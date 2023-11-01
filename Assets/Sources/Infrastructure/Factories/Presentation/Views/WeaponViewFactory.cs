@@ -11,12 +11,17 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 {
     public class WeaponViewFactory
     {
-        private readonly WeaponPresenterFactory _weaponPresenterFactory;
+        private readonly WeaponStateMachineFactory _weaponStateMachineFactory;
+        private readonly BulletViewFactory _bulletViewFactory;
         private readonly Dictionary<Type, string> _prefabPaths;
 
-        public WeaponViewFactory(WeaponPresenterFactory weaponPresenterFactory, Dictionary<Type, string> prefabPaths)
+        public WeaponViewFactory(
+            WeaponStateMachineFactory weaponStateMachineFactory,
+            BulletViewFactory bulletViewFactory,
+            Dictionary<Type, string> prefabPaths)
         {
-            _weaponPresenterFactory = weaponPresenterFactory;
+            _weaponStateMachineFactory = weaponStateMachineFactory;
+            _bulletViewFactory = bulletViewFactory;
             _prefabPaths = prefabPaths;
         }
 
@@ -24,10 +29,14 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         {
             string prefabPath = _prefabPaths[weapon.GetType()];
             WeaponView weaponView = Object.Instantiate(Resources.Load<WeaponView>(prefabPath));
-            WeaponPresenter presenter = _weaponPresenterFactory.Create(
+            
+            WeaponStateMachine stateMachine = _weaponStateMachineFactory.Create(
                 weaponView, weapon, weaponView.TargetTrackerSystem
             );
-            weaponView.Construct(presenter);
+            
+            weaponView.Construct(stateMachine);
+
+            _bulletViewFactory.Create(weaponView.Bullet, weapon.Bullet);
 
             return weaponView;
         }

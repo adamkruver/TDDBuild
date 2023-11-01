@@ -1,8 +1,10 @@
-﻿namespace Sources.Domain.Weapons
+﻿using Sources.Domain.Bullets;
+
+namespace Sources.Domain.Weapons
 {
     public interface IWeapon
     {
-        float BulletSpeed { get; }
+        IBullet Bullet { get; }
         float FireDistance { get;}
     }
 }

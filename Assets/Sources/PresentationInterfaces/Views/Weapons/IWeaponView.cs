@@ -3,5 +3,7 @@
     public interface IWeaponView
     {
         IWeaponRotationSystem RotationSystem { get; }
+
+        void Fire();
     }
 }
