@@ -6,19 +6,17 @@ using UnityEngine.AI;
 
 namespace Sources.Presentation.Views.Zombies
 {
-    public class ZombieView : EnemyView<ZombiePresenter>, IZombieView
+    public class ZombieView : EnemyView<ZombieStateMachine>, IZombieView
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
 
+        public NavMeshAgent NavMeshAgent => _navMeshAgent;
+        
         public void Update()
         {
-            if (_navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
-                _navMeshAgent.Stop();
+            Presenter?.Update(Time.deltaTime);
         }
-
-        public void SetDestination(Vector3 position) =>
-            _navMeshAgent.SetDestination(position);
-
+        
         public void Die()
         {
             gameObject.SetActive(false);
