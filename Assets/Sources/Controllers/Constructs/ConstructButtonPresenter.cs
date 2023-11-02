@@ -14,21 +14,21 @@ namespace Sources.Controllers.Constructs
         private readonly ConstructButton _constructButton;
         private readonly PaymentService _paymentService;
         private readonly ConstructService _constructService;
-        private readonly IConstructionView _constructionView;
+        private readonly Func<IConstructionView>  _constructionViewFactory;
 
         public ConstructButtonPresenter(
             IConstructButtonUi ui,
             ConstructButton constructButton,
             PaymentService paymentService,
             ConstructService constructService,
-            IConstructionView constructionView
+            Func<IConstructionView> constructionViewFactory
         )
         {
             _ui = ui;
             _constructButton = constructButton;
             _paymentService = paymentService;
             _constructService = constructService;
-            _constructionView = constructionView;
+            _constructionViewFactory = constructionViewFactory;
             
             _ui.SetPrice(_constructButton.Price.ToString());
             _ui.SetTitle(_constructButton.Title);
@@ -59,7 +59,7 @@ namespace Sources.Controllers.Constructs
         private void OnButtonClick()
         {
             if (_paymentService.IsEnough(_constructButton.Price))
-                _constructService.Enable(_constructionView, _constructButton.Price);
+                _constructService.Enable(_constructionViewFactory.Invoke(), _constructButton.Price);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
         private readonly PaymentService _paymentService;
         private readonly TurretViewFactory _turretViewFactory;
         private readonly ConstructService _constructService;
-        private readonly Dictionary<string, IConstructionView> _constructViews;
+        private readonly Dictionary<string, Func<IConstructionView>> _constructViews;
 
         public ConstructButtonPresenterFactory(
             ITimeService timeService,
@@ -72,9 +72,9 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
 
             _constructService.Disable();
             
-            _constructViews = new Dictionary<string, IConstructionView>()
+            _constructViews = new Dictionary<string, Func<IConstructionView>>()
             {
-                [nameof(LaserGun)] = turretConstructionViewFactory.Create(new Turret(laserGunFactory.Create())),
+                [nameof(LaserGun)] = () => turretConstructionViewFactory.Create(new Turret(laserGunFactory.Create())),
 
 /*                [nameof(RocketGun)] = position => turretViewFactory
                     .Create(turretFactory.Create(rocketGunFactory.Create(rocketGunFab), position), position),
