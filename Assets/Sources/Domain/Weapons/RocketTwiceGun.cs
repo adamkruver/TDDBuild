@@ -4,9 +4,9 @@ using Sources.InfrastructureInterfaces.Services.Times;
 
 namespace Sources.Domain.Weapons
 {
-    public class RocketGun : WeaponBase, IConstructable
+    public class RocketTwiceGun : WeaponBase, IConstructable
     {
-        public RocketGun(IBullet bullet, ITimeService timeService, WeaponFab weaponFab) : base(
+        public RocketTwiceGun(IBullet bullet, ITimeService timeService, WeaponFab weaponFab) : base(
             bullet, timeService, weaponFab
         )
         {

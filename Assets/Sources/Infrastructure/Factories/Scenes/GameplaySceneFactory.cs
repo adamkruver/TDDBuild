@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
@@ -68,7 +69,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             Dictionary<Type, string> weapons = new Dictionary<Type, string>()
             {
                 [typeof(LaserGun)] = "Views/Weapons/LaserGunView",
-                [typeof(RocketGun)] = "Views/Weapons/RocketGunView",
+                [typeof(RocketTwiceGun)] = "Views/Weapons/RocketGunView",
             };
 
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
@@ -90,32 +91,44 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new Dictionary<string, TurretConstructionPreview>()
                 {
                     [nameof(LaserGun)] = Object.Instantiate(
-                        Resources.Load<TurretConstructionPreview>("Views/Weapons/Previews/LaserGunPreview")
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/LaserGunPreview")
+                    ),
+                    [nameof(DoubleLaserGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/DoubleLaserGunPreview")
+                    ),
+                    [nameof(DoubleLaserTwiceGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/DoubleLaserTwiceGunPreview")
+                    ),
+                    [nameof(MiniTwiceGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/MiniTwiceGunPreview")
+                    ),
+                    [nameof(RocketTwiceGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/RocketTwiceGunPreview")
                     ),
                 };
-            
-            turretConstructionViews[nameof(LaserGun)].Hide();
+
+            turretConstructionViews.Values.ToList().ForEach(view => view.Hide());
 
             TurretFactory turretFactory = new TurretFactory(tileRepository);
-            
+
             WeaponStateMachineFactory weaponStateMachineFactory = new WeaponStateMachineFactory();
-            
+
             BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
 
 
             BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
-            
+
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
                 weaponStateMachineFactory, bulletViewFactory, weapons
             );
-            
+
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
             TurretViewFactory turretViewFactory = new TurretViewFactory(turretPresenterFactory, weaponViewFactory);
-            
-            
+
+
             TurretConstructionPresenterFactory turretConstructionPresenterFactory =
                 new TurretConstructionPresenterFactory(tilemapService, turretViewFactory, turretFactory);
-            
+
             TurretConstructionViewFactory turretConstructionViewFactory =
                 new TurretConstructionViewFactory(turretConstructionPresenterFactory, turretConstructionViews);
 
@@ -201,7 +214,7 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             spawnSystemViewFactory.Create(spawnSystemView, enemySpawnWaveCollectionFab);
 
-            return new GameplayScene(pointerService, gameplayCameraService,aggressiveSystem);
+            return new GameplayScene(pointerService, gameplayCameraService, aggressiveSystem);
         }
     }
 }
