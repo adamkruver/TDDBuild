@@ -1,11 +1,11 @@
 ﻿using System;
+using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Handlers.Pointers;
-using Sources.Infrastructure.Handlers.Pointers.Untouchable;
 using Sources.Infrastructure.Services.Payments;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.InfrastructureInterfaces.Services.Pointers;
 using Sources.Presentation.Views.Cameras;
-using UnityEngine;
+using Sources.PresentationInterfaces.Views.Constructions;
 
 namespace Sources.Infrastructure.Factories.Services
 {
@@ -13,50 +13,59 @@ namespace Sources.Infrastructure.Factories.Services
     {
         private readonly IPointerService _pointerService;
         private readonly GameplayCamera _gameplayCamera;
-        private readonly TilemapUntouchablePointerHandler _tilemapUntouchablePointerHandler;
+        private readonly TilemapUntouchablePointerHandlerFactory _tilemapUntouchablePointerHandlerFactory;
         private readonly PaymentService _paymentService;
         private readonly TilemapService _tilemapService;
+
+        private IConstructionView _constructionView;
 
         public ConstructService(
             IPointerService pointerService,
             PaymentService paymentService,
             TilemapService tilemapService,
             GameplayCamera gameplayCamera,
-            TilemapUntouchablePointerHandler tilemapUntouchablePointerHandler
+            TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory
         )
         {
-            _pointerService = pointerService;
-            _paymentService = paymentService;
-            _tilemapService = tilemapService;
-            _gameplayCamera = gameplayCamera;
-            _tilemapUntouchablePointerHandler = tilemapUntouchablePointerHandler;
+            _pointerService = pointerService ?? throw new ArgumentNullException(nameof(pointerService));
+            _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+            _tilemapService = tilemapService ?? throw new ArgumentNullException(nameof(tilemapService));
+            _gameplayCamera = gameplayCamera ?? throw new ArgumentNullException(nameof(gameplayCamera));
+            _tilemapUntouchablePointerHandlerFactory = tilemapUntouchablePointerHandlerFactory
+                                                       ?? throw new ArgumentNullException(
+                                                           nameof(tilemapUntouchablePointerHandlerFactory)
+                                                       );
         }
 
-        public void Enable(Action<Vector2Int> onClick, int money)
+        public void Enable(IConstructionView constructionView, int money)
         {
             Disable();
+
+            _constructionView = constructionView;
 
             _pointerService.RegisterHandler(
                 0,
                 new GameplayInteractPointerHandler(
                     _gameplayCamera, position =>
                     {
-                        if(_paymentService.TryPay(money))
-                            onClick.Invoke(position);
-                        
+                        if (_paymentService.TryPay(money))
+                            constructionView.Build(_tilemapService.ConvertToWorldPosition(position));
+
                         Disable();
                     }
                 )
             );
-            
-            _pointerService.RegisterUntouchableHandler(_tilemapUntouchablePointerHandler);
+
+            _pointerService.RegisterUntouchableHandler(
+                _tilemapUntouchablePointerHandlerFactory.Create(constructionView)
+            );
         }
 
         public void Disable()
         {
             _pointerService.UnregisterHandler(0);
             _pointerService.UnregisterUntouchableHandler();
-            _tilemapService.HideTileInfo();
+            _constructionView?.Hide();
         }
     }
 }

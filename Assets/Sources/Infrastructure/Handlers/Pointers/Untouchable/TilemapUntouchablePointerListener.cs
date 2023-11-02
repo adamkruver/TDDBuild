@@ -3,6 +3,7 @@ using Sources.Infrastructure.Services.Tilemaps;
 using Sources.InfrastructureInterfaces.Listeners;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Views.Tilemaps;
+using Sources.PresentationInterfaces.Views.Constructions;
 using UnityEngine;
 
 namespace Sources.Infrastructure.Handlers.Pointers.Untouchable
@@ -11,26 +12,30 @@ namespace Sources.Infrastructure.Handlers.Pointers.Untouchable
     {
         private readonly RaycastService _raycastService;
         private readonly TilemapService _tilemapService;
+        private readonly IConstructionView _constructionView;
 
         public TilemapUntouchablePointerHandler(
             RaycastService raycastService,
-            TilemapService tilemapService
+            TilemapService tilemapService,
+            IConstructionView constructionView
         )
         {
             _raycastService = raycastService;
             _tilemapService = tilemapService;
+            _constructionView = constructionView;
         }
 
         public void OnMove(Vector3 screenPosition, bool isPointerOverUI)
         {
             if (isPointerOverUI || TryGetTileWorldPosition(screenPosition, out Vector3 tileWorldPosition) == false)
             {
-                _tilemapService.HideTileInfo();
+                _constructionView.Hide();
 
                 return;
             }
 
-            _tilemapService.ShowTileInfo(tileWorldPosition);
+            _constructionView.Show();
+            _constructionView.SetPosition(tileWorldPosition);
         }
 
         private bool TryGetTileWorldPosition(Vector3 screenPosition, out Vector3 tileWorldPosition)

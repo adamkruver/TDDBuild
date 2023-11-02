@@ -1,4 +1,5 @@
 ﻿using System;
+using Sources.Constants;
 using Sources.InfrastructureInterfaces.Listeners;
 using Sources.Presentation.Views.Cameras;
 using UnityEngine;
@@ -26,9 +27,8 @@ namespace Sources.Infrastructure.Handlers.Pointers
         public void OnTouchStart(Vector3 position, bool isPointerOverUI)
         {
             Ray ray = _gameplayCamera.Camera.ScreenPointToRay(position);
-            int layer = 1 << LayerMask.NameToLayer("GameplayGrid");
 
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer) == false)
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Layers.GameplayGrid) == false)
                 return;
 
             Vector3Int gridPosition = _tilemap.WorldToCell(hit.point);
