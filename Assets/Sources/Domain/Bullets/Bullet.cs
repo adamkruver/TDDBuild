@@ -2,10 +2,10 @@
 
 namespace Sources.Domain.Bullets
 {
-    public class Laser : IBullet
+    public class Bullet : IBullet
     {
-        public float Damage { get; } = 5;
-        public float Speed { get; } = 100000000000;
+        public float Damage { get; } = 1;
+        public float Speed { get; } = 1;
         
         public void Attack(IDamageable damageable) => 
             damageable.TakeDamage(Damage);

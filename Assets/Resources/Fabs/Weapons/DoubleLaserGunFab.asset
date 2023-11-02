@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acdb5fdbf817487fb002097df45f127b, type: 3}
-  m_Name: RocketGunFab
+  m_Name: DoubleLaserGunFab
   m_EditorClassIdentifier: 
-  <Cooldown>k__BackingField: 2
-  <MinFireDistance>k__BackingField: 3
-  <MaxFireDistance>k__BackingField: 12
-  <HorizontalRotationSpeed>k__BackingField: 1
-  <VerticalRotationSpeed>k__BackingField: 1
+  <Cooldown>k__BackingField: 0
+  <MinFireDistance>k__BackingField: 0
+  <MaxFireDistance>k__BackingField: 0
+  <HorizontalRotationSpeed>k__BackingField: 0
+  <VerticalRotationSpeed>k__BackingField: 0

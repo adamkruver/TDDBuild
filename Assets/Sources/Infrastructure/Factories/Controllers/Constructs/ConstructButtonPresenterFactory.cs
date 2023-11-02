@@ -51,7 +51,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
 
             WallFactory wallFactory = new WallFactory(tileRepository);
             LaserGunFactory laserGunFactory = new LaserGunFactory(timeService);
-            RocketGunFactory rocketGunFactory = new RocketGunFactory(timeService);
+            RocketTwiceGunFactory rocketTwiceGunFactory = new RocketTwiceGunFactory(timeService);
 
 
 

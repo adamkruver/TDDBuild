@@ -4,13 +4,13 @@ using Sources.InfrastructureInterfaces.Services.Times;
 
 namespace Sources.Infrastructure.Factories.Domain.Weapons
 {
-    public class RocketGunFactory : WeaponFactoryBase<RocketTwiceGun>
+    public class DoubleLaserGunFactory : WeaponFactoryBase<DoubleLaserGun>
     {
-        public RocketGunFactory(ITimeService timeService) : base(timeService)
+        public DoubleLaserGunFactory(ITimeService timeService) : base(timeService)
         {
         }
 
         public override IWeapon Create() =>
-            new RocketTwiceGun(new Rocket(), TimeService, WeaponFab);
+            new DoubleLaserGun(new Laser(), TimeService, WeaponFab);
     }
 }
