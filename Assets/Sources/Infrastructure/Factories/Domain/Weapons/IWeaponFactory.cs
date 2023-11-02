@@ -4,6 +4,6 @@ namespace Sources.Infrastructure.Factories.Domain.Weapons
 {
     public interface IWeaponFactory
     {
-        IWeapon Create(WeaponFab weaponFab);
+        IWeapon Create();
     }
 }

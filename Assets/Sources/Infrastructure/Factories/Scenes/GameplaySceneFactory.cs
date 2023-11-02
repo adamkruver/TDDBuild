@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
+using Sources.Domain.Bullets;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
@@ -10,11 +12,16 @@ using Sources.Domain.Systems.EnemySpawn;
 using Sources.Domain.Weapons;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
+using Sources.Infrastructure.Factories.Controllers.Bullets;
+using Sources.Infrastructure.Factories.Controllers.Constructions;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
 using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Tilemaps;
+using Sources.Infrastructure.Factories.Controllers.Turrets;
+using Sources.Infrastructure.Factories.Controllers.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Domain.Systems;
+using Sources.Infrastructure.Factories.Domain.Turrets;
 using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Systems;
@@ -29,6 +36,7 @@ using Sources.Infrastructure.Services.Raycasts;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.Infrastructure.Services.Times;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
+using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Systems.Spawn;
@@ -68,7 +76,6 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
             Hud hud = Object.FindObjectOfType<Hud>();
-            TileMapCellUi tileMapCellUi = Object.FindObjectOfType<TileMapCellUi>(true);
             GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
             BaseView baseView = Object.FindObjectOfType<BaseView>();
 
@@ -76,16 +83,45 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             PaymentService paymentService = new PaymentService(money);
             RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
-            TilemapService tilemapService = new TilemapService(tilemap, tileMapCellUi);
+            TilemapService tilemapService = new TilemapService(tilemap);
 
             ActiveTilePresenterFactory activeTilePresenterFactory =
                 new ActiveTilePresenterFactory(tileRepository, tilemapService);
-            ActiveTileViewFactory activeTileViewFactory = new ActiveTileViewFactory(activeTilePresenterFactory);
+//            ActiveTileViewFactory activeTileViewFactory = new ActiveTileViewFactory(activeTilePresenterFactory);
 
-            ActiveTileView activeTile = activeTileViewFactory.Create();
+            Dictionary<string, TurretConstructionPreview> turretConstructionViews =
+                new Dictionary<string, TurretConstructionPreview>()
+                {
+                    [nameof(LaserGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Views/Weapons/Previews/LaserGunPreview")
+                    ),
+                };
+            
+            turretConstructionViews[nameof(LaserGun)].Hide();
 
-            tilemapService.SetActiveTileView(activeTile);
-            tilemapService.HideTileInfo();
+            TurretFactory turretFactory = new TurretFactory(tileRepository);
+            
+            WeaponStateMachineFactory weaponStateMachineFactory = new WeaponStateMachineFactory();
+            
+            BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
+
+
+            BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
+            
+            WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
+                weaponStateMachineFactory, bulletViewFactory, weapons
+            );
+            
+            TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
+            TurretViewFactory turretViewFactory = new TurretViewFactory(turretPresenterFactory, weaponViewFactory);
+            
+            
+            TurretConstructionPresenterFactory turretConstructionPresenterFactory =
+                new TurretConstructionPresenterFactory(tilemapService, turretViewFactory, turretFactory);
+            
+            TurretConstructionViewFactory turretConstructionViewFactory =
+                new TurretConstructionViewFactory(turretConstructionPresenterFactory, turretConstructionViews);
+
 
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory =
                 new TilemapUntouchablePointerHandlerFactory(
@@ -95,12 +131,14 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             GameplayCameraService gameplayCameraService = new GameplayCameraService(gameplayCamera);
 
+
             PointerService pointerService = new PointerService();
             TimeService timeService = new TimeService();
 
             ConstructButtonPresenterFactory constructButtonPresenterFactory =
                 new ConstructButtonPresenterFactory(
                     timeService,
+                    turretConstructionViewFactory,
                     tilemapUntouchablePointerHandlerFactory,
                     tileRepository,
                     paymentService,

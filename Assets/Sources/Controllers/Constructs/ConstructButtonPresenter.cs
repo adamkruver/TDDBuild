@@ -2,6 +2,7 @@
 using Sources.Domain.Constructs;
 using Sources.Infrastructure.Factories.Services;
 using Sources.Infrastructure.Services.Payments;
+using Sources.PresentationInterfaces.Views.Constructions;
 using Sources.PresentationInterfaces.Views.Constructs;
 using UnityEngine;
 
@@ -13,21 +14,21 @@ namespace Sources.Controllers.Constructs
         private readonly ConstructButton _constructButton;
         private readonly PaymentService _paymentService;
         private readonly ConstructService _constructService;
-        private readonly Action<Vector2Int> _onClickAction;
+        private readonly IConstructionView _constructionView;
 
         public ConstructButtonPresenter(
             IConstructButtonUi ui,
             ConstructButton constructButton,
             PaymentService paymentService,
             ConstructService constructService,
-            Action<Vector2Int> onClickAction
+            IConstructionView constructionView
         )
         {
             _ui = ui;
             _constructButton = constructButton;
             _paymentService = paymentService;
             _constructService = constructService;
-            _onClickAction = onClickAction;
+            _constructionView = constructionView;
             
             _ui.SetPrice(_constructButton.Price.ToString());
             _ui.SetTitle(_constructButton.Title);
@@ -58,7 +59,7 @@ namespace Sources.Controllers.Constructs
         private void OnButtonClick()
         {
             if (_paymentService.IsEnough(_constructButton.Price))
-                _constructService.Enable(_onClickAction, _constructButton.Price);
+                _constructService.Enable(_constructionView, _constructButton.Price);
         }
     }
 }

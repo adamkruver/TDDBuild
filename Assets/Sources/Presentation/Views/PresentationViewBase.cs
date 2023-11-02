@@ -26,10 +26,10 @@ namespace Sources.Presentation.Views
             OnAfterDisable();
         }
 
-        public void Show() =>
+        public void Show() => 
             gameObject.SetActive(true);
 
-        public void Hide() =>
+        public void Hide() => 
             gameObject.SetActive(false);
 
         public void Construct(T presenter)
