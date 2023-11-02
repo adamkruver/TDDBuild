@@ -21,23 +21,23 @@ namespace Sources.Presentation.Ui.Elements
             _cancellationTokenSource?.Cancel();
 
             _cancellationTokenSource = new CancellationTokenSource();
-            SetNormalizedValueAsync(normalizedValue, _cancellationTokenSource);
+            
+            SetNormalizedValueAsync(normalizedValue, _cancellationTokenSource.Token);
         }
 
         private async UniTask SetNormalizedValueAsync(
             float normalizedValue,
-            CancellationTokenSource cancellationTokenSource
+            CancellationToken cancellationToken
         )
         {
-            while (Math.Abs(_currentValue - normalizedValue) > 0.01f &&
-                   cancellationTokenSource.IsCancellationRequested == false)
+            while (Math.Abs(_currentValue - normalizedValue) > 0.01f)
             {
                 _currentValue = Mathf.Lerp(_currentValue, normalizedValue, Time.deltaTime * _speed);
                 Apply();
-                await UniTask.Yield();
+                
+                await UniTask.Yield(cancellationToken);
             }
 
-            _currentValue = normalizedValue;
             Apply();
         }
 

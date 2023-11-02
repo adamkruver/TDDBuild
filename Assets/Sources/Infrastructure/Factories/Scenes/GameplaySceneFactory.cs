@@ -201,7 +201,7 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             spawnSystemViewFactory.Create(spawnSystemView, enemySpawnWaveCollectionFab);
 
-            return new GameplayScene(pointerService, gameplayCameraService);
+            return new GameplayScene(pointerService, gameplayCameraService,aggressiveSystem);
         }
     }
 }
