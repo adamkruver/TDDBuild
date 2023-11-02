@@ -134,6 +134,9 @@ namespace Sources.Infrastructure.Factories.Scenes
             ZombiePresenterFactory zombiePresenterFactory = new ZombiePresenterFactory(
                 aggressiveSystem, enemyRepository, enemyDeathAssessor
             );
+            ZombieStateMachineFactory zombieStateMachineFactory = new ZombieStateMachineFactory(
+                aggressiveSystem, enemyRepository, enemyDeathAssessor);
+            
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
 
             MovementSystemViewFactory movementSystemViewFactory =
@@ -144,7 +147,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new DamageableSystemViewFactory(damageableSystemPresenterFactory);
 
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
-                zombiePresenterFactory, movementSystemViewFactory, damageableSystemViewFactory, baseView
+                zombiePresenterFactory, zombieStateMachineFactory, movementSystemViewFactory, damageableSystemViewFactory, baseView
             );
 
             ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);
