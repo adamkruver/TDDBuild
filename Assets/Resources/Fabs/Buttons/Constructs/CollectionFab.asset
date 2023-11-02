@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ConstructButtons>k__BackingField:
   - {fileID: 11400000, guid: 5c01474bdf95a844f826c00c35fbb29b, type: 2}
+  - {fileID: 11400000, guid: bb19889cf0eff734495d9e52c741613d, type: 2}
+  - {fileID: 11400000, guid: 4af49aad0862c1c468cc51e170bec02c, type: 2}
+  - {fileID: 11400000, guid: de76c9a60cbcd3f4a8e835bc2daf0afd, type: 2}
+  - {fileID: 11400000, guid: 77bc92bcd2158bc4bbd4f301c6cc40ea, type: 2}

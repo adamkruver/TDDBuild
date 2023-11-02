@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627194ad06ca4470aaf79b31cc797c47, type: 3}
-  m_Name: MiniGun
+  m_Name: DoubleLaserGun
   m_EditorClassIdentifier: 
-  <IconSprite>k__BackingField: {fileID: 21300000, guid: f29017c8aa2688f47bed1e22218ef2d4, type: 3}
-  <Title>k__BackingField: Minigun
-  <Price>k__BackingField: 200
-  Type: MiniGun
+  <IconSprite>k__BackingField: {fileID: 21300000, guid: 2b5fadfd6991f484989fe5f9520cf041, type: 3}
+  <Title>k__BackingField: Laser Gun
+  <Price>k__BackingField: 50
+  Type: DoubleLaserGun

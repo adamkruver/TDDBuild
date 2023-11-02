@@ -51,7 +51,11 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
 
             WallFactory wallFactory = new WallFactory(tileRepository);
             LaserGunFactory laserGunFactory = new LaserGunFactory(timeService);
+            DoubleLaserGunFactory doubleLaserGunFactory = new DoubleLaserGunFactory(timeService);
+            DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory = new DoubleLaserTwiceGunFactory(timeService);
+            MiniTwiceGunFactory miniTwiceGunFactory = new MiniTwiceGunFactory(timeService);
             RocketTwiceGunFactory rocketTwiceGunFactory = new RocketTwiceGunFactory(timeService);
+            
 
 
 
@@ -74,7 +78,20 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             
             _constructViews = new Dictionary<string, Func<IConstructionView>>()
             {
-                [nameof(LaserGun)] = () => turretConstructionViewFactory.Create(new Turret(laserGunFactory.Create())),
+                [nameof(LaserGun)] = () => 
+                    turretConstructionViewFactory.Create(new Turret(laserGunFactory.Create())),
+                
+                [nameof(DoubleLaserGun)] = () => 
+                    turretConstructionViewFactory.Create(new Turret(doubleLaserGunFactory.Create())),
+                
+                [nameof(DoubleLaserTwiceGun)] = () => 
+                    turretConstructionViewFactory.Create(new Turret(doubleLaserTwiceGunFactory.Create())),
+
+                [nameof(MiniTwiceGun)] = () => 
+                    turretConstructionViewFactory.Create(new Turret(miniTwiceGunFactory.Create())),
+
+                [nameof(RocketTwiceGun)] = () => 
+                    turretConstructionViewFactory.Create(new Turret(rocketTwiceGunFactory.Create())),
 
 /*                [nameof(RocketGun)] = position => turretViewFactory
                     .Create(turretFactory.Create(rocketGunFactory.Create(rocketGunFab), position), position),
