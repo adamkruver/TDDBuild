@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: RocketTwiceGun
   m_EditorClassIdentifier: 
   <IconSprite>k__BackingField: {fileID: 21300000, guid: 1bce79ce0edd46e498322272df643504, type: 3}
-  <Title>k__BackingField: Rocket Gun
+  <Title>k__BackingField: Rocket Twice Gun
   <Price>k__BackingField: 150
   Type: RocketTwiceGun
