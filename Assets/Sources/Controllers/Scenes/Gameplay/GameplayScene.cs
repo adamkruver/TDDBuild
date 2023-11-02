@@ -9,25 +9,19 @@ namespace Sources.Controllers.Scenes.Gameplay
     {
         private readonly PointerService _pointerService;
         private readonly GameplayCameraService _gameplayCameraService;
-        private readonly AggressiveSystem _aggressiveSystem;
 
         public GameplayScene(
             PointerService pointerService,
-            GameplayCameraService gameplayCameraService,
-            AggressiveSystem aggressiveSystem
+            GameplayCameraService gameplayCameraService
         )
         {
             _pointerService = pointerService;
             _gameplayCameraService = gameplayCameraService;
-            _aggressiveSystem = aggressiveSystem;
         }
 
         public void Update(float deltaTime)
         {
             _pointerService.Update(deltaTime);
-
-            if (Input.GetKeyDown(KeyCode.A))
-                _aggressiveSystem.AddProgress(10);
         }
 
         public void UpdateFixed(float fixedDeltaTime)

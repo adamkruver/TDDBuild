@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
-using Sources.Domain.Bullets;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
@@ -40,7 +38,6 @@ using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Systems.Spawn;
-using Sources.Presentation.Views.Tilemaps;
 using Sources.PresentationInterfaces.Views.Enemies;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -204,7 +201,7 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             spawnSystemViewFactory.Create(spawnSystemView, enemySpawnWaveCollectionFab);
 
-            return new GameplayScene(pointerService, gameplayCameraService, aggressiveSystem);
+            return new GameplayScene(pointerService, gameplayCameraService);
         }
     }
 }
