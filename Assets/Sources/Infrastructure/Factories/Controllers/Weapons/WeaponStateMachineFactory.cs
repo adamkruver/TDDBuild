@@ -11,21 +11,21 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
     public class WeaponStateMachineFactory
     {
         public WeaponStateMachine Create(
-            IWeaponView view,
+            IWeaponView[] views,
             IWeapon weapon,
             ITargetTrackerSystem targetTrackerSystem
         )
         {
             WeaponStateMachine stateMachine = new WeaponStateMachine();
-            WeaponService service = new WeaponService(weapon, view.RotationSystem);
+            WeaponService service = new WeaponService(weapon, views[0].RotationSystem);
 
-            CreateStates(view, stateMachine, weapon, targetTrackerSystem, service);
-
+            CreateStates(views, stateMachine, weapon, targetTrackerSystem, service);
+            
             return stateMachine;
         }
 
         private void CreateStates(
-            IWeaponView view,
+            IWeaponView[] views,
             WeaponStateMachine stateMachine,
             IWeapon weapon,
             ITargetTrackerSystem targetTrackerSystem,
@@ -33,7 +33,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
         )
         {
             TrackTargetState trackTargetState = new TrackTargetState(weapon, targetTrackerSystem, service);
-            ShootState shootState = new ShootState(view, view.Animation, weapon);
+            ShootState shootState = new ShootState(views, weapon);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
                 shootState, weapon, targetTrackerSystem, service

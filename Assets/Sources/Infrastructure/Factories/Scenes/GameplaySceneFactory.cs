@@ -70,6 +70,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             {
                 [typeof(LaserGun)] = "Views/Weapons/LaserGunView",
                 [typeof(RocketTwiceGun)] = "Views/Weapons/RocketGunView",
+                [typeof(DoubleLaserGun)] = "Views/Weapons/DoubleLaserGunView",
             };
 
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
