@@ -1,12 +1,13 @@
 ﻿using System;
 using Sources.Domain.Weapons;
+using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
 
 namespace Sources.Infrastructure.Services.Weapons
 {
-    public class WeaponService
+    public class WeaponService:IWeaponService
     {
         private readonly IWeapon _weapon;
         private readonly IWeaponRotationSystem _weaponRotationSystem;

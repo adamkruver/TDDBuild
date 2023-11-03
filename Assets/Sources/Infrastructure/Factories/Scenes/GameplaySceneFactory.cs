@@ -34,6 +34,7 @@ using Sources.Infrastructure.Services.Pointers;
 using Sources.Infrastructure.Services.Raycasts;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.Infrastructure.Services.Times;
+using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
@@ -111,7 +112,19 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             TurretFactory turretFactory = new TurretFactory(tileRepository);
 
-            WeaponStateMachineFactory weaponStateMachineFactory = new WeaponStateMachineFactory();
+            Dictionary<Type, IWeaponStateMachineFactory> weaponStateMachineFactories =
+                new Dictionary<Type, IWeaponStateMachineFactory>()
+                {
+                    [typeof(LaserGun)] = new LaserGunStateMachineFactory(),
+                    [typeof(DoubleLaserGun)] = new DoubleLaserGunStateMachineFactory(),
+                    [typeof(DoubleLaserTwiceGun)] = new DoubleLaserTwiceGunStateMachineFactory(),
+                    [typeof(MiniTwiceGun)] = new MiniTwiceGunStateMachineFactory(),
+                    [typeof(RocketTwiceGun)] = new RocketTwiceGunStateMachineFactory(),
+                };
+
+            WeaponStateMachineFactory weaponStateMachineFactory =
+                new WeaponStateMachineFactory(weaponStateMachineFactories);
+
 
             BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
 
@@ -183,8 +196,9 @@ namespace Sources.Infrastructure.Factories.Scenes
                 aggressiveSystem, enemyRepository, enemyDeathAssessor
             );
             ZombieStateMachineFactory zombieStateMachineFactory = new ZombieStateMachineFactory(
-                aggressiveSystem, enemyRepository, enemyDeathAssessor);
-            
+                aggressiveSystem, enemyRepository, enemyDeathAssessor
+            );
+
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
 
             MovementSystemViewFactory movementSystemViewFactory =
@@ -195,7 +209,8 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new DamageableSystemViewFactory(damageableSystemPresenterFactory);
 
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
-                zombiePresenterFactory, zombieStateMachineFactory, movementSystemViewFactory, damageableSystemViewFactory, baseView
+                zombiePresenterFactory, zombieStateMachineFactory, movementSystemViewFactory,
+                damageableSystemViewFactory, baseView
             );
 
             ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);
