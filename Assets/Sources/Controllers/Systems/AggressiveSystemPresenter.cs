@@ -2,14 +2,14 @@
 using Sources.Domain.Systems.Aggressive;
 using Sources.Frameworks.LiveDatas;
 using Sources.Infrastructure.Repositories;
-using Sources.PresentationInterfaces.Views.Systems.Aggressive;
+using Sources.PresentationInterfaces.Ui.Systems;
 using UnityEngine;
 
 namespace Sources.Controllers.Systems
 {
     public class AggressiveSystemPresenter
     {
-        private readonly IAggressiveSystemView _view;
+        private readonly IAggressiveSystemUi _ui;
         private readonly EnemyRepository _enemyRepository;
         private readonly LiveData<int> _progress;
         private readonly LiveData<float> _enemySpeed;
@@ -18,12 +18,12 @@ namespace Sources.Controllers.Systems
         private readonly LiveData<float> _levelProgressNormalized;
 
         public AggressiveSystemPresenter(
-            IAggressiveSystemView view,
+            IAggressiveSystemUi ui,
             AggressiveSystem system,
             EnemyRepository enemyRepository
         )
         {
-            _view = view;
+            _ui = ui;
             _enemyRepository = enemyRepository;
             _progress = system.Progress;
             _enemySpeed = system.EnemySpeed;
@@ -51,13 +51,13 @@ namespace Sources.Controllers.Systems
         }
 
         private void OnLevelProgressNormalizedChanged(float normalizedProgress) =>
-            _view.SetLevelProgressNormalized(normalizedProgress);
+            _ui.SetLevelProgressNormalized(normalizedProgress);
 
         private void OnProgressChanged(int progress) =>
-            _view.SetProgress(progress.ToString());
+            _ui.SetProgress(progress.ToString());
 
         private void OnLevelTitleChanged(string title) =>
-            _view.SetLevelTitle(title);
+            _ui.SetLevelTitle(title);
 
         private void OnEnemySpeedChanged(float speed)
         {
@@ -70,6 +70,6 @@ namespace Sources.Controllers.Systems
         }
 
         private void OnLevelProgressChanged(int levelProgress) =>
-            _view.SetLevelProgress(levelProgress.ToString());
+            _ui.SetLevelProgress(levelProgress.ToString());
     }
 }

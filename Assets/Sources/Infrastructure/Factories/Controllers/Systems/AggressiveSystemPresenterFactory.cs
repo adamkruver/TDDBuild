@@ -1,7 +1,7 @@
 ﻿using Sources.Controllers.Systems;
 using Sources.Domain.Systems.Aggressive;
 using Sources.Infrastructure.Repositories;
-using Sources.PresentationInterfaces.Views.Systems.Aggressive;
+using Sources.PresentationInterfaces.Ui.Systems;
 
 namespace Sources.Infrastructure.Factories.Controllers.Systems
 {
@@ -12,7 +12,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Systems
         public AggressiveSystemPresenterFactory(EnemyRepository enemyRepository) =>
             _enemyRepository = enemyRepository;
 
-        public AggressiveSystemPresenter Create(IAggressiveSystemView view, AggressiveSystem system) =>
-            new AggressiveSystemPresenter(view, system, _enemyRepository);
+        public AggressiveSystemPresenter Create(IAggressiveSystemUi ui, AggressiveSystem system) =>
+            new AggressiveSystemPresenter(ui, system, _enemyRepository);
     }
 }

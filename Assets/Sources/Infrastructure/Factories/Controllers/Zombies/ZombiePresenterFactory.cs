@@ -1,5 +1,6 @@
 ﻿using Sources.Controllers.Zombies;
 using Sources.Domain.Systems.Aggressive;
+using Sources.Domain.Systems.Progresses;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
 using Sources.Infrastructure.Repositories;
@@ -9,22 +10,25 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
 {
     public class ZombiePresenterFactory
     {
+        private readonly ProgressSystem _progressSystem;
         private readonly AggressiveSystem _aggressiveSystem;
         private readonly EnemyRepository _enemyRepository;
-        private readonly EnemyDeathAssessor _enemyDeathAssessor;
+        private readonly EnemyAssessor _enemyAssessor;
 
         public ZombiePresenterFactory(
+            ProgressSystem progressSystem,
             AggressiveSystem aggressiveSystem,
             EnemyRepository enemyRepository,
-            EnemyDeathAssessor enemyDeathAssessor
+            EnemyAssessor enemyAssessor
         )
         {
+            _progressSystem = progressSystem;
             _aggressiveSystem = aggressiveSystem;
             _enemyRepository = enemyRepository;
-            _enemyDeathAssessor = enemyDeathAssessor;
+            _enemyAssessor = enemyAssessor;
         }
 
         public ZombiePresenter Create(ZombieView view, Zombie zombie) =>
-            new ZombiePresenter(view, zombie, _aggressiveSystem, _enemyRepository, _enemyDeathAssessor);
+            new ZombiePresenter(view, zombie, _progressSystem, _aggressiveSystem, _enemyRepository, _enemyAssessor);
     }
 }

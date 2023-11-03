@@ -1,6 +1,6 @@
-﻿namespace Sources.PresentationInterfaces.Views.Systems.Aggressive
+﻿namespace Sources.PresentationInterfaces.Ui.Systems
 {
-    public interface IAggressiveSystemView
+    public interface IAggressiveSystemUi
     {
         void SetLevelProgressNormalized(float normalizedProgress);
         void SetProgress(string progress);
