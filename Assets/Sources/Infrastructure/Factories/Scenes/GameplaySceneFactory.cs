@@ -67,12 +67,6 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             Money money = new Money(220);
 
-            Dictionary<Type, string> weapons = new Dictionary<Type, string>()
-            {
-                [typeof(LaserGun)] = "Views/Weapons/LaserGunView",
-                [typeof(RocketTwiceGun)] = "Views/Weapons/RocketGunView",
-            };
-
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
             Hud hud = Object.FindObjectOfType<Hud>();
             GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
@@ -84,8 +78,8 @@ namespace Sources.Infrastructure.Factories.Scenes
             RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
             TilemapService tilemapService = new TilemapService(tilemap);
 
-            ActiveTilePresenterFactory activeTilePresenterFactory =
-                new ActiveTilePresenterFactory(tileRepository, tilemapService);
+//            ActiveTilePresenterFactory activeTilePresenterFactory =
+//                new ActiveTilePresenterFactory(tileRepository, tilemapService);
 //            ActiveTileViewFactory activeTileViewFactory = new ActiveTileViewFactory(activeTilePresenterFactory);
 
             Dictionary<string, TurretConstructionPreview> turretConstructionViews =
@@ -132,7 +126,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
-                weaponStateMachineFactory, bulletViewFactory, weapons
+                weaponStateMachineFactory, bulletViewFactory
             );
 
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
@@ -167,8 +161,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                     paymentService,
                     pointerService,
                     tilemapService,
-                    gameplayCamera,
-                    weapons
+                    gameplayCamera
                 );
 
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));

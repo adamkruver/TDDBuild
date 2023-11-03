@@ -42,8 +42,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             PaymentService paymentService,
             IPointerService pointerService,
             TilemapService tilemapService,
-            GameplayCamera gameplayCamera,
-            Dictionary<Type, string> weapons
+            GameplayCamera gameplayCamera
         )
         {
             _paymentService = paymentService;
