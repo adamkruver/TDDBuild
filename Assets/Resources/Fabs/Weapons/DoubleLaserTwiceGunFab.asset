@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acdb5fdbf817487fb002097df45f127b, type: 3}
   m_Name: DoubleLaserTwiceGunFab
   m_EditorClassIdentifier: 
-  <Cooldown>k__BackingField: 0
+  <Cooldown>k__BackingField: 1
   <MinFireDistance>k__BackingField: 0
-  <MaxFireDistance>k__BackingField: 0
-  <HorizontalRotationSpeed>k__BackingField: 0
-  <VerticalRotationSpeed>k__BackingField: 0
+  <MaxFireDistance>k__BackingField: 10
+  <HorizontalRotationSpeed>k__BackingField: 0.3
+  <VerticalRotationSpeed>k__BackingField: 0.3

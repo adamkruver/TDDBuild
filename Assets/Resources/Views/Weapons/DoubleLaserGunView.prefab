@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6553810843755417696}
   - component: {fileID: 5934686523049895069}
+  - component: {fileID: 1631358516404541239}
   - component: {fileID: 8990116113355438891}
   - component: {fileID: 1212930038589972185}
   - component: {fileID: 3038828784500526902}
+  - component: {fileID: 2443759046691243179}
   m_Layer: 0
   m_Name: DoubleLaserGunView
   m_TagString: Untagged
@@ -53,6 +55,23 @@ MonoBehaviour:
   _particleSystem: {fileID: 7736458533350920283}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
   <Bullet>k__BackingField: {fileID: 3655695986082532635}
+--- !u!114 &1631358516404541239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143574402138706927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSystem: {fileID: 8990116113355438891}
+  _weaponAnimation: {fileID: 3038828784500526902}
+  _particleSystem: {fileID: 830291129208953954}
+  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
+  <Bullet>k__BackingField: {fileID: 5936590145003634978}
 --- !u!114 &8990116113355438891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +115,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 8698169063113228624}
+--- !u!114 &2443759046691243179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143574402138706927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe842d645034434687fa019af19fa714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponViews:
+  - {fileID: 5934686523049895069}
+  - {fileID: 1631358516404541239}
+  _rotationSystem: {fileID: 8990116113355438891}
+  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!1001 &2347489802029944726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -290,6 +326,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+--- !u!198 &830291129208953954 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+  m_PrefabInstance: {fileID: 4632885566572807087}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5936590145003634978 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1308385477549458061, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+  m_PrefabInstance: {fileID: 4632885566572807087}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58107b5fb224262895dbeeb2fac6759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8784157478469652692
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,7 +1,9 @@
 ﻿using Sources.Controllers;
+using Sources.Controllers.Weapons;
 using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Presentation.Views.Weapons;
+using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
 
 namespace Sources.Infrastructure.Factories.Presentation.Views
@@ -20,19 +22,22 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
             _bulletViewFactory = bulletViewFactory;
         }
 
-        public WeaponView Create(IWeapon weapon)
+        public CompositeWeaponView Create(IWeapon weapon)
         {
-            WeaponView weaponView = Object.Instantiate(Resources.Load<WeaponView>(GetPrefabPath(weapon)));
+            CompositeWeaponView compositeWeaponView = Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
+            
+            IWeaponView[] weaponViews = compositeWeaponView.WeaponViews;
 
-            IPresenter stateMachine = _weaponStateMachineFactory.Create(
-                weaponView, weapon, weaponView.TargetTrackerSystem
-            );
+            IPresenter stateMachine = _weaponStateMachineFactory.Create(compositeWeaponView, weaponViews, weapon, compositeWeaponView.TargetTrackerSystem);
+            
+            foreach (IWeaponView weaponView in weaponViews)
+            {
+                WeaponView view = (WeaponView) weaponView;
+                view.Construct(stateMachine);
+                _bulletViewFactory.Create(view.Bullet, weapon.Bullet);
+            }
 
-            weaponView.Construct(stateMachine);
-
-            _bulletViewFactory.Create(weaponView.Bullet, weapon.Bullet);
-
-            return weaponView;
+            return compositeWeaponView;
         }
 
         private string GetPrefabPath(IWeapon weapon) =>

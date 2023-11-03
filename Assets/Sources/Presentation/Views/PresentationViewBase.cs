@@ -32,7 +32,7 @@ namespace Sources.Presentation.Views
         public void Hide() => 
             gameObject.SetActive(false);
 
-        public void Construct(T presenter)
+        public virtual void Construct(T presenter)
         {
             Hide();
             Presenter = presenter;

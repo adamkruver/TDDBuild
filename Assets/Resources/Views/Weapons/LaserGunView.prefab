@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6553810843755417696}
+  - component: {fileID: -5636964516454344138}
   - component: {fileID: 5934686523049895069}
   - component: {fileID: 8990116113355438891}
   - component: {fileID: 1212930038589972185}
@@ -36,6 +37,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-5636964516454344138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143574402138706927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe842d645034434687fa019af19fa714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponViews:
+  - {fileID: 5934686523049895069}
+  _rotationSystem: {fileID: 8990116113355438891}
+  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!114 &5934686523049895069
 MonoBehaviour:
   m_ObjectHideFlags: 0
