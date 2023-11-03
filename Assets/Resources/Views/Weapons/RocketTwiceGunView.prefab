@@ -48,12 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe842d645034434687fa019af19fa714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponViews:
-  - {fileID: 5073338201767727948}
+  _rotationSystem: {fileID: 8990116113355438891}
+  <WeaponViews>k__BackingField:
   - {fileID: 509354684470730607}
+  - {fileID: 5073338201767727948}
   - {fileID: 1013355987030624731}
   - {fileID: 4492616093786766923}
-  _rotationSystem: {fileID: 8990116113355438891}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!114 &8990116113355438891
 MonoBehaviour:
@@ -325,23 +325,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1000010604689152, guid: 2652172d138981b4abc806ea8ec36564, type: 3}
   m_PrefabInstance: {fileID: 243900336258631073}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5073338201767727948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243492971835978401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotationSystem: {fileID: 8990116113355438891}
-  _weaponAnimation: {fileID: 3038828784500526902}
-  _particleSystem: {fileID: 7736458533350920283}
-  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
-  <Bullet>k__BackingField: {fileID: 3655695986082532635}
 --- !u!114 &509354684470730607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +342,23 @@ MonoBehaviour:
   _particleSystem: {fileID: 6781728040145763804}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
   <Bullet>k__BackingField: {fileID: 575125473657299100}
+--- !u!114 &5073338201767727948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243492971835978401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSystem: {fileID: 8990116113355438891}
+  _weaponAnimation: {fileID: 3038828784500526902}
+  _particleSystem: {fileID: 7736458533350920283}
+  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
+  <Bullet>k__BackingField: {fileID: 3655695986082532635}
 --- !u!4 &246774309523446381 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010779566028, guid: 2652172d138981b4abc806ea8ec36564, type: 3}

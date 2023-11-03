@@ -1,4 +1,5 @@
-﻿using Sources.Controllers;
+﻿using System.Linq;
+using Sources.Controllers;
 using Sources.Controllers.Weapons;
 using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
@@ -24,15 +25,18 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 
         public CompositeWeaponView Create(IWeapon weapon)
         {
-            CompositeWeaponView compositeWeaponView = Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
-            
-            IWeaponView[] weaponViews = compositeWeaponView.WeaponViews;
+            CompositeWeaponView compositeWeaponView =
+                Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
 
-            IPresenter stateMachine = _weaponStateMachineFactory.Create(compositeWeaponView, weaponViews, weapon, compositeWeaponView.TargetTrackerSystem);
-            
-            foreach (IWeaponView weaponView in weaponViews)
+            WeaponView[] weaponViews = compositeWeaponView.WeaponViews;
+
+            IPresenter stateMachine = _weaponStateMachineFactory.Create(
+                compositeWeaponView, weaponViews.Cast<IWeaponView>().ToArray(), weapon,
+                compositeWeaponView.TargetTrackerSystem
+            );
+
+            foreach (WeaponView view in weaponViews)
             {
-                WeaponView view = (WeaponView) weaponView;
                 view.Construct(stateMachine);
                 _bulletViewFactory.Create(view.Bullet, weapon.Bullet);
             }

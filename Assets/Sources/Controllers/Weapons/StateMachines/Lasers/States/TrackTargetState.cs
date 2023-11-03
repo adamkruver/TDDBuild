@@ -4,6 +4,7 @@ using Sources.Infrastructure.FiniteStateMachines.States;
 using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
+using UnityEngine;
 
 namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 {

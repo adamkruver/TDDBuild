@@ -48,10 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe842d645034434687fa019af19fa714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponViews:
+  _rotationSystem: {fileID: 8990116113355438891}
+  <WeaponViews>k__BackingField:
   - {fileID: 3703712965694450691}
   - {fileID: 2209212961463407182}
-  _rotationSystem: {fileID: 8990116113355438891}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!114 &8990116113355438891
 MonoBehaviour:

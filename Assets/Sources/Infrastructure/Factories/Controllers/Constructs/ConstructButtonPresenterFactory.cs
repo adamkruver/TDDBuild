@@ -35,32 +35,23 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
         private readonly Dictionary<string, Func<IConstructionView>> _constructViews;
 
         public ConstructButtonPresenterFactory(
-            ITimeService timeService,
             TurretConstructionViewFactory turretConstructionViewFactory,
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory,
             TileRepository tileRepository,
             PaymentService paymentService,
             IPointerService pointerService,
             TilemapService tilemapService,
-            GameplayCamera gameplayCamera
+            GameplayCamera gameplayCamera,
+            LaserGunFactory laserGunFactory,
+            DoubleLaserGunFactory doubleLaserGunFactory,
+            DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory,
+            MiniTwiceGunFactory miniTwiceGunFactory,
+            RocketTwiceGunFactory rocketTwiceGunFactory
         )
         {
             _paymentService = paymentService;
-            
 
             WallFactory wallFactory = new WallFactory(tileRepository);
-            LaserGunFactory laserGunFactory = new LaserGunFactory(timeService);
-            DoubleLaserGunFactory doubleLaserGunFactory = new DoubleLaserGunFactory(timeService);
-            DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory = new DoubleLaserTwiceGunFactory(timeService);
-            MiniTwiceGunFactory miniTwiceGunFactory = new MiniTwiceGunFactory(timeService);
-            RocketTwiceGunFactory rocketTwiceGunFactory = new RocketTwiceGunFactory(timeService);
-            
-
-
-
-
-
-
 
             WallPresenterFactory wallPresenterFactory = new WallPresenterFactory();
             WallViewFactory wallViewFactory = new WallViewFactory(wallPresenterFactory);
@@ -74,22 +65,22 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             );
 
             _constructService.Disable();
-            
+
             _constructViews = new Dictionary<string, Func<IConstructionView>>()
             {
-                [nameof(LaserGun)] = () => 
+                [nameof(LaserGun)] = () =>
                     turretConstructionViewFactory.Create(new Turret(laserGunFactory.Create())),
-                
-                [nameof(DoubleLaserGun)] = () => 
+
+                [nameof(DoubleLaserGun)] = () =>
                     turretConstructionViewFactory.Create(new Turret(doubleLaserGunFactory.Create())),
-                
-                [nameof(DoubleLaserTwiceGun)] = () => 
+
+                [nameof(DoubleLaserTwiceGun)] = () =>
                     turretConstructionViewFactory.Create(new Turret(doubleLaserTwiceGunFactory.Create())),
 
-                [nameof(MiniTwiceGun)] = () => 
+                [nameof(MiniTwiceGun)] = () =>
                     turretConstructionViewFactory.Create(new Turret(miniTwiceGunFactory.Create())),
 
-                [nameof(RocketTwiceGun)] = () => 
+                [nameof(RocketTwiceGun)] = () =>
                     turretConstructionViewFactory.Create(new Turret(rocketTwiceGunFactory.Create())),
 
 /*                [nameof(RocketGun)] = position => turretViewFactory

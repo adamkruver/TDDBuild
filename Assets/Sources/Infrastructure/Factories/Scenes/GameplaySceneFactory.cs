@@ -9,6 +9,7 @@ using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Systems.EnemySpawn;
 using Sources.Domain.Systems.Progresses;
+using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
@@ -19,8 +20,10 @@ using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Turrets;
 using Sources.Infrastructure.Factories.Controllers.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
+using Sources.Infrastructure.Factories.Domain.Bullets;
 using Sources.Infrastructure.Factories.Domain.Systems;
 using Sources.Infrastructure.Factories.Domain.Turrets;
+using Sources.Infrastructure.Factories.Domain.Weapons;
 using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Systems;
@@ -39,6 +42,7 @@ using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
+using Sources.Presentation.Ui.Systems.Upgrades;
 using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Systems.Spawn;
 using Sources.PresentationInterfaces.Views.Enemies;
@@ -53,12 +57,12 @@ namespace Sources.Infrastructure.Factories.Scenes
         public IScene Create(object payload)
         {
             Money money = new Money(220);
-            
+
             #region Resources
 
             AggressiveLevelCollection aggressiveLevelCollection =
                 Resources.Load<AggressiveLevelCollection>("Fabs/Systems/Aggressive/AggressiveLevelCollectionFab");
-            
+
             ConstructButtonCollection constructButtonCollection =
                 Resources.Load<ConstructButtonCollection>("Fabs/Buttons/Constructs/CollectionFab");
 
@@ -84,6 +88,9 @@ namespace Sources.Infrastructure.Factories.Scenes
                         Resources.Load<TurretConstructionPreview>("Previews/Weapons/RocketTwiceGunPreview")
                     ),
                 };
+
+            UpgradeSystemUiContainer upgradeSystemUiContainer =
+                Object.Instantiate(Resources.Load<UpgradeSystemUiContainer>("Ui/Systems/UpgradeSystemUiContainer"));
 
             #endregion
 
@@ -126,13 +133,9 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             AggressiveSystem aggressiveSystem = new AggressiveSystemFactory().Create(aggressiveLevelCollection);
             ProgressSystem progressSystem = new ProgressSystem();
-
-            #endregion
-
-            #region Domain Factories
-
-            ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);
-            TurretFactory turretFactory = new TurretFactory(tileRepository);
+            UpgradeSystem laserUpgradeSystem = new UpgradeSystem();
+            UpgradeSystem bulletUpgradeSystem = new UpgradeSystem();
+            UpgradeSystem rocketUpgradeSystem = new UpgradeSystem();
 
             #endregion
 
@@ -147,8 +150,30 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #endregion
 
+            #region Domain Factories
+
+            ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);
+
+            LaserFactory laserFactory = new LaserFactory(laserUpgradeSystem);
+            BulletFactory bulletFactory = new BulletFactory(bulletUpgradeSystem);
+            RocketFactory rocketFactory = new RocketFactory(rocketUpgradeSystem);
+
+            LaserGunFactory laserGunFactory = new LaserGunFactory(laserFactory, timeService, laserUpgradeSystem);
+            DoubleLaserGunFactory doubleLaserGunFactory =
+                new DoubleLaserGunFactory(laserFactory, timeService, laserUpgradeSystem);
+            DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory =
+                new DoubleLaserTwiceGunFactory(laserFactory, timeService, laserUpgradeSystem);
+            MiniTwiceGunFactory miniTwiceGunFactory =
+                new MiniTwiceGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
+            RocketTwiceGunFactory rocketTwiceGunFactory =
+                new RocketTwiceGunFactory(rocketFactory, timeService, rocketUpgradeSystem);
+
+            TurretFactory turretFactory = new TurretFactory(tileRepository);
+
+            #endregion
+
             #region StateMachine Factories
-            
+
             WeaponStateMachineFactory weaponStateMachineFactory =
                 new WeaponStateMachineFactory(
                     new Dictionary<Type, IWeaponStateMachineFactory>()
@@ -160,7 +185,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                         [typeof(RocketTwiceGun)] = new RocketTwiceGunStateMachineFactory(),
                     }
                 );
-            
+
             ZombieStateMachineFactory zombieStateMachineFactory = new ZombieStateMachineFactory(
                 progressSystem,
                 aggressiveSystem,
@@ -168,23 +193,25 @@ namespace Sources.Infrastructure.Factories.Scenes
                 enemyDeathAggressiveAssessor,
                 enemyDeathProgressAssessor
             );
-            
+
             #endregion
-            
+
             #region Presenter Factories
 
             BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
             DamageableSystemPresenterFactory damageableSystemPresenterFactory = new DamageableSystemPresenterFactory();
-            
+
             AggressiveSystemPresenterFactory aggressiveSystemPresenterFactory =
                 new AggressiveSystemPresenterFactory(enemyRepository);
 
             ProgressSystemPresenterFactory progressSystemPresenterFactory = new ProgressSystemPresenterFactory();
 
+            UpgradeSystemPresenterFactory upgradeSystemPresenterFactory = new UpgradeSystemPresenterFactory();
+
             #endregion
-            
+
             #region Pointer Handler Factories
 
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory =
@@ -194,23 +221,23 @@ namespace Sources.Infrastructure.Factories.Scenes
                 );
 
             #endregion
-            
+
             #region View Factories
-            
+
             BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
-            
+
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
                 weaponStateMachineFactory, bulletViewFactory
             );
-            
+
             TurretViewFactory turretViewFactory = new TurretViewFactory(turretPresenterFactory, weaponViewFactory);
-            
+
             MovementSystemViewFactory movementSystemViewFactory =
                 new MovementSystemViewFactory(movementSystemPresenterFactory);
-            
+
             DamageableSystemViewFactory damageableSystemViewFactory =
                 new DamageableSystemViewFactory(damageableSystemPresenterFactory);
-            
+
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
                 zombieStateMachineFactory, movementSystemViewFactory,
                 damageableSystemViewFactory, baseView
@@ -224,32 +251,36 @@ namespace Sources.Infrastructure.Factories.Scenes
             );
 
             #endregion
-            
+
             #region Constuction Presenter And View Factories
-            
+
             TurretConstructionPresenterFactory turretConstructionPresenterFactory =
                 new TurretConstructionPresenterFactory(tilemapService, turretViewFactory, turretFactory);
-            
+
             TurretConstructionViewFactory turretConstructionViewFactory =
                 new TurretConstructionViewFactory(turretConstructionPresenterFactory, turretConstructionViews);
-            
+
             ConstructButtonPresenterFactory constructButtonPresenterFactory =
                 new ConstructButtonPresenterFactory(
-                    timeService,
                     turretConstructionViewFactory,
                     tilemapUntouchablePointerHandlerFactory,
                     tileRepository,
                     paymentService,
                     pointerService,
                     tilemapService,
-                    gameplayCamera
+                    gameplayCamera,
+                    laserGunFactory,
+                    doubleLaserGunFactory,
+                    doubleLaserTwiceGunFactory,
+                    miniTwiceGunFactory,
+                    rocketTwiceGunFactory
                 );
-            
+
             ConstructButtonUiFactory constructButtonUiFactory =
                 new ConstructButtonUiFactory(constructButtonPresenterFactory);
-            
+
             #endregion
-            
+
             #region Spawn System Factories
 
             SpawnSystemPresenterFactory spawnSystemPresenterFactory = new SpawnSystemPresenterFactory(enemyViewFactory);
@@ -260,23 +291,32 @@ namespace Sources.Infrastructure.Factories.Scenes
             #region Ui Factories
 
             MoneyUiFactory moneyUiFactory = new MoneyUiFactory();
-            
+
             AggressiveSystemUiFactory aggressiveSystemUiFactory =
                 new AggressiveSystemUiFactory(aggressiveSystemPresenterFactory);
 
             ProgressSystemUiFactory progressSystemUiFactory =
                 new ProgressSystemUiFactory(progressSystemPresenterFactory);
-            
+
+            UpgradeSystemUiFactory upgradeSystemUiFactory = new UpgradeSystemUiFactory(upgradeSystemPresenterFactory);
+
             #endregion
-            
+
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
 
             spawnSystemViewFactory.Create(spawnSystemView, enemySpawnWaveCollectionFab);
             turretConstructionViews.Values.ToList().ForEach(view => view.Hide());
 
+            upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Laser, laserUpgradeSystem);
+            upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Bullet, bulletUpgradeSystem);
+            upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Rocket, rocketUpgradeSystem);
+
             hud.TopLeft.AddChild(progressSystemUiFactory.Create(progressSystem));
             hud.TopCenter.AddChild(moneyUiFactory.Create(money));
             hud.TopRight.AddChild(aggressiveSystemUiFactory.Create(aggressiveSystem));
+
+            hud.MiddleLeft.AddChild(upgradeSystemUiContainer);
+
 
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
                 hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton));

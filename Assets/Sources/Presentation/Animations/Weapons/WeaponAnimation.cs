@@ -1,7 +1,7 @@
 ﻿using Sources.PresentationInterfaces.Animations.Weapons;
 using UnityEngine;
 
-namespace Sources.Presentation.Aimations.Weapons
+namespace Sources.Presentation.Animations.Weapons
 {
     public class WeaponAnimation : MonoBehaviour, IWeaponAnimation
     {

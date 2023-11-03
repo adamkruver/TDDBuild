@@ -1,5 +1,5 @@
 ﻿using Sources.Controllers;
-using Sources.Presentation.Aimations.Weapons;
+using Sources.Presentation.Animations.Weapons;
 using Sources.Presentation.Views.Bullets;
 using Sources.Presentation.Views.Systems.TargetTrackers;
 using Sources.PresentationInterfaces.Animations.Weapons;

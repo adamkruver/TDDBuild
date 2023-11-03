@@ -1,16 +1,26 @@
-﻿using Sources.Domain.Bullets;
+﻿using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
+using Sources.Infrastructure.Factories.Domain.Bullets;
 using Sources.InfrastructureInterfaces.Services.Times;
 
 namespace Sources.Infrastructure.Factories.Domain.Weapons
 {
     public class LaserGunFactory : WeaponFactoryBase<LaserGun>
     {
-        public LaserGunFactory(ITimeService timeService) : base(timeService)
+        private readonly LaserFactory _laserFactory;
+        private readonly UpgradeSystem _laserUpgradeSystem;
+
+        public LaserGunFactory(
+            LaserFactory laserFactory,
+            ITimeService timeService,
+            UpgradeSystem laserUpgradeSystem
+        ) : base(timeService)
         {
+            _laserFactory = laserFactory;
+            _laserUpgradeSystem = laserUpgradeSystem;
         }
 
         public override IWeapon Create() =>
-            new LaserGun(new Laser(), TimeService, WeaponFab);
+            new LaserGun(_laserFactory.Create(), TimeService, WeaponFab, _laserUpgradeSystem);
     }
 }
