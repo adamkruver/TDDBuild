@@ -1,55 +1,28 @@
-﻿using Sources.Controllers.Weapons;
-using Sources.Controllers.Weapons.StateMachines.Lasers.States;
-using Sources.Controllers.Weapons.StateMachines.Lasers.Transitions;
+﻿using System;
+using System.Collections.Generic;
+using Sources.Controllers;
 using Sources.Domain.Weapons;
-using Sources.Infrastructure.Services.Weapons;
+using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
 using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Factories.Controllers.Weapons
 {
-    public class WeaponStateMachineFactory
+    public class WeaponStateMachineFactory : IWeaponStateMachineFactory
     {
-        public WeaponStateMachine Create(
-            IWeaponView[] views,
-            IWeapon weapon,
-            ITargetTrackerSystem targetTrackerSystem
-        )
+        private readonly Dictionary<Type, IWeaponStateMachineFactory> _factories;
+
+        public WeaponStateMachineFactory(Dictionary<Type, IWeaponStateMachineFactory> factories) =>
+            _factories = factories ?? throw new ArgumentNullException(nameof(factories));
+
+        public IPresenter Create(IWeaponView view, IWeapon weapon, ITargetTrackerSystem targetTrackerSystem)
         {
-            WeaponStateMachine stateMachine = new WeaponStateMachine();
-            WeaponService service = new WeaponService(weapon, views[0].RotationSystem);
+            Type weaponType = weapon.GetType();
 
-            CreateStates(views, stateMachine, weapon, targetTrackerSystem, service);
-            
-            return stateMachine;
-        }
+            if (_factories.ContainsKey(weaponType) == false)
+                throw new KeyNotFoundException(weaponType.Name);
 
-        private void CreateStates(
-            IWeaponView[] views,
-            WeaponStateMachine stateMachine,
-            IWeapon weapon,
-            ITargetTrackerSystem targetTrackerSystem,
-            WeaponService service
-        )
-        {
-            TrackTargetState trackTargetState = new TrackTargetState(weapon, targetTrackerSystem, service);
-            ShootState shootState = new ShootState(views, weapon);
-
-            ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
-                shootState, weapon, targetTrackerSystem, service
-            );
-
-            CooldownState cooldownState = new CooldownState();
-
-            ToCooldownTransition toCooldownTransition = new ToCooldownTransition(cooldownState, weapon);
-
-            ToTrackTargetTransition toTrackTargetTransition = new ToTrackTargetTransition(trackTargetState, weapon);
-
-            trackTargetState.AddTransition(toShootStateTransition);
-            shootState.AddTransition(toCooldownTransition);
-            cooldownState.AddTransition(toTrackTargetTransition);
-
-            stateMachine.SetFirstState(trackTargetState);
+            return _factories[weaponType].Create(view, weapon, targetTrackerSystem);
         }
     }
 }

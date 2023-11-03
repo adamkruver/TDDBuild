@@ -34,6 +34,7 @@ using Sources.Infrastructure.Services.Pointers;
 using Sources.Infrastructure.Services.Raycasts;
 using Sources.Infrastructure.Services.Tilemaps;
 using Sources.Infrastructure.Services.Times;
+using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
@@ -66,13 +67,6 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             Money money = new Money(220);
 
-            Dictionary<Type, string> weapons = new Dictionary<Type, string>()
-            {
-                [typeof(LaserGun)] = "Views/Weapons/LaserGunView",
-                [typeof(RocketTwiceGun)] = "Views/Weapons/RocketGunView",
-                [typeof(DoubleLaserGun)] = "Views/Weapons/DoubleLaserGunView",
-            };
-
             Tilemap tilemap = Object.FindObjectOfType<Tilemap>();
             Hud hud = Object.FindObjectOfType<Hud>();
             GameplayCamera gameplayCamera = Object.FindObjectOfType<GameplayCamera>();
@@ -84,8 +78,8 @@ namespace Sources.Infrastructure.Factories.Scenes
             RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
             TilemapService tilemapService = new TilemapService(tilemap);
 
-            ActiveTilePresenterFactory activeTilePresenterFactory =
-                new ActiveTilePresenterFactory(tileRepository, tilemapService);
+//            ActiveTilePresenterFactory activeTilePresenterFactory =
+//                new ActiveTilePresenterFactory(tileRepository, tilemapService);
 //            ActiveTileViewFactory activeTileViewFactory = new ActiveTileViewFactory(activeTilePresenterFactory);
 
             Dictionary<string, TurretConstructionPreview> turretConstructionViews =
@@ -112,7 +106,19 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             TurretFactory turretFactory = new TurretFactory(tileRepository);
 
-            WeaponStateMachineFactory weaponStateMachineFactory = new WeaponStateMachineFactory();
+            Dictionary<Type, IWeaponStateMachineFactory> weaponStateMachineFactories =
+                new Dictionary<Type, IWeaponStateMachineFactory>()
+                {
+                    [typeof(LaserGun)] = new LaserGunStateMachineFactory(),
+                    [typeof(DoubleLaserGun)] = new DoubleLaserGunStateMachineFactory(),
+                    [typeof(DoubleLaserTwiceGun)] = new DoubleLaserTwiceGunStateMachineFactory(),
+                    [typeof(MiniTwiceGun)] = new MiniTwiceGunStateMachineFactory(),
+                    [typeof(RocketTwiceGun)] = new RocketTwiceGunStateMachineFactory(),
+                };
+
+            WeaponStateMachineFactory weaponStateMachineFactory =
+                new WeaponStateMachineFactory(weaponStateMachineFactories);
+
 
             BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
 
@@ -120,7 +126,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
-                weaponStateMachineFactory, bulletViewFactory, weapons
+                weaponStateMachineFactory, bulletViewFactory
             );
 
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
@@ -155,8 +161,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                     paymentService,
                     pointerService,
                     tilemapService,
-                    gameplayCamera,
-                    weapons
+                    gameplayCamera
                 );
 
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
@@ -183,6 +188,10 @@ namespace Sources.Infrastructure.Factories.Scenes
             ZombiePresenterFactory zombiePresenterFactory = new ZombiePresenterFactory(
                 aggressiveSystem, enemyRepository, enemyDeathAssessor
             );
+            ZombieStateMachineFactory zombieStateMachineFactory = new ZombieStateMachineFactory(
+                aggressiveSystem, enemyRepository, enemyDeathAssessor
+            );
+
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
 
             MovementSystemViewFactory movementSystemViewFactory =
@@ -193,7 +202,8 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new DamageableSystemViewFactory(damageableSystemPresenterFactory);
 
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
-                zombiePresenterFactory, movementSystemViewFactory, damageableSystemViewFactory, baseView
+                zombiePresenterFactory, zombieStateMachineFactory, movementSystemViewFactory,
+                damageableSystemViewFactory, baseView
             );
 
             ZombieFactory zombieFactory = new ZombieFactory(enemyRepository, aggressiveSystem);

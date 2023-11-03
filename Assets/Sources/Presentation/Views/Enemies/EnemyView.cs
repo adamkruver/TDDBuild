@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Sources.Presentation.Views.Enemies
 {
-    public class EnemyView<T> : PresentationViewBase<T>, IEnemyView where T : PresenterBase
+    public class EnemyView<T> : PresentationViewBase<T>, IEnemyView where T : IPresenter
     {
         [field: SerializeField] public DamageableSystemView DamageableSystemView { get; private set; }
-        
+
         public Vector3 Position => Transform.position;
         public Vector3 Forward => Transform.forward;
 

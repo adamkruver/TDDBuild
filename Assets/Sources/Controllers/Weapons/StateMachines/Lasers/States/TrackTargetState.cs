@@ -1,7 +1,7 @@
 ﻿using System;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.FiniteStateMachines.States;
-using Sources.Infrastructure.Services.Weapons;
+using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
 
@@ -11,12 +11,12 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
     {
         private readonly IWeapon _weapon;
         private readonly ITargetTrackerSystem _targetTrackerSystem;
-        private readonly WeaponService _weaponService;
+        private readonly IWeaponService _weaponService;
 
         public TrackTargetState(
             IWeapon weapon,
             ITargetTrackerSystem targetTrackerSystem,
-            WeaponService weaponService
+            IWeaponService weaponService
         )
         {
             _weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));

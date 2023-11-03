@@ -1,4 +1,5 @@
-﻿using Sources.Controllers.Weapons;
+﻿using Sources.Controllers;
+using Sources.Controllers.Weapons;
 using Sources.Presentation.Aimations.Weapons;
 using Sources.Presentation.Views.Bullets;
 using Sources.Presentation.Views.Systems.TargetTrackers;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Sources.Presentation.Views.Weapons
 {
-    public class WeaponView : PresentationViewBase<WeaponStateMachine>, IWeaponView
+    public class WeaponView : PresentationViewBase<IPresenter>, IWeaponView
     {
         [SerializeField] private WeaponRotationSystem _rotationSystem;
         [SerializeField] private WeaponAnimation _weaponAnimation;

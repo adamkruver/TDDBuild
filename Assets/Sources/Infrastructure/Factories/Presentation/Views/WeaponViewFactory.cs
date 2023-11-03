@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using Sources.Controllers.Weapons;
+﻿using Sources.Controllers;
 using Sources.Domain.Weapons;
-using Sources.Infrastructure.Factories.Controllers.Weapons;
+using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Presentation.Views.Weapons;
 using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Sources.Infrastructure.Factories.Presentation.Views
 {
     public class WeaponViewFactory
     {
-        private readonly WeaponStateMachineFactory _weaponStateMachineFactory;
+        private readonly IWeaponStateMachineFactory _weaponStateMachineFactory;
         private readonly BulletViewFactory _bulletViewFactory;
-        private readonly Dictionary<Type, string> _prefabPaths;
 
         public WeaponViewFactory(
-            WeaponStateMachineFactory weaponStateMachineFactory,
-            BulletViewFactory bulletViewFactory,
-            Dictionary<Type, string> prefabPaths)
+            IWeaponStateMachineFactory weaponStateMachineFactory,
+            BulletViewFactory bulletViewFactory
+        )
         {
             _weaponStateMachineFactory = weaponStateMachineFactory;
             _bulletViewFactory = bulletViewFactory;
-            _prefabPaths = prefabPaths;
         }
 
         public CompositeWeaponView Create(IWeapon weapon)
         {
+            WeaponView weaponView = Object.Instantiate(Resources.Load<WeaponView>(GetPrefabPath(weapon)));
+
+            IPresenter stateMachine = _weaponStateMachineFactory.Create(
+                weaponView, weapon, weaponView.TargetTrackerSystem
             string prefabPath = _prefabPaths[weapon.GetType()];
             CompositeWeaponView compositeWeaponView = Object.Instantiate(Resources.Load<CompositeWeaponView>(prefabPath));
             
@@ -46,5 +45,8 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 
             return compositeWeaponView;
         }
+
+        private string GetPrefabPath(IWeapon weapon) =>
+            $"Views/Weapons/{weapon.GetType().Name}View";
     }
 }
