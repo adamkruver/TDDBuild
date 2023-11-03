@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6553810843755417696}
-  - component: {fileID: 5934686523049895069}
+  - component: {fileID: 5800364530539739658}
   - component: {fileID: 8990116113355438891}
   - component: {fileID: 1212930038589972185}
   - component: {fileID: 3038828784500526902}
@@ -36,7 +36,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5934686523049895069
+--- !u!114 &5800364530539739658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,14 +45,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6143574402138706927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
+  m_Script: {fileID: 11500000, guid: fe842d645034434687fa019af19fa714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponViews:
+  - {fileID: 3703712965694450691}
+  - {fileID: 2209212961463407182}
   _rotationSystem: {fileID: 8990116113355438891}
-  _weaponAnimation: {fileID: 3038828784500526902}
-  _particleSystem: {fileID: 7736458533350920283}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
-  <Bullet>k__BackingField: {fileID: 3655695986082532635}
 --- !u!114 &8990116113355438891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,6 +279,50 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 95000013006542780, guid: ff744fa1e43cd5747a6732d0189a5a52, type: 3}
   m_PrefabInstance: {fileID: 6032142468798537829}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6031995677511417515 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000012327329486, guid: ff744fa1e43cd5747a6732d0189a5a52, type: 3}
+  m_PrefabInstance: {fileID: 6032142468798537829}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3703712965694450691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6031995677511417515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSystem: {fileID: 8990116113355438891}
+  _weaponAnimation: {fileID: 3038828784500526902}
+  _particleSystem: {fileID: 7736458533350920283}
+  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
+  <Bullet>k__BackingField: {fileID: 3655695986082532635}
+--- !u!1 &6031995678256543201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000013717362052, guid: ff744fa1e43cd5747a6732d0189a5a52, type: 3}
+  m_PrefabInstance: {fileID: 6032142468798537829}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2209212961463407182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6031995678256543201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSystem: {fileID: 8990116113355438891}
+  _weaponAnimation: {fileID: 3038828784500526902}
+  _particleSystem: {fileID: 2277125905149910458}
+  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
+  <Bullet>k__BackingField: {fileID: 5079833711564964090}
 --- !u!4 &6032655677135809027 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000013112085094, guid: ff744fa1e43cd5747a6732d0189a5a52, type: 3}
@@ -388,3 +432,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+--- !u!198 &2277125905149910458 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+  m_PrefabInstance: {fileID: 6077432257746813559}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5079833711564964090 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1308385477549458061, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+  m_PrefabInstance: {fileID: 6077432257746813559}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58107b5fb224262895dbeeb2fac6759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

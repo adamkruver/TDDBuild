@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponViews:
   - {fileID: 5934686523049895069}
+  _rotationSystem: {fileID: 8990116113355438891}
   <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!114 &5934686523049895069
 MonoBehaviour:
