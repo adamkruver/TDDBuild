@@ -1,4 +1,5 @@
 ﻿using Sources.Controllers;
+using Sources.Controllers.Weapons;
 using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Presentation.Views.Weapons;
@@ -23,19 +24,12 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 
         public CompositeWeaponView Create(IWeapon weapon)
         {
-            WeaponView weaponView = Object.Instantiate(Resources.Load<WeaponView>(GetPrefabPath(weapon)));
-
-            IPresenter stateMachine = _weaponStateMachineFactory.Create(
-                weaponView, weapon, weaponView.TargetTrackerSystem
-            string prefabPath = _prefabPaths[weapon.GetType()];
-            CompositeWeaponView compositeWeaponView = Object.Instantiate(Resources.Load<CompositeWeaponView>(prefabPath));
+            CompositeWeaponView compositeWeaponView = Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
             
             IWeaponView[] weaponViews = compositeWeaponView.WeaponViews;
 
-            WeaponStateMachine stateMachine = _weaponStateMachineFactory.Create(
-                weaponViews, weapon, compositeWeaponView.TargetTrackerSystem
-            );
-
+            IPresenter stateMachine = _weaponStateMachineFactory.Create(compositeWeaponView, weaponViews, weapon, compositeWeaponView.TargetTrackerSystem);
+            
             foreach (IWeaponView weaponView in weaponViews)
             {
                 WeaponView view = (WeaponView) weaponView;
