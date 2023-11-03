@@ -1,11 +1,10 @@
-﻿using Sources.Domain.Enemies;
-using Sources.Domain.Systems.Aggressive;
+﻿using Sources.Domain.Systems.Aggressive;
+using Sources.Domain.Systems.Progresses;
 using Sources.Domain.Zombies;
-using Sources.Infrastructure.Assessors;
 using Sources.Infrastructure.FiniteStateMachines.States;
 using Sources.Infrastructure.Repositories;
+using Sources.InfrastructureInterfaces.Assessors;
 using Sources.Presentation.Views.Zombies;
-using UnityEngine;
 
 namespace Sources.Controllers.Zombies.StateMachines.States
 {
@@ -13,28 +12,35 @@ namespace Sources.Controllers.Zombies.StateMachines.States
     {
         private readonly ZombieView _zombieView;
         private readonly Zombie _zombie;
+        private readonly ProgressSystem _progressSystem;
         private readonly AggressiveSystem _aggressiveSystem;
         private readonly EnemyRepository _enemyRepository;
-        private readonly EnemyDeathAssessor _enemyDeathAssessor;
+        private readonly IEnemyAssessor _enemyDeathAggressiveAssessor;
+        private readonly IEnemyAssessor _enemyDeathProgressAssessor;
 
         public DeathState(
             ZombieView zombieView,
             Zombie zombie,
+            ProgressSystem progressSystem,
             AggressiveSystem aggressiveSystem,
             EnemyRepository enemyRepository,
-            EnemyDeathAssessor enemyDeathAssessor
+            IEnemyAssessor enemyDeathAggressiveAssessor,
+            IEnemyAssessor enemyDeathProgressAssessor
         )
         {
             _zombieView = zombieView;
             _zombie = zombie;
+            _progressSystem = progressSystem;
             _aggressiveSystem = aggressiveSystem;
             _enemyRepository = enemyRepository;
-            _enemyDeathAssessor = enemyDeathAssessor;
+            _enemyDeathAggressiveAssessor = enemyDeathAggressiveAssessor;
+            _enemyDeathProgressAssessor = enemyDeathProgressAssessor;
         }
 
         protected override void OnEnter()
         {
-            _aggressiveSystem.AddProgress(_enemyDeathAssessor.Access(_zombie));
+            _aggressiveSystem.AddProgress(_enemyDeathAggressiveAssessor.Assess(_zombie));
+            _progressSystem.AddProgress(_enemyDeathProgressAssessor.Assess(_zombie));
             _enemyRepository.Remove(_zombie);
             _zombieView.Die();
         }

@@ -1,14 +1,13 @@
 ﻿using DG.Tweening;
 using Sources.Controllers.Systems;
 using Sources.Presentation.Ui.Elements;
-using Sources.PresentationInterfaces.Views.Systems.Aggressive;
+using Sources.PresentationInterfaces.Ui.Systems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Sources.Presentation.Views.Systems.Aggressive
+namespace Sources.Presentation.Ui.Systems.Aggressive
 {
-    public class AggressiveSystemView : MonoBehaviour, IAggressiveSystemView
+    public class AggressiveSystemUi : MonoBehaviour, IAggressiveSystemUi
     {
         [SerializeField] private TextMeshProUGUI _progress;
         [SerializeField] private TextMeshProUGUI _levelTitle;
