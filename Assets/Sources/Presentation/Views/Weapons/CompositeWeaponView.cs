@@ -15,6 +15,10 @@ namespace Sources.Presentation.Views.Weapons
         [field: SerializeField] public TargetTrackerSystem TargetTrackerSystem { get; private set; }
 
         public IWeaponRotationSystem RotationSystem => _rotationSystem;
+        public int BarrelsAmount => WeaponViews.Length;
+
+        public void Shoot(int weaponId) => 
+            WeaponViews[weaponId].Shoot();
 
         public void SetParent(Transform parent) =>
             transform.SetParent(parent, true);

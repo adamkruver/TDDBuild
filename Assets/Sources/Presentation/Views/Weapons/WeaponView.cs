@@ -14,9 +14,10 @@ namespace Sources.Presentation.Views.Weapons
 
         [field: SerializeField] public BulletView Bullet { get; private set; }
 
-        public IWeaponAnimation Animation => _weaponAnimation;
-
-        public void Fire() =>
+        public void Shoot()
+        {
             _particleSystem.Play();
+            _weaponAnimation.Shoot();
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
         )
         {
             TrackTargetState trackTargetState = new TrackTargetState(weapon, targetTrackerSystem, service);
-            ShootState shootState = new ShootState(views, weapon);
+            ShootState shootState = new ShootState(compositeView, weapon, shootsAtOnce: 1);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
                 shootState, weapon, targetTrackerSystem, service
