@@ -31,15 +31,16 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
             WeaponView[] weaponViews = compositeWeaponView.WeaponViews;
 
             IPresenter stateMachine = _weaponStateMachineFactory.Create(
-                compositeWeaponView, weaponViews.Cast<IWeaponView>().ToArray(), weapon,
+                compositeWeaponView, 
+                weaponViews.Cast<IWeaponView>().ToArray(), 
+                weapon,
                 compositeWeaponView.TargetTrackerSystem
             );
 
-            foreach (WeaponView view in weaponViews)
-            {
-                view.Construct(stateMachine);
+            foreach (WeaponView view in weaponViews) 
                 _bulletViewFactory.Create(view.Bullet, weapon.Bullet);
-            }
+            
+            compositeWeaponView.Construct(stateMachine);
 
             return compositeWeaponView;
         }
