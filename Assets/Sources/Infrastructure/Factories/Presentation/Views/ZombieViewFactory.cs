@@ -2,6 +2,7 @@
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Presentation.Systems;
+using Sources.Infrastructure.ObjectPools;
 using Sources.Presentation.Views.Zombies;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         private readonly DamageableSystemViewFactory _damageableSystemViewFactory;
         private readonly BaseView _baseView;
         private readonly ZombieView _prefab;
+        private readonly ObjectPool _objectPool = new ObjectPool();
 
         public ZombieViewFactory(
             ZombieStateMachineFactory zombieStateMachineFactory,
@@ -31,7 +33,10 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 
         public ZombieView Create(Zombie zombie, Vector3 spawnPosition)
         {
-            ZombieView view = Object.Instantiate(_prefab, spawnPosition, Quaternion.identity);
+            ZombieView view = _objectPool.Get<ZombieView>() ?? Object.Instantiate(_prefab, spawnPosition, Quaternion.identity);
+            view.Create(_objectPool);
+            view.SetPosition(spawnPosition);
+            
             ZombieStateMachine zombieStateMachine = _zombieStateMachineFactory.Create(view, zombie,_baseView);
             
             view.Construct(zombieStateMachine);
