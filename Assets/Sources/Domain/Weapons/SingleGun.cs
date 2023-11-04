@@ -5,9 +5,9 @@ using Sources.InfrastructureInterfaces.Services.Times;
 
 namespace Sources.Domain.Weapons
 {
-    public class MiniTwiceGun : WeaponBase, IConstructable
+    public class SingleGun : WeaponBase, IConstructable
     {
-        public MiniTwiceGun(
+        public SingleGun(
             IBullet bullet,
             ITimeService timeService,
             WeaponFab weaponFab,

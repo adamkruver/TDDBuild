@@ -11,8 +11,8 @@ namespace Sources.Domain.Weapons
             IBullet bullet,
             ITimeService timeService,
             WeaponFab weaponFab,
-            UpgradeSystem laserUpgradeSystem
-        ) : base(bullet, timeService, weaponFab, laserUpgradeSystem)
+            UpgradeSystem upgradeSystem
+        ) : base(bullet, timeService, weaponFab, upgradeSystem)
         {
         }
     }
