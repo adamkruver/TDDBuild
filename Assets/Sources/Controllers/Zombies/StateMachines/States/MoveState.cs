@@ -1,15 +1,16 @@
 ﻿using Sources.Infrastructure.FiniteStateMachines.States;
 using Sources.Presentation.Views.Zombies;
+using Sources.PresentationInterfaces.Views.Zombies;
 using UnityEngine;
 
 namespace Sources.Controllers.Zombies.StateMachines.States
 {
     public class MoveState : FiniteStateBase
     {
-        private readonly ZombieView _zombieView;
+        private readonly IZombieView _zombieView;
         private readonly Vector3 _destination;
 
-        public MoveState(ZombieView zombieView, Vector3 destination)
+        public MoveState(IZombieView zombieView, Vector3 destination)
         {
             _zombieView = zombieView;
             _destination = destination;
@@ -17,12 +18,12 @@ namespace Sources.Controllers.Zombies.StateMachines.States
 
         protected override void OnEnter()
         {
-            _zombieView.NavMeshAgent.SetDestination(_destination);
+            _zombieView.SetDestination(_destination);
         }
 
         protected override void OnExit()
         {
-            _zombieView.NavMeshAgent.Stop();
+            _zombieView.Stop();
         }
     }
 }

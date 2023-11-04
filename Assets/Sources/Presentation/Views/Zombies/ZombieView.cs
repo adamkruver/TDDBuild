@@ -10,13 +10,22 @@ namespace Sources.Presentation.Views.Zombies
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
 
-        public NavMeshAgent NavMeshAgent => _navMeshAgent;
-        
         public void Update()
         {
             Presenter?.Update(Time.deltaTime);
         }
-        
+
+        public void SetDestination(Vector3 destination) =>
+            _navMeshAgent.SetDestination(destination);
+
+        public void Stop()
+        {
+            if (_navMeshAgent.isActiveAndEnabled == false)
+                return;
+            
+            _navMeshAgent.isStopped = true;
+        }
+
         public void Die()
         {
             gameObject.SetActive(false);
