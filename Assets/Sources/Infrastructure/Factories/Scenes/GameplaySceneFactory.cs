@@ -87,6 +87,18 @@ namespace Sources.Infrastructure.Factories.Scenes
                     [nameof(RocketTwiceGun)] = Object.Instantiate(
                         Resources.Load<TurretConstructionPreview>("Previews/Weapons/RocketTwiceGunPreview")
                     ),
+                    [nameof(SingleGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/SingleGunPreview")
+                    ),
+                    [nameof(DoubleGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/DoubleGunPreview")
+                    ),
+                    [nameof(TripleGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/TripleGunPreview")
+                    ),
+                    [nameof(QuadGun)] = Object.Instantiate(
+                        Resources.Load<TurretConstructionPreview>("Previews/Weapons/QuadGunPreview")
+                    ),
                 };
 
             UpgradeSystemUiContainer upgradeSystemUiContainer =
@@ -167,6 +179,11 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new MiniTwiceGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
             RocketTwiceGunFactory rocketTwiceGunFactory =
                 new RocketTwiceGunFactory(rocketFactory, timeService, rocketUpgradeSystem);
+            
+            SingleGunFactory singleGunFactory = new SingleGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
+            DoubleGunFactory doubleGunFactory = new DoubleGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
+            TripleGunFactory tripleGunFactory = new TripleGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
+            QuadGunFactory quadGunFactory = new QuadGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
 
             TurretFactory turretFactory = new TurretFactory(tileRepository);
 
@@ -183,6 +200,10 @@ namespace Sources.Infrastructure.Factories.Scenes
                         [typeof(DoubleLaserTwiceGun)] = new DoubleLaserTwiceGunStateMachineFactory(),
                         [typeof(MiniTwiceGun)] = new MiniTwiceGunStateMachineFactory(),
                         [typeof(RocketTwiceGun)] = new RocketTwiceGunStateMachineFactory(),
+                        [typeof(SingleGun)] = new SingleGunStateMachineFactory(),
+                        [typeof(DoubleGun)] = new DoubleGunStateMachineFactory(),
+                        [typeof(TripleGun)] = new TripleGunStateMachineFactory(),
+                        [typeof(QuadGun)] = new QuadGunStateMachineFactory(),
                     }
                 );
 
@@ -273,7 +294,11 @@ namespace Sources.Infrastructure.Factories.Scenes
                     doubleLaserGunFactory,
                     doubleLaserTwiceGunFactory,
                     miniTwiceGunFactory,
-                    rocketTwiceGunFactory
+                    rocketTwiceGunFactory,
+                    singleGunFactory,
+                    doubleGunFactory,
+                    tripleGunFactory,
+                    quadGunFactory
                 );
 
             ConstructButtonUiFactory constructButtonUiFactory =

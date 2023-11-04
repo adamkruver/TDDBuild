@@ -46,7 +46,11 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
             DoubleLaserGunFactory doubleLaserGunFactory,
             DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory,
             MiniTwiceGunFactory miniTwiceGunFactory,
-            RocketTwiceGunFactory rocketTwiceGunFactory
+            RocketTwiceGunFactory rocketTwiceGunFactory,
+            SingleGunFactory singleGunFactory,
+            DoubleGunFactory doubleGunFactory,
+            TripleGunFactory tripleGunFactory,
+            QuadGunFactory quadGunFactory
         )
         {
             _paymentService = paymentService;
@@ -82,6 +86,18 @@ namespace Sources.Infrastructure.Factories.Controllers.Constructs
 
                 [nameof(RocketTwiceGun)] = () =>
                     turretConstructionViewFactory.Create(new Turret(rocketTwiceGunFactory.Create())),
+                
+                [nameof(SingleGun)] = () =>
+                    turretConstructionViewFactory.Create(new Turret(singleGunFactory.Create())),
+
+                [nameof(DoubleGun)] = () =>
+                    turretConstructionViewFactory.Create(new Turret(doubleGunFactory.Create())),
+                
+                [nameof(TripleGun)] = () =>
+                    turretConstructionViewFactory.Create(new Turret(tripleGunFactory.Create())),
+                
+                [nameof(QuadGun)] = () =>
+                    turretConstructionViewFactory.Create(new Turret(quadGunFactory.Create())),
 
 /*                [nameof(RocketGun)] = position => turretViewFactory
                     .Create(turretFactory.Create(rocketGunFactory.Create(rocketGunFab), position), position),
