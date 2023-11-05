@@ -70,7 +70,7 @@ namespace Sources.Domain.Weapons
 
         public bool CanShoot => _lastShootTime < _timeSource.Time - Cooldown;
 
-        public void Fire() =>
+        public void Shoot() =>
             _lastShootTime = _timeSource.Time;
     }
 }

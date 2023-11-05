@@ -1,4 +1,5 @@
-﻿using Sources.Domain.Zombies;
+﻿using Sources.Domain.HealthPoints;
+using Sources.Frameworks.LiveDatas;
 using Sources.Infrastructure.FiniteStateMachines.Transitions;
 using Sources.InfrastructureInterfaces.FiniteStateMachines;
 
@@ -6,14 +7,14 @@ namespace Sources.Controllers.Zombies.StateMachines.Transitions
 {
     public class ToDeathTransition : TransitionBase
     {
-        private readonly Zombie _zombie;
+        private readonly LiveData<float> _health;
 
-        public ToDeathTransition(IFiniteState nextState, Zombie zombie) : base(nextState)
+        public ToDeathTransition(IFiniteState nextState, Health health) : base(nextState)
         {
-            _zombie = zombie;
+            _health = health.Points;
         }
 
         protected override bool CanMoveNextState() => 
-            _zombie.Health.Points.Value <= 0;
+            _health.Value <= 0;
     }
 }

@@ -11,6 +11,6 @@ namespace Sources.Domain.Weapons
         float HorizontalRotationSpeed { get; }
         float VerticalRotationSpeed { get; }
         bool CanShoot { get; }
-        void Fire();
+        void Shoot();
     }
 }

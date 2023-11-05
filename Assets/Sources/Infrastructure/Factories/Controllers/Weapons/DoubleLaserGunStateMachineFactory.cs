@@ -19,11 +19,12 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             IWeaponService service
         )
         {
-            TrackTargetState trackTargetState = new TrackTargetState(weapon, targetTrackerSystem, service);
-            ShootState shootState = new ShootState(views, weapon);
+            TrackTargetState trackTargetState =
+                new TrackTargetState(weapon, targetTrackerSystem, service, compositeView);
+            ShootState shootState = new ShootState(compositeView, weapon, shootsAtOnce: 1);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
-                shootState, weapon, targetTrackerSystem, service
+                shootState, weapon, targetTrackerSystem, service, compositeView
             );
 
             CooldownState cooldownState = new CooldownState();

@@ -1,35 +1,38 @@
 ﻿using System;
-using System.Linq;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.FiniteStateMachines.States;
-using Sources.PresentationInterfaces.Animations.Weapons;
-using Sources.PresentationInterfaces.Views.Weapons;
+using Sources.Presentation.Views.Weapons;
 
 namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 {
     public class ShootState : FiniteStateBase
     {
-        private readonly IWeaponView[] _weaponViews;
-        private readonly IWeaponAnimation[] _weaponAnimations;
+        private readonly ICompositeWeaponView _compositeWeaponView;
         private readonly IWeapon _weapon;
+        private readonly int _shootsAtOnce;
+        private readonly int _maxBarrelId;
 
         private int _currentBarrelId;
 
-        public ShootState(IWeaponView[] weaponViews, IWeapon weapon)
+        public ShootState(ICompositeWeaponView compositeWeaponView, IWeapon weapon, int shootsAtOnce)
         {
-            _weaponViews = weaponViews ?? throw new ArgumentNullException(nameof(weaponViews));
+            _compositeWeaponView = compositeWeaponView ?? throw new ArgumentNullException(nameof(compositeWeaponView));
             _weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
-            _weaponAnimations = _weaponViews.Select(view => view.Animation).ToArray();
+            _shootsAtOnce = shootsAtOnce;
+            _maxBarrelId = compositeWeaponView.BarrelsAmount;
         }
 
         protected override void OnEnter()
         {
-            _weaponAnimations[_currentBarrelId].Shoot();
-            _weaponViews[_currentBarrelId].Fire();
-            _weapon.Fire();
+            _weapon.Shoot();
 
-            if (++_currentBarrelId == _weaponViews.Length)
-                _currentBarrelId = 0;
+            for (int i = 0; i < _shootsAtOnce; i++)
+            {
+                _compositeWeaponView.Shoot(_currentBarrelId);
+
+                if (++_currentBarrelId == _maxBarrelId)
+                    _currentBarrelId = 0;
+            }
         }
     }
 }
