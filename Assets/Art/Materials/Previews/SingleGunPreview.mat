@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponPreview
+  m_Name: SingleGunPreview
   m_Shader: {fileID: 4800000, guid: 2bffc50af4b1ff34cb151aa15bb9edb4, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9618dc900e231af4a84357700942a479, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5afd0139166a0de4fb3fa2971d43bf04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:

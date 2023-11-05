@@ -7,14 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LaserPreview
+  m_Name: DoubleGun
   m_Shader: {fileID: 4800000, guid: f8d49205b3b0a644195633020367689d, type: 3}
   m_ValidKeywords:
   - TCP2_DISABLE_WRAPPED_LIGHT
   - TCP2_RAMPTEXT
   - TCP2_SPEC_TOON
   - TCP2_STYLIZED_FRESNEL
-  - _ALPHAPREMULTIPLY_ON
   - _EMISSION
   - _NORMALMAP
   m_InvalidKeywords:
@@ -24,15 +23,14 @@ Material:
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: e5c9cbbb65bca234a9dbbb612e90e9cf, type: 3}
+        m_Texture: {fileID: 2800000, guid: af1ee05d999d41d4389e5b6b286c1ab8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -48,11 +46,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: f365080c116b5da4da2d9cbe2470afb9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0b0ff90705eb0f64d9c83e7e3a88f47f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 23bf3b24b436dda4d820d31e8c5aff26, type: 3}
+        m_Texture: {fileID: 2800000, guid: cf88e7c19d57f7a48be1e3e5dba0c3aa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -60,7 +58,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: d5d9fd836ef862e478f7bee004f9cbcd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2f4981da3063d4745b7269386cb5d173, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -84,7 +82,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _DstBlendOutline: 10
     - _EnableConstSizeOutline: 0
     - _EnableOutline: 0
@@ -97,7 +95,7 @@ Material:
     - _HSV_S: 0
     - _HSV_V: 0
     - _Metallic: 0
-    - _Mode: 3
+    - _Mode: 0
     - _NormalsSource: 0
     - _NormalsUVType: 0
     - _OcclusionStrength: 1
@@ -135,13 +133,13 @@ Material:
     - _TexLod: 0
     - _UVSec: 0
     - _ZSmooth: 0
-    - _ZWrite: 0
+    - _ZWrite: 1
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:
-    - _Color: {r: 0, g: 0.85490227, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffTint: {r: 0.7, g: 0.8, b: 1, a: 1}
-    - _EmissionColor: {r: 0.5338282, g: 1.3450482, b: 1.741101, a: 1}
+    - _EmissionColor: {r: 0, g: 0.9210683, b: 0.80722845, a: 1}
     - _HColor: {r: 0.6282484, g: 0.69861746, b: 0.735849, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.44852942, g: 0, b: 0, a: 0.734}

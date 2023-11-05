@@ -33,3 +33,8 @@ MonoBehaviour:
     <SpawnIntervalMax>k__BackingField: 1
     <Type>k__BackingField: Zombie
     <Count>k__BackingField: 100
+  - <GroupDelay>k__BackingField: 10
+    <SpawnIntervalMin>k__BackingField: 0.1
+    <SpawnIntervalMax>k__BackingField: 0.2
+    <Type>k__BackingField: Zombie
+    <Count>k__BackingField: 500

@@ -7,8 +7,13 @@ namespace Sources.Domain.Weapons
 {
     public class LaserGun : WeaponBase, IConstructable
     {
-        public LaserGun(IBullet bullet, ITimeService timeService, WeaponFab weaponFab, UpgradeSystem upgradeSystem) : base(
-            bullet, timeService, weaponFab,upgradeSystem
+        public LaserGun(
+            IBullet bullet,
+            ITimeService timeService,
+            WeaponFab weaponFab,
+            UpgradeSystem upgradeSystem
+        ) : base(
+            bullet, timeService, weaponFab, upgradeSystem
         )
         {
         }

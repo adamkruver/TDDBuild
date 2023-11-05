@@ -1,9 +1,10 @@
 ﻿using Sources.Controllers;
+using Sources.Presentation.Components;
 using UnityEngine;
 
 namespace Sources.Presentation.Views
 {
-    public abstract class PresentationViewBase<T> : MonoBehaviour where T : IPresenter
+    public abstract class PresentationViewBase<T> : PoolableBehaviour where T : IPresenter
     {
         protected T Presenter;
         protected Transform Transform;

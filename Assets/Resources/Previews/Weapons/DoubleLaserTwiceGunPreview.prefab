@@ -541,7 +541,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: ActiveTileView
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1995980329949007981, guid: bae96d4601de2ef4c8a4495559ef7991, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bae96d4601de2ef4c8a4495559ef7991, type: 3}
 --- !u!4 &7769373644782524924 stripped
 Transform:

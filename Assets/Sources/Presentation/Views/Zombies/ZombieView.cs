@@ -10,10 +10,8 @@ namespace Sources.Presentation.Views.Zombies
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
 
-        public void Update()
-        {
+        public void Update() =>
             Presenter?.Update(Time.deltaTime);
-        }
 
         public void SetDestination(Vector3 destination) =>
             _navMeshAgent.SetDestination(destination);
@@ -26,10 +24,14 @@ namespace Sources.Presentation.Views.Zombies
             _navMeshAgent.isStopped = true;
         }
 
+        public void SetPosition(Vector3 spawnPosition) =>
+            Transform.position = spawnPosition;
+        
         public void Die()
         {
-            gameObject.SetActive(false);
-            Debug.Log("Zombie Died");
+            Presenter.Disable();
+            Presenter = null;
+            Destroy();
         }
     }
 }
