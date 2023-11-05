@@ -1,4 +1,5 @@
 ﻿using Sources.PresentationInterfaces.Views.Weapons;
+using UnityEngine;
 
 namespace Sources.Presentation.Views.Weapons
 {
@@ -7,6 +8,7 @@ namespace Sources.Presentation.Views.Weapons
         IWeaponRotationSystem RotationSystem { get; }
         int BarrelsAmount { get; }
         float GunPointOffset { get; }
+        Vector3 HeadPosition { get; }
         
         void Shoot(int weaponId);
     }

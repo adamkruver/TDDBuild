@@ -3,6 +3,7 @@ using Sources.Controllers;
 using Sources.Controllers.Weapons;
 using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
+using Sources.Presentation.Views.Systems.TargetTrackers;
 using Sources.Presentation.Views.Weapons;
 using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
@@ -13,14 +14,17 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
     {
         private readonly IWeaponStateMachineFactory _weaponStateMachineFactory;
         private readonly BulletViewFactory _bulletViewFactory;
+        private readonly TargetTrackerSystem _targetTrackerSystem;
 
         public WeaponViewFactory(
             IWeaponStateMachineFactory weaponStateMachineFactory,
-            BulletViewFactory bulletViewFactory
+            BulletViewFactory bulletViewFactory,
+            TargetTrackerSystem targetTrackerSystem
         )
         {
             _weaponStateMachineFactory = weaponStateMachineFactory;
             _bulletViewFactory = bulletViewFactory;
+            _targetTrackerSystem = targetTrackerSystem;
         }
 
         public CompositeWeaponView Create(IWeapon weapon)
@@ -29,12 +33,13 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
                 Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
 
             WeaponView[] weaponViews = compositeWeaponView.WeaponViews;
+            
 
             IPresenter stateMachine = _weaponStateMachineFactory.Create(
                 compositeWeaponView, 
                 weaponViews.Cast<IWeaponView>().ToArray(), 
                 weapon,
-                compositeWeaponView.TargetTrackerSystem
+                _targetTrackerSystem
             );
 
             foreach (WeaponView view in weaponViews) 

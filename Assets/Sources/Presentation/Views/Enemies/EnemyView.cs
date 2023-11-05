@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Sources.Presentation.Views.Enemies
 {
-    public class EnemyView<T> : PresentationViewBase<T>, IEnemyView where T : IPresenter
+    public abstract class EnemyView<T> : PresentationViewBase<T>, IEnemyView where T : IPresenter
     {
         [field: SerializeField] public DamageableSystemView DamageableSystemView { get; private set; }
 

@@ -381,7 +381,6 @@ GameObject:
   - component: {fileID: 2443759046691243179}
   - component: {fileID: 5934686523049895069}
   - component: {fileID: 8990116113355438891}
-  - component: {fileID: 1212930038589972185}
   - component: {fileID: 3038828784500526902}
   m_Layer: 0
   m_Name: SingleGunView
@@ -421,7 +420,6 @@ MonoBehaviour:
   _rotationSystem: {fileID: 8990116113355438891}
   <WeaponViews>k__BackingField:
   - {fileID: 5934686523049895069}
-  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!114 &5934686523049895069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,11 +432,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSystem: {fileID: 8990116113355438891}
   _weaponAnimation: {fileID: 3038828784500526902}
   _particleSystem: {fileID: 7736458533350920283}
-  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
   <Bullet>k__BackingField: {fileID: 3655695986082532635}
+  <GunPointOffset>k__BackingField: 0
 --- !u!114 &8990116113355438891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,22 +450,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _base: {fileID: 6553810843755417696}
   _head: {fileID: 7088453587728125188}
---- !u!114 &1212930038589972185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143574402138706927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa6a0fce58e4861b9893f9349f807ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxColliders: 2000
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &3038828784500526902
 MonoBehaviour:
   m_ObjectHideFlags: 0

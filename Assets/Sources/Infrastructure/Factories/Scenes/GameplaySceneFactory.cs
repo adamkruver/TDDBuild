@@ -45,6 +45,7 @@ using Sources.Presentation.Ui;
 using Sources.Presentation.Ui.Systems.Upgrades;
 using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Systems.Spawn;
+using Sources.Presentation.Views.Systems.TargetTrackers;
 using Sources.PresentationInterfaces.Views.Enemies;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -148,6 +149,8 @@ namespace Sources.Infrastructure.Factories.Scenes
             UpgradeSystem laserUpgradeSystem = new UpgradeSystem();
             UpgradeSystem bulletUpgradeSystem = new UpgradeSystem();
             UpgradeSystem rocketUpgradeSystem = new UpgradeSystem();
+            TargetTrackerSystem targetTrackerSystem =
+                new TargetTrackerSystem(2000, Layers.Enemy, Layers.Obstacle);
 
             #endregion
 
@@ -179,7 +182,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new MiniTwiceGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
             RocketTwiceGunFactory rocketTwiceGunFactory =
                 new RocketTwiceGunFactory(rocketFactory, timeService, rocketUpgradeSystem);
-            
+
             SingleGunFactory singleGunFactory = new SingleGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
             DoubleGunFactory doubleGunFactory = new DoubleGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
             TripleGunFactory tripleGunFactory = new TripleGunFactory(bulletFactory, timeService, bulletUpgradeSystem);
@@ -248,7 +251,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
-                weaponStateMachineFactory, bulletViewFactory
+                weaponStateMachineFactory, bulletViewFactory, targetTrackerSystem
             );
 
             TurretViewFactory turretViewFactory = new TurretViewFactory(turretPresenterFactory, weaponViewFactory);
@@ -333,8 +336,8 @@ namespace Sources.Infrastructure.Factories.Scenes
             turretConstructionViews.Values.ToList().ForEach(view => view.Hide());
 
             upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Laser, laserUpgradeSystem);
-      //      upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Bullet, bulletUpgradeSystem);
-        //    upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Rocket, rocketUpgradeSystem);
+            //      upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Bullet, bulletUpgradeSystem);
+            //    upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Rocket, rocketUpgradeSystem);
 
             hud.TopLeft.AddChild(progressSystemUiFactory.Create(progressSystem));
             hud.TopCenter.AddChild(moneyUiFactory.Create(money));

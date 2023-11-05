@@ -9,6 +9,7 @@ namespace Sources.Presentation.Views.Weapons
         [SerializeField] private Transform _head;
 
         public Vector3 Position => _base.position;
+        public Vector3 HeadPosition => _head.position;
 
         public void SetXAngle(float angle) =>
             _head.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));

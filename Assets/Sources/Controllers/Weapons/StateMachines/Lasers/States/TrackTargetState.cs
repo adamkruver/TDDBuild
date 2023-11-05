@@ -1,10 +1,12 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.FiniteStateMachines.States;
 using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
+using UnityEngine;
 
 namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 {
@@ -16,6 +18,7 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
         private readonly ICompositeWeaponView _compositeWeaponView;
 
         private float _gunPointOffset;
+        private IEnemyView _enemy;
 
         public TrackTargetState(
             IWeapon weapon,
@@ -27,8 +30,13 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
             _weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
             _targetTrackerSystem = targetTrackerSystem ?? throw new ArgumentNullException(nameof(targetTrackerSystem));
             _weaponService = weaponService ?? throw new ArgumentNullException(nameof(weaponService));
-            _compositeWeaponView = compositeWeaponView;
+            _compositeWeaponView = compositeWeaponView ?? throw new ArgumentNullException(nameof(compositeWeaponView));
         }
+
+        private bool CanSeeEnemy =>
+            _targetTrackerSystem.CanSeeEnemy(
+                _compositeWeaponView.HeadPosition, _enemy, _weapon.MinFireDistance, _weapon.MaxFireDistance
+            );
 
         protected override void OnEnter()
         {
@@ -37,12 +45,17 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 
         protected override void OnUpdate(float deltaTime)
         {
-            IEnemyView enemyView = _targetTrackerSystem.Track(_weapon.MaxFireDistance);
-
-            if (enemyView == null)
+            if(CanSeeEnemy == false && TryGetEnemy(out _enemy) == false)
                 return;
 
-            _weaponService.UpdateLookDirectionWithPredict(enemyView, _weapon.HorizontalRotationSpeed, _gunPointOffset);
+            _weaponService.UpdateLookDirectionWithPredict(_enemy, _weapon.HorizontalRotationSpeed, _gunPointOffset);
+        }
+
+        private bool TryGetEnemy(out IEnemyView view)
+        {
+            view = _targetTrackerSystem.Track(_compositeWeaponView.HeadPosition, _weapon.MinFireDistance, _weapon.MaxFireDistance);
+            
+            return view != null;
         }
     }
 }

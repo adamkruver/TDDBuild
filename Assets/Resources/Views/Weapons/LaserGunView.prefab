@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 6553810843755417696}
   - component: {fileID: -5636964516454344138}
   - component: {fileID: 8990116113355438891}
-  - component: {fileID: 1212930038589972185}
   m_Layer: 0
   m_Name: LaserGunView
   m_TagString: Untagged
@@ -136,7 +135,6 @@ MonoBehaviour:
   _rotationSystem: {fileID: 8990116113355438891}
   <WeaponViews>k__BackingField:
   - {fileID: 8466127817983420406}
-  <TargetTrackerSystem>k__BackingField: {fileID: 1212930038589972185}
 --- !u!114 &8990116113355438891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,22 +149,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _base: {fileID: 6553810843755417696}
   _head: {fileID: 7459589186999409729}
---- !u!114 &1212930038589972185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143574402138706927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa6a0fce58e4861b9893f9349f807ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxColliders: 100
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &7460336664845706559
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,6 +511,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
   m_PrefabInstance: {fileID: 2347489802029944726}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3046081318939137705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7736458533350920284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e9af560010443b8db762ae34bc77d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 6508580826686363838}
 --- !u!114 &8466127817983420406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,19 +540,6 @@ MonoBehaviour:
   _particleSystem: {fileID: 7736458533350920283}
   <Bullet>k__BackingField: {fileID: 3655695986082532635}
   <GunPointOffset>k__BackingField: 0
---- !u!114 &3046081318939137705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736458533350920284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e9af560010443b8db762ae34bc77d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 6508580826686363838}
 --- !u!4 &7736458533350920285 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5462472183688404939, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}

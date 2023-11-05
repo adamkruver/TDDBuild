@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using Sources.Frameworks.LiveDatas;
 using Sources.InfrastructureInterfaces.Listeners;
 using Sources.InfrastructureInterfaces.Services;
 using Sources.InfrastructureInterfaces.Services.Pointers;
@@ -11,11 +10,22 @@ namespace Sources.Infrastructure.Services.Pointers
     public class PointerService : IUpdatable, IPointerService
     {
         private readonly PointerUIService _pointerUIService = new PointerUIService();
-        private readonly Dictionary<int, IPointerHandler> _handlers = new Dictionary<int, IPointerHandler>();
-        private readonly Dictionary<int, bool> _startedTouches = new Dictionary<int, bool>();
-        private IUntouchablePointerHandler _untouchablePointerHandler;
+        private readonly IDictionary<int, IPointerHandler> _handlers = new Dictionary<int, IPointerHandler>();
+        private readonly IDictionary<int, bool> _startedTouches = new Dictionary<int, bool>();
 
-        private bool IsTouched => _startedTouches.Values.FirstOrDefault(isStartedTouch => isStartedTouch);
+        private readonly MutableLiveData<IUntouchablePointerHandler> _untouchablePointerHandler =
+            new MutableLiveData<IUntouchablePointerHandler>();
+
+        private readonly MousePointerService _mousePointerService;
+        private readonly TouchPointerService _touchPointerService;
+
+        public PointerService()
+        {
+            _mousePointerService = new MousePointerService(
+                _pointerUIService, _handlers, _startedTouches, _untouchablePointerHandler
+            );
+            _touchPointerService = new TouchPointerService(_pointerUIService, _handlers, _startedTouches);
+        }
 
         public void RegisterHandler(int pointerId, IPointerHandler handler) =>
             _handlers[pointerId] = handler;
@@ -24,55 +34,24 @@ namespace Sources.Infrastructure.Services.Pointers
             _handlers.Remove(pointerId);
 
         public void RegisterUntouchableHandler(IUntouchablePointerHandler handler) =>
-            _untouchablePointerHandler = handler;
+            _untouchablePointerHandler.Value = handler;
 
         public void UnregisterUntouchableHandler() =>
-            _untouchablePointerHandler = null;
+            _untouchablePointerHandler.Value = null;
 
         public void UnregisterAll() =>
             _handlers.Clear();
 
         public void Update(float deltaTime)
         {
-            Vector3 pointerPosition = Input.mousePosition;
-            bool isPointerOverUi = _pointerUIService.IsPointerOverUI;
-            List<Action<Vector3, bool>> actions = new List<Action<Vector3, bool>>();
-            
-            foreach (int pointerId in _handlers.Keys)
+            if (Input.touches.Length > 0)
             {
-                if (_startedTouches.ContainsKey(pointerId) == false)
-                    _startedTouches[pointerId] = false;
+                _touchPointerService.Update(deltaTime);
 
-                if (_startedTouches[pointerId] == false)
-                {
-                    if (isPointerOverUi == false)
-                    {
-                        if (Input.GetMouseButtonDown(pointerId))
-                        {
-                            actions.Add(_handlers[pointerId].OnTouchStart);
-                            _startedTouches[pointerId] = true;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Input.GetMouseButtonUp(pointerId))
-                    {
-                        actions.Add(_handlers[pointerId].OnTouchEnd);
-                        _startedTouches[pointerId] = false;
-                    }
-                    else
-                    {
-                        actions.Add(_handlers[pointerId].OnTouchMove);
-                    }
-                }
+                return;
             }
 
-            foreach (Action<Vector3, bool> action in actions) 
-                action.Invoke(pointerPosition, isPointerOverUi);
-
-            if (IsTouched == false)
-                _untouchablePointerHandler?.OnMove(pointerPosition, isPointerOverUi);
+            _mousePointerService.Update(deltaTime);
         }
     }
 }

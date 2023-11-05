@@ -1,4 +1,5 @@
-﻿using Sources.Domain.Bullets;
+﻿using System;
+using Sources.Domain.Bullets;
 using Sources.Domain.Systems.Upgrades;
 using Sources.Frameworks.LiveDatas;
 using Sources.InfrastructureInterfaces.Services.Times;
@@ -61,6 +62,7 @@ namespace Sources.Domain.Weapons
         {
         }
 
+        public event Action Shooting;
         public IBullet Bullet { get; }
         public float MinFireDistance { get; }
         public float MaxFireDistance => _baseMaxFireDistance + _maxFireDistance.Value;
@@ -70,7 +72,7 @@ namespace Sources.Domain.Weapons
 
         public bool CanShoot => _lastShootTime < _timeSource.Time - Cooldown;
 
-        public void Shoot() =>
+        public virtual void Shoot() =>
             _lastShootTime = _timeSource.Time;
     }
 }

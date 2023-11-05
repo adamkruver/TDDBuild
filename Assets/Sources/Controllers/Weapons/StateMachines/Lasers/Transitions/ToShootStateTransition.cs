@@ -34,7 +34,9 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.Transitions
             if (_weapon.CanShoot == false)
                 return false;
 
-            IEnemyView enemyView = _targetTrackerSystem.Track(_weapon.MaxFireDistance);
+            IEnemyView enemyView = _targetTrackerSystem.Track(
+                _compositeWeaponView.HeadPosition, _weapon.MinFireDistance, _weapon.MaxFireDistance
+            );
 
             if (enemyView == null)
                 return false;

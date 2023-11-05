@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 344446195224669742}
   - component: {fileID: 344446195224669741}
   - component: {fileID: 344446195224669740}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ZombieView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,8 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5836e3fcdf8f406c9d33b7f3b66ecc78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _navMeshAgent: {fileID: 344446195224669742}
   <DamageableSystemView>k__BackingField: {fileID: 5277823081139978213}
+  _navMeshAgent: {fileID: 344446195224669742}
 --- !u!1 &344446195609264389
 GameObject:
   m_ObjectHideFlags: 0

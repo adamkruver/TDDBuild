@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Sources.Controllers;
-using Sources.Presentation.Views.Systems.TargetTrackers;
+﻿using Sources.Controllers;
 using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
 
@@ -12,11 +9,12 @@ namespace Sources.Presentation.Views.Weapons
         [SerializeField] private WeaponRotationSystem _rotationSystem;
 
         [field: SerializeField] public WeaponView[] WeaponViews { get; private set; }
-        [field: SerializeField] public TargetTrackerSystem TargetTrackerSystem { get; private set; }
 
         public IWeaponRotationSystem RotationSystem => _rotationSystem;
         public int BarrelsAmount => WeaponViews.Length;
         public float GunPointOffset => WeaponViews[_currentWeaponId].GunPointOffset;
+
+        public Vector3 HeadPosition => _rotationSystem.HeadPosition;
 
         private int _currentWeaponId;
 
