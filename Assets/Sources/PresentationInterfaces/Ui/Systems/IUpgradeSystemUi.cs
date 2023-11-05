@@ -2,8 +2,11 @@
 {
     public interface IUpgradeSystemUi
     {
-        void SetCooldown(string cooldown);
-        void SetMaxFireDistance(string maxFireDistance);
-        void SetDamage(string damage);
+        void SetCooldownValue(string cooldown);
+        void SetMaxFireDistanceValue(string maxFireDistance);
+        void SetDamageValue(string damage);
+        void SetCooldownLevel(int level);
+        void SetMaxFireDistanceLevel(int level);
+        void SetDamageLevel(int level);
     }
 }

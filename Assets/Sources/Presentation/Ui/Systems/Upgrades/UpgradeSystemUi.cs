@@ -1,48 +1,52 @@
 ﻿using Sources.Controllers.Systems;
 using Sources.Presentation.Views;
 using Sources.PresentationInterfaces.Ui.Systems;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Sources.Presentation.Ui.Systems.Upgrades
 {
     public class UpgradeSystemUi : PresentationViewBase<UpgradeSystemPresenter>, IUpgradeSystemUi
     {
-        [SerializeField] private Button _upgradeCooldownButton;
-        [SerializeField] private Button _upgradeMaxFireDistanceButton;
-        [SerializeField] private Button _upgradeDamageButton;
-        [SerializeField] private TextMeshProUGUI _cooldownText;
-        [SerializeField] private TextMeshProUGUI _maxFireDistanceText;
-        [SerializeField] private TextMeshProUGUI _damageText;
+        [SerializeField] UpgradeModifierUi _cooldown;
+        [SerializeField] UpgradeModifierUi _maxFireDistance;
+        [SerializeField] UpgradeModifierUi _damage;
 
         protected override void OnBeforeEnable()
         {
-            if(Presenter is null)
+            if (Presenter is null)
                 return;
-            
-            _upgradeCooldownButton.onClick.AddListener(Presenter.UpgradeCooldown);
-            _upgradeMaxFireDistanceButton.onClick.AddListener(Presenter.UpgradeMaxFireDistance);
-            _upgradeDamageButton.onClick.AddListener(Presenter.UpgradeDamage);
+
+            _cooldown.AddButtonListener(Presenter.UpgradeCooldown);
+            _maxFireDistance.AddButtonListener(Presenter.UpgradeMaxFireDistance);
+            _damage.AddButtonListener(Presenter.UpgradeDamage);
         }
 
         protected override void OnAfterDisable()
         {
-            if(Presenter is null)
+            if (Presenter is null)
                 return;
-            
-            _upgradeCooldownButton.onClick.RemoveListener(Presenter.UpgradeCooldown);
-            _upgradeMaxFireDistanceButton.onClick.RemoveListener(Presenter.UpgradeMaxFireDistance);
-            _upgradeDamageButton.onClick.RemoveListener(Presenter.UpgradeDamage);
+
+            _cooldown.RemoveButtonListener(Presenter.UpgradeCooldown);
+            _maxFireDistance.RemoveButtonListener(Presenter.UpgradeMaxFireDistance);
+            _damage.RemoveButtonListener(Presenter.UpgradeDamage);
         }
 
-        public void SetCooldown(string cooldown) => 
-            _cooldownText.text = cooldown;
-        
-        public void SetMaxFireDistance(string maxFireDistance) =>
-            _maxFireDistanceText.text = maxFireDistance;
-        
-        public void SetDamage(string damage) => 
-            _damageText.text = damage;
+        public void SetCooldownValue(string cooldown) =>
+            _cooldown.SetValue(cooldown);
+
+        public void SetCooldownLevel(int level) =>
+            _cooldown.SetLevel(level);
+
+        public void SetMaxFireDistanceValue(string maxFireDistance) =>
+            _maxFireDistance.SetValue(maxFireDistance);
+
+        public void SetMaxFireDistanceLevel(int level) =>
+            _maxFireDistance.SetLevel(level);
+
+        public void SetDamageValue(string damage) =>
+            _damage.SetValue(damage);
+
+        public void SetDamageLevel(int level) =>
+            _damage.SetLevel(level);
     }
 }

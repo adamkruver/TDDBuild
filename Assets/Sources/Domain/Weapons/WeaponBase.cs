@@ -36,8 +36,8 @@ namespace Sources.Domain.Weapons
             _baseMaxFireDistance = maxFireDistance;
             HorizontalRotationSpeed = horizontalRotationSpeed;
             VerticalRotationSpeed = verticalRotationSpeed;
-            _maxFireDistance = upgradeSystem.MaxFireDistance;
-            _cooldown = upgradeSystem.Cooldown;
+            _maxFireDistance = upgradeSystem.MaxFireDistance.Value;
+            _cooldown = upgradeSystem.Cooldown.Value;
             
             Debug.Log(_baseCooldown + _cooldown.Value);
         }

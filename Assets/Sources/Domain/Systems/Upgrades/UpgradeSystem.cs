@@ -1,40 +1,18 @@
-﻿using Sources.Frameworks.LiveDatas;
-
-namespace Sources.Domain.Systems.Upgrades
+﻿namespace Sources.Domain.Systems.Upgrades
 {
     public class UpgradeSystem
     {
-        private readonly MutableLiveData<float> _cooldown = new MutableLiveData<float>(0);
-        private readonly MutableLiveData<float> _maxFireDistance = new MutableLiveData<float>(0);
-        private readonly MutableLiveData<float> _damage = new MutableLiveData<float>(0);
-
-        public UpgradeSystem(float cooldown = 0, float maxFireDistance = 0, float damage = 0)
+        private const int MaxLevel = 10;
+        
+        public UpgradeSystem(float cooldownDelta = -.1f, float maxFireDistanceDelta = .5f, float damageDelta = 5f)
         {
-            SetCooldown(cooldown);
-            SetMaxFireDistance(maxFireDistance);
-            SetDamage(damage);
+            Cooldown = new UpgradeModifier(cooldownDelta, MaxLevel);
+            MaxFireDistance = new UpgradeModifier(maxFireDistanceDelta, MaxLevel);
+            Damage = new UpgradeModifier(damageDelta, MaxLevel);
         }
 
-        public LiveData<float> Cooldown => _cooldown;
-        public LiveData<float> MaxFireDistance => _maxFireDistance;
-        public LiveData<float> Damage => _damage;
-
-        public void UpgradeCooldown(float cooldown) =>
-            SetCooldown(_cooldown.Value + cooldown);
-
-        public void UpgradeMaxFireDistance(float maxFireDistance) =>
-            SetMaxFireDistance(_maxFireDistance.Value + maxFireDistance);
-
-        public void UpgradeDamage(float damage) =>
-            SetDamage(_damage.Value + damage);
-
-        private void SetCooldown(float cooldown) =>
-            _cooldown.Value = cooldown;
-
-        private void SetMaxFireDistance(float maxFireDistance) =>
-            _maxFireDistance.Value = maxFireDistance;
-
-        private void SetDamage(float damage) =>
-            _damage.Value = damage;
+        public UpgradeModifier Cooldown { get; }
+        public UpgradeModifier MaxFireDistance { get; }
+        public UpgradeModifier Damage { get; }
     }
 }

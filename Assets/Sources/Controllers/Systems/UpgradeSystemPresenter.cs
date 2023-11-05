@@ -1,4 +1,5 @@
-﻿using Sources.Domain.Systems.Upgrades;
+﻿using System;
+using Sources.Domain.Systems.Upgrades;
 using Sources.Frameworks.LiveDatas;
 using Sources.PresentationInterfaces.Ui.Systems;
 
@@ -6,52 +7,74 @@ namespace Sources.Controllers.Systems
 {
     public class UpgradeSystemPresenter : PresenterBase
     {
+        private const string CooldownFormat = "{0:+0.#;-0.#}";
+        private const string MaxFireDistanceFormat = "{0:+0.#;-#.#}";
+        private const string DamageFormat = "{0:+0.#;-#.#}";
+
         private readonly IUpgradeSystemUi _ui;
         private readonly UpgradeSystem _system;
-        private readonly LiveData<float> _cooldown;
-        private readonly LiveData<float> _maxFireDistance;
-        private readonly LiveData<float> _damage;
+        private readonly LiveData<float> _cooldownValue;
+        private readonly LiveData<float> _maxFireDistanceValue;
+        private readonly LiveData<float> _damageValue;
+        private readonly LiveData<int> _cooldownLevel;
+        private readonly LiveData<int> _maxFireDistanceLevel;
+        private readonly LiveData<int> _damageLevel;
 
         public UpgradeSystemPresenter(IUpgradeSystemUi ui, UpgradeSystem system)
         {
             _ui = ui;
             _system = system;
 
-            _cooldown = system.Cooldown;
-            _maxFireDistance = system.MaxFireDistance;
-            _damage = system.Damage;
+            _cooldownValue = system.Cooldown.Value;
+            _cooldownLevel = system.Cooldown.Level;
+            _maxFireDistanceValue = system.MaxFireDistance.Value;
+            _maxFireDistanceLevel = system.MaxFireDistance.Level;
+            _damageValue = system.Damage.Value;
+            _damageLevel = system.Damage.Level;
         }
 
         public override void Enable()
         {
-            _cooldown.AddListener(OnCooldownChanged);
-            _damage.AddListener(OnDamageChanged);
-            _maxFireDistance.AddListener(OnMaxFireDistanceChanged);
+            _cooldownValue.AddListener(OnCooldownValueChanged);
+            _cooldownLevel.AddListener(OnCooldownLevelChanged);
+            _damageValue.AddListener(OnDamageValueChanged);
+            _damageLevel.AddListener(OnDamageLevelChanged);
+            _maxFireDistanceValue.AddListener(OnMaxFireDistanceValueChanged);
+            _maxFireDistanceLevel.AddListener(OnMaxFireDistanceLevelChanged);
         }
 
         public override void Disable()
         {
-            _cooldown.RemoveListener(OnCooldownChanged);
-            _damage.RemoveListener(OnDamageChanged);
-            _maxFireDistance.RemoveListener(OnMaxFireDistanceChanged);
+            _cooldownValue.RemoveListener(OnCooldownValueChanged);
+            _damageValue.RemoveListener(OnDamageValueChanged);
+            _maxFireDistanceValue.RemoveListener(OnMaxFireDistanceValueChanged);
         }
 
         public void UpgradeDamage() =>
-            _system.UpgradeDamage(.2f);
+            _system.Damage.Upgrade();
 
         public void UpgradeCooldown() =>
-            _system.UpgradeCooldown(-.05f);
+            _system.Cooldown.Upgrade();
 
         public void UpgradeMaxFireDistance() =>
-            _system.UpgradeMaxFireDistance(.5f);
+            _system.MaxFireDistance.Upgrade();
 
-        private void OnCooldownChanged(float cooldown) =>
-            _ui.SetCooldown(cooldown.ToString());
+        private void OnCooldownValueChanged(float cooldown) =>
+            _ui.SetCooldownValue(String.Format(CooldownFormat, cooldown));
 
-        private void OnDamageChanged(float damage) =>
-            _ui.SetDamage(damage.ToString());
+        private void OnCooldownLevelChanged(int level) =>
+            _ui.SetCooldownLevel(level);
 
-        private void OnMaxFireDistanceChanged(float maxFireDistance) =>
-            _ui.SetMaxFireDistance(maxFireDistance.ToString());
+        private void OnDamageValueChanged(float damage) =>
+            _ui.SetDamageValue(String.Format(DamageFormat, damage));
+
+        private void OnDamageLevelChanged(int level) =>
+            _ui.SetDamageLevel(level);
+
+        private void OnMaxFireDistanceValueChanged(float maxFireDistance) =>
+            _ui.SetMaxFireDistanceValue(String.Format(MaxFireDistanceFormat, maxFireDistance));
+
+        private void OnMaxFireDistanceLevelChanged(int level) =>
+            _ui.SetMaxFireDistanceLevel(level);
     }
 }
