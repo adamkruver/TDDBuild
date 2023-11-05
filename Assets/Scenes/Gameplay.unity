@@ -9591,7 +9591,7 @@ MonoBehaviour:
   <TopLeft>k__BackingField: {fileID: 993966605}
   <TopCenter>k__BackingField: {fileID: 758799291}
   <TopRight>k__BackingField: {fileID: 378051154}
-  <MiddleLeft>k__BackingField: {fileID: 0}
+  <MiddleLeft>k__BackingField: {fileID: 1132999114}
   <Footer>k__BackingField: {fileID: 938087139}
 --- !u!4 &736254385 stripped
 Transform:
