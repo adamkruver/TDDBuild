@@ -64,7 +64,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
                 _enemyDeathProgressAssessor
                 );
 
-            ToDeathTransition toDeathTransition = new ToDeathTransition(deathState, zombie);
+            ToDeathTransition toDeathTransition = new ToDeathTransition(deathState, zombie.Health);
 
             moveState.AddTransition(toDeathTransition);
 
