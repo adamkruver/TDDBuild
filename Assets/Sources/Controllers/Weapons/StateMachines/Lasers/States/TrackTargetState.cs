@@ -2,9 +2,9 @@
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.FiniteStateMachines.States;
 using Sources.InfrastructureInterfaces.Services.Weapons;
+using Sources.Presentation.Views.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
-using UnityEngine;
 
 namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 {
@@ -13,16 +13,26 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
         private readonly IWeapon _weapon;
         private readonly ITargetTrackerSystem _targetTrackerSystem;
         private readonly IWeaponService _weaponService;
+        private readonly ICompositeWeaponView _compositeWeaponView;
+
+        private float _gunPointOffset;
 
         public TrackTargetState(
             IWeapon weapon,
             ITargetTrackerSystem targetTrackerSystem,
-            IWeaponService weaponService
+            IWeaponService weaponService,
+            ICompositeWeaponView compositeWeaponView
         )
         {
             _weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
             _targetTrackerSystem = targetTrackerSystem ?? throw new ArgumentNullException(nameof(targetTrackerSystem));
             _weaponService = weaponService ?? throw new ArgumentNullException(nameof(weaponService));
+            _compositeWeaponView = compositeWeaponView;
+        }
+
+        protected override void OnEnter()
+        {
+            _gunPointOffset = _compositeWeaponView.GunPointOffset;
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -32,7 +42,7 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
             if (enemyView == null)
                 return;
 
-            _weaponService.UpdateLookDirectionWithPredict(enemyView, _weapon.HorizontalRotationSpeed);
+            _weaponService.UpdateLookDirectionWithPredict(enemyView, _weapon.HorizontalRotationSpeed, _gunPointOffset);
         }
     }
 }

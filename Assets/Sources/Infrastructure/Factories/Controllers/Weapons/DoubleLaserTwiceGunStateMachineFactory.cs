@@ -9,7 +9,7 @@ using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Factories.Controllers.Weapons
 {
-    public class DoubleLaserTwiceGunStateMachineFactory: WeaponStateMachineFactoryBase
+    public class DoubleLaserTwiceGunStateMachineFactory : WeaponStateMachineFactoryBase
     {
         protected override IFiniteState CreateStates(
             ICompositeWeaponView compositeView,
@@ -19,11 +19,12 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             IWeaponService service
         )
         {
-            TrackTargetState trackTargetState = new TrackTargetState(weapon, targetTrackerSystem, service);
+            TrackTargetState trackTargetState =
+                new TrackTargetState(weapon, targetTrackerSystem, service, compositeView);
             ShootState shootState = new ShootState(compositeView, weapon, shootsAtOnce: 2);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
-                shootState, weapon, targetTrackerSystem, service
+                shootState, weapon, targetTrackerSystem, service, compositeView
             );
 
             CooldownState cooldownState = new CooldownState();

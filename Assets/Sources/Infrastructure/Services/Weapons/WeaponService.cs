@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Sources.Infrastructure.Services.Weapons
 {
-    public class WeaponService:IWeaponService
+    public class WeaponService : IWeaponService
     {
         private readonly IWeapon _weapon;
         private readonly IWeaponRotationSystem _weaponRotationSystem;
@@ -20,13 +20,13 @@ namespace Sources.Infrastructure.Services.Weapons
                 weaponRotationSystem ?? throw new ArgumentNullException(nameof(weaponRotationSystem));
         }
 
-        public void UpdateLookDirectionWithPredict(IEnemyView enemy, float rotationSpeed) => 
-            _weaponRotationSystem.UpdateRotationBase(GetDirectionToEnemy(enemy), rotationSpeed);
+        public void UpdateLookDirectionWithPredict(IEnemyView enemy, float rotationSpeed, float gunpointXOffset) =>
+            _weaponRotationSystem.UpdateRotationBase(GetDirectionToEnemy(enemy, gunpointXOffset), rotationSpeed);
 
-        public bool HasLockedTarget(IEnemyView enemyView) => 
-            _weaponRotationSystem.HasTargetAtLook(GetDirectionToEnemy(enemyView));
+        public bool HasLockedTarget(IEnemyView enemyView, float gunpointXOffset) =>
+            _weaponRotationSystem.HasTargetAtLook(GetDirectionToEnemy(enemyView, gunpointXOffset));
 
-        private Vector3 GetDirectionToEnemy(IEnemyView enemy)
+        private Vector3 GetDirectionToEnemy(IEnemyView enemy, float gunpointXOffset)
         {
             Vector3 directionToEnemyNormalized = (enemy.Position - _weaponRotationSystem.Position).normalized;
             Vector3 enemyForward = enemy.Forward;
@@ -41,7 +41,21 @@ namespace Sources.Infrastructure.Services.Weapons
 
             direction.y = 0;
 
-            return direction;
+            float angle = CalculateAngleCorrection(
+                enemy.Position,
+                _weaponRotationSystem.Position,
+                gunpointXOffset: gunpointXOffset
+            );
+
+            return Quaternion.Euler(new Vector3(0, angle, 0)) * direction;
+        }
+
+        private float CalculateAngleCorrection(Vector3 enemyPosition, Vector3 position, float gunpointXOffset)
+        {
+            float distanceToEnemy = (enemyPosition - position).magnitude;
+            float turnRadians = Mathf.Asin(gunpointXOffset / distanceToEnemy);
+            float angle = turnRadians * Mathf.Rad2Deg;
+            return angle;
         }
     }
 }

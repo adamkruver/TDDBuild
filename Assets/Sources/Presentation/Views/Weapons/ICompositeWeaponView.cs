@@ -6,7 +6,8 @@ namespace Sources.Presentation.Views.Weapons
     {
         IWeaponRotationSystem RotationSystem { get; }
         int BarrelsAmount { get; }
-
+        float GunPointOffset { get; }
+        
         void Shoot(int weaponId);
     }
 }

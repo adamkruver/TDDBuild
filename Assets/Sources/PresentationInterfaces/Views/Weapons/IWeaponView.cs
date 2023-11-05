@@ -3,5 +3,6 @@
     public interface IWeaponView
     {
         void Shoot();
+        float GunPointOffset { get; }
     }
 }

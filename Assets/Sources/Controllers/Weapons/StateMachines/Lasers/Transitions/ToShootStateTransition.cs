@@ -2,6 +2,7 @@
 using Sources.Infrastructure.FiniteStateMachines.Transitions;
 using Sources.InfrastructureInterfaces.FiniteStateMachines;
 using Sources.InfrastructureInterfaces.Services.Weapons;
+using Sources.Presentation.Views.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
 
@@ -12,17 +13,20 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.Transitions
         private readonly IWeapon _weapon;
         private readonly ITargetTrackerSystem _targetTrackerSystem;
         private readonly IWeaponService _weaponService;
+        private readonly ICompositeWeaponView _compositeWeaponView;
 
         public ToShootStateTransition(
             IFiniteState nextState,
             IWeapon weapon,
             ITargetTrackerSystem targetTrackerSystem,
-            IWeaponService weaponService
+            IWeaponService weaponService,
+            ICompositeWeaponView compositeWeaponView
         ) : base(nextState)
         {
             _weapon = weapon;
             _targetTrackerSystem = targetTrackerSystem;
             _weaponService = weaponService;
+            _compositeWeaponView = compositeWeaponView;
         }
 
         protected override bool CanMoveNextState()
@@ -35,7 +39,7 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.Transitions
             if (enemyView == null)
                 return false;
 
-            return _weaponService.HasLockedTarget(enemyView);
+            return _weaponService.HasLockedTarget(enemyView, _compositeWeaponView.GunPointOffset);
         }
     }
 }
