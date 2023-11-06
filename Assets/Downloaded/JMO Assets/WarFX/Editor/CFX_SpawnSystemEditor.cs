@@ -6,7 +6,7 @@ using UnityEngine;
 
 // CFX Spawn System Editor interface
 
-namespace JMO_Assets.WarFX.Editor
+namespace Downloaded.JMO_Assets.WarFX.Editor
 {
 	[CustomEditor(typeof(CFX_SpawnSystem))]
 	public class CFX_SpawnSystemEditor : UnityEditor.Editor
