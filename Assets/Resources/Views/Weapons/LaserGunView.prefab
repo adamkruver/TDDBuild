@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSystem: {fileID: 8990116113355438891}
   <WeaponViews>k__BackingField:
-  - {fileID: 8466127817983420406}
+  - {fileID: 6191974415097178208}
 --- !u!114 &8990116113355438891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +408,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7459589187151724389}
     m_Modifications:
+    - target: {fileID: 3046081318939137705, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 6508580826686363838}
     - target: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
       propertyPath: m_Name
       value: LaserView
@@ -458,56 +462,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
---- !u!114 &3655695986082532635 stripped
+--- !u!114 &6191974415097178208 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1308385477549458061, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8466127817983420406, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
   m_PrefabInstance: {fileID: 2347489802029944726}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736458533350920284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58107b5fb224262895dbeeb2fac6759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!198 &7736458533350920283 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-  m_PrefabInstance: {fileID: 2347489802029944726}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7736458533350920284 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-  m_PrefabInstance: {fileID: 2347489802029944726}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3046081318939137705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736458533350920284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e9af560010443b8db762ae34bc77d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 6508580826686363838}
---- !u!114 &8466127817983420406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736458533350920284}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponAnimation: {fileID: 3046081318939137705}
-  _particleSystem: {fileID: 7736458533350920283}
-  <Bullet>k__BackingField: {fileID: 3655695986082532635}
-  <GunPointOffset>k__BackingField: 0
 --- !u!4 &7736458533350920285 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5462472183688404939, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}

@@ -149,8 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSystem: {fileID: 8990116113355438891}
   <WeaponViews>k__BackingField:
-  - {fileID: 6636848855722602028}
-  - {fileID: 1666563526894361088}
+  - {fileID: 6191974415097178208}
+  - {fileID: 3834509991540106329}
 --- !u!114 &8990116113355438891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +424,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8784743119558694154}
     m_Modifications:
+    - target: {fileID: 3046081318939137705, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 3891684584903426629}
     - target: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
       propertyPath: m_Name
       value: LaserView
@@ -472,77 +476,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: CollisionModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: CollisionModule.m_EnergyLossOnCollision.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time
-      value: 0.12633178
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].time
-      value: 0.98306274
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
-      value: 0.77365696
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].value
-      value: 0.5384598
-      objectReference: {fileID: 0}
+    - target: {fileID: 8466127817983420406, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+      propertyPath: _weaponAnimation
+      value: 
+      objectReference: {fileID: 5878561764490841366}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
---- !u!114 &3655695986082532635 stripped
+--- !u!114 &6191974415097178208 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1308385477549458061, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8466127817983420406, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
   m_PrefabInstance: {fileID: 2347489802029944726}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736458533350920284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58107b5fb224262895dbeeb2fac6759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!198 &7736458533350920283 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-  m_PrefabInstance: {fileID: 2347489802029944726}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7736458533350920284 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-  m_PrefabInstance: {fileID: 2347489802029944726}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6636848855722602028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736458533350920284}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponAnimation: {fileID: 5878561764490841366}
-  _particleSystem: {fileID: 7736458533350920283}
-  <Bullet>k__BackingField: {fileID: 3655695986082532635}
-  <GunPointOffset>k__BackingField: 0
 --- !u!4 &7736458533350920285 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5462472183688404939, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
@@ -555,6 +505,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8784743119558694154}
     m_Modifications:
+    - target: {fileID: 3046081318939137705, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 3891684584903426629}
     - target: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
       propertyPath: m_Name
       value: LaserView (1)
@@ -603,83 +557,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404940, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+    - target: {fileID: 8466127817983420406, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+      propertyPath: _weaponAnimation
       value: 
-      objectReference: {fileID: 2100000, guid: a445891fd1787344fa9933e3377085ec, type: 2}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: CollisionModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: CollisionModule.m_EnergyLossOnCollision.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time
-      value: 0.12633178
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].time
-      value: 0.98306274
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
-      value: 0.77365696
-      objectReference: {fileID: 0}
-    - target: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].value
-      value: 0.5384598
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5878561764490841366}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
---- !u!198 &830291129208953954 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5462472183688404941, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-  m_PrefabInstance: {fileID: 4632885566572807087}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &830291129208953956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5462472183688404939, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
   m_PrefabInstance: {fileID: 4632885566572807087}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &830291129208953957 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5462472183688404938, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
+--- !u!114 &3834509991540106329 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8466127817983420406, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
   m_PrefabInstance: {fileID: 4632885566572807087}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1666563526894361088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 830291129208953957}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponAnimation: {fileID: 5878561764490841366}
-  _particleSystem: {fileID: 830291129208953954}
-  <Bullet>k__BackingField: {fileID: 5936590145003634978}
-  <GunPointOffset>k__BackingField: 0
---- !u!114 &5936590145003634978 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1308385477549458061, guid: e318d686e5a91ad4f914b23af2c196d0, type: 3}
-  m_PrefabInstance: {fileID: 4632885566572807087}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 830291129208953957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58107b5fb224262895dbeeb2fac6759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -4833,6 +4833,8 @@ GameObject:
   - component: {fileID: 5462472183688404941}
   - component: {fileID: 5462472183688404940}
   - component: {fileID: 1308385477549458061}
+  - component: {fileID: 3046081318939137705}
+  - component: {fileID: 8466127817983420406}
   m_Layer: 0
   m_Name: LaserView
   m_TagString: Untagged
@@ -9659,6 +9661,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particleSystem: {fileID: 5462472183688404941}
+--- !u!114 &3046081318939137705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5462472183688404938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e9af560010443b8db762ae34bc77d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+--- !u!114 &8466127817983420406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5462472183688404938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4033cafb5c4b4b8d1aeb029442c8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponAnimation: {fileID: 3046081318939137705}
+  _particleSystem: {fileID: 5462472183688404941}
+  <Bullet>k__BackingField: {fileID: 1308385477549458061}
+  <GunPointOffset>k__BackingField: 0
 --- !u!1 &5690954203258896966
 GameObject:
   m_ObjectHideFlags: 0
