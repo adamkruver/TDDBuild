@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627194ad06ca4470aaf79b31cc797c47, type: 3}
   m_Name: DoubleLaserTwiceGun
   m_EditorClassIdentifier: 
-  <IconSprite>k__BackingField: {fileID: 21300000, guid: 2b5fadfd6991f484989fe5f9520cf041, type: 3}
+  <IconSprite>k__BackingField: {fileID: 21300000, guid: c8d29e2e478b93a4698c2e2be5904032, type: 3}
   <Title>k__BackingField: Double Laser Twice Gun
   <Price>k__BackingField: 50
   Type: DoubleLaserTwiceGun

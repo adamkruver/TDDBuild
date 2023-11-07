@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627194ad06ca4470aaf79b31cc797c47, type: 3}
   m_Name: SingleGun
   m_EditorClassIdentifier: 
-  <IconSprite>k__BackingField: {fileID: 21300000, guid: 1bce79ce0edd46e498322272df643504, type: 3}
+  <IconSprite>k__BackingField: {fileID: 21300000, guid: fb992960e08c40c47bd87e2767ac0f7e, type: 3}
   <Title>k__BackingField: Single Gun
   <Price>k__BackingField: 20
   Type: SingleGun

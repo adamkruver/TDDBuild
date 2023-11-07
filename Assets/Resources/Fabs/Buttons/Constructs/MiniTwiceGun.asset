@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627194ad06ca4470aaf79b31cc797c47, type: 3}
   m_Name: MiniTwiceGun
   m_EditorClassIdentifier: 
-  <IconSprite>k__BackingField: {fileID: 21300000, guid: f29017c8aa2688f47bed1e22218ef2d4, type: 3}
+  <IconSprite>k__BackingField: {fileID: 21300000, guid: 46b3d8318b2d7234b8e13d96e7a176f9, type: 3}
   <Title>k__BackingField: Mini Twice Gun
   <Price>k__BackingField: 200
   Type: MiniTwiceGun

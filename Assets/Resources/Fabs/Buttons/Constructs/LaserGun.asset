@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627194ad06ca4470aaf79b31cc797c47, type: 3}
   m_Name: LaserGun
   m_EditorClassIdentifier: 
-  <IconSprite>k__BackingField: {fileID: 21300000, guid: 2b5fadfd6991f484989fe5f9520cf041, type: 3}
+  <IconSprite>k__BackingField: {fileID: 21300000, guid: c61c8a4819943d845a2f1edf876e18d8, type: 3}
   <Title>k__BackingField: Laser Gun
   <Price>k__BackingField: 50
   Type: LaserGun
