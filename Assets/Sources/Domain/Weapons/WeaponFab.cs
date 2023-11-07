@@ -21,5 +21,9 @@ namespace Sources.Domain.Weapons
         public float HorizontalRotationSpeed { get; private set; }
 
         [field: SerializeField] public float VerticalRotationSpeed { get; private set; }
+
+        [field: Header("Onetime shoots amount")]
+        [field: SerializeField]
+        public int ShootAtOnce { get; private set; }
     }
 }

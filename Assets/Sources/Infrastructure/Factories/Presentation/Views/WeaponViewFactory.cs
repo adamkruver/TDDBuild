@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using Sources.Controllers;
-using Sources.Controllers.Weapons;
+﻿using Sources.Controllers;
 using Sources.Domain.Weapons;
+using Sources.Infrastructure.Services.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
+using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Systems.TargetTrackers;
 using Sources.Presentation.Views.Weapons;
-using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
 
 namespace Sources.Infrastructure.Factories.Presentation.Views
@@ -33,18 +32,18 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
                 Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
 
             WeaponView[] weaponViews = compositeWeaponView.WeaponViews;
-            
+
+            ITargetProvider targetProvider = new TargetProvider(_targetTrackerSystem, compositeWeaponView, weapon);
 
             IPresenter stateMachine = _weaponStateMachineFactory.Create(
-                compositeWeaponView, 
-                weaponViews.Cast<IWeaponView>().ToArray(), 
+                compositeWeaponView,
                 weapon,
-                _targetTrackerSystem
+                targetProvider
             );
 
-            foreach (WeaponView view in weaponViews) 
+            foreach (WeaponView view in weaponViews)
                 _bulletViewFactory.Create(view.Bullet, weapon.Bullet);
-            
+
             compositeWeaponView.Construct(stateMachine);
 
             return compositeWeaponView;

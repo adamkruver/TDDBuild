@@ -14,7 +14,7 @@ namespace Sources.Domain.Bullets
             _damageUpgrade = upgradeSystem.Damage.Value;
 
         public float Damage => BaseDamage + _damageUpgrade.Value;
-        public float Speed { get; } = 1;
+        public float Speed { get; } = 10000;
 
         public void Attack(IDamageable damageable) =>
             damageable.TakeDamage(Damage);

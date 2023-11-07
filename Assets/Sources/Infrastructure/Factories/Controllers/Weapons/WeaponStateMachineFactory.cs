@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Sources.Controllers;
 using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
+using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Weapons;
-using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
-using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Factories.Controllers.Weapons
 {
@@ -18,9 +17,8 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
 
         public IPresenter Create(
             ICompositeWeaponView compositeView,
-            IWeaponView[] views,
             IWeapon weapon,
-            ITargetTrackerSystem targetTrackerSystem
+            ITargetProvider targetProvider
         )
         {
             Type weaponType = weapon.GetType();
@@ -28,7 +26,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             if (_factories.ContainsKey(weaponType) == false)
                 throw new KeyNotFoundException(weaponType.Name);
 
-            return _factories[weaponType].Create(compositeView, views, weapon, targetTrackerSystem);
+            return _factories[weaponType].Create(compositeView, weapon, targetProvider);
         }
     }
 }
