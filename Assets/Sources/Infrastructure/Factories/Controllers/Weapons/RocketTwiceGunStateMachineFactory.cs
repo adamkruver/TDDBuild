@@ -22,7 +22,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
                 targetProvider
             );
 
-            ShootState shootState = new ShootState(compositeView, weapon, shootsAtOnce: 2);
+            ShootState shootState = new ShootState(compositeView, weapon);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
                 shootState,

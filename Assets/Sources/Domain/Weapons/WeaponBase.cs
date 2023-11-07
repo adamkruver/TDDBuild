@@ -27,7 +27,8 @@ namespace Sources.Domain.Weapons
             float minFireDistance,
             float maxFireDistance,
             float horizontalRotationSpeed,
-            float verticalRotationSpeed
+            float verticalRotationSpeed,
+            int shootAtOnce
         )
         {
             _timeSource = timeSource;
@@ -35,6 +36,7 @@ namespace Sources.Domain.Weapons
             _baseCooldown = cooldown;
             MinFireDistance = minFireDistance;
             _baseMaxFireDistance = maxFireDistance;
+            ShootAtOnce = shootAtOnce;
             HorizontalRotationSpeed = horizontalRotationSpeed;
             VerticalRotationSpeed = verticalRotationSpeed;
             _maxFireDistance = upgradeSystem.MaxFireDistance.Value;
@@ -57,7 +59,8 @@ namespace Sources.Domain.Weapons
                 weaponFab.MinFireDistance,
                 weaponFab.MaxFireDistance,
                 weaponFab.HorizontalRotationSpeed,
-                weaponFab.VerticalRotationSpeed
+                weaponFab.VerticalRotationSpeed,
+                weaponFab.ShootAtOnce
             )
         {
         }
@@ -68,6 +71,7 @@ namespace Sources.Domain.Weapons
         public float MaxFireDistance => _baseMaxFireDistance + _maxFireDistance.Value;
         public float HorizontalRotationSpeed { get; }
         public float VerticalRotationSpeed { get; }
+        public int ShootAtOnce { get; }
         public float Cooldown => Mathf.Max(_baseCooldown + _cooldown.Value, MinCooldown);
 
         public bool CanShoot => _lastShootTime < _timeSource.Time - Cooldown;

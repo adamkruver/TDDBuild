@@ -17,3 +17,4 @@ MonoBehaviour:
   <MaxFireDistance>k__BackingField: 8
   <HorizontalRotationSpeed>k__BackingField: 0.3
   <VerticalRotationSpeed>k__BackingField: 1
+  <ShootAtOnce>k__BackingField: 1

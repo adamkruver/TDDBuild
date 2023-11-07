@@ -14,11 +14,11 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
 
         private int _currentBarrelId;
 
-        public ShootState(ICompositeWeaponView compositeWeaponView, IWeapon weapon, int shootsAtOnce)
+        public ShootState(ICompositeWeaponView compositeWeaponView, IWeapon weapon)
         {
             _compositeWeaponView = compositeWeaponView ?? throw new ArgumentNullException(nameof(compositeWeaponView));
             _weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
-            _shootsAtOnce = shootsAtOnce;
+            _shootsAtOnce = weapon.ShootAtOnce;
             _maxBarrelId = compositeWeaponView.BarrelsAmount;
         }
 
