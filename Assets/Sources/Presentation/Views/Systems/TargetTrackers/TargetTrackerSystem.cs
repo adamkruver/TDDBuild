@@ -32,8 +32,6 @@ namespace Sources.Presentation.Views.Systems.TargetTrackers
             if (enemy == null)
                 return false;
 
-            Debug.Log(enemy.IsVisible);
-            
             if (enemy.IsVisible == false)
                 return false;
             
