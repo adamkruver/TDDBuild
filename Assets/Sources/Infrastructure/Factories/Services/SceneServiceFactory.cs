@@ -3,6 +3,7 @@ using Sources.Controllers.Scenes;
 using Sources.Infrastructure.Factories.Scenes;
 using Sources.Infrastructure.Services.Scenes;
 using Sources.Infrastructure.StateMachines;
+using Sources.InfrastructureInterfaces.Factories.Scenes;
 
 namespace Sources.Infrastructure.Factories.Services
 {
@@ -13,13 +14,13 @@ namespace Sources.Infrastructure.Factories.Services
             MainMenuSceneFactory mainMenuSceneFactory = new MainMenuSceneFactory();
             GameplaySceneFactory gameplaySceneFactory = new GameplaySceneFactory();
 
-            Dictionary<string, SceneState> sceneStates = new Dictionary<string, SceneState>()
+            Dictionary<string, ISceneFactory> sceneStates = new Dictionary<string, ISceneFactory>()
             {
-                ["MainMenu"] = new SceneState(mainMenuSceneFactory),
-                ["Gameplay"] = new SceneState(gameplaySceneFactory),
+                ["MainMenu"] = mainMenuSceneFactory,
+                ["Gameplay"] = gameplaySceneFactory,
             };
 
-            StateMachine<SceneState> sceneStateMachine = new StateMachine<SceneState>();
+            StateMachine<IScene> sceneStateMachine = new StateMachine<IScene>();
 
             return new SceneService(sceneStateMachine, sceneStates);
         }

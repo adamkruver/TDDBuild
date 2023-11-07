@@ -1,5 +1,6 @@
 ﻿using Sources.Controllers;
 using Sources.Domain.Weapons;
+using Sources.Infrastructure.Resource;
 using Sources.Infrastructure.Services.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Services.Weapons;
@@ -11,16 +12,19 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 {
     public class WeaponViewFactory
     {
+        private readonly ResourceService _resourceService;
         private readonly IWeaponStateMachineFactory _weaponStateMachineFactory;
         private readonly BulletViewFactory _bulletViewFactory;
         private readonly TargetTrackerSystem _targetTrackerSystem;
 
         public WeaponViewFactory(
+            ResourceService resourceService,
             IWeaponStateMachineFactory weaponStateMachineFactory,
             BulletViewFactory bulletViewFactory,
             TargetTrackerSystem targetTrackerSystem
         )
         {
+            _resourceService = resourceService;
             _weaponStateMachineFactory = weaponStateMachineFactory;
             _bulletViewFactory = bulletViewFactory;
             _targetTrackerSystem = targetTrackerSystem;
@@ -29,7 +33,7 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         public CompositeWeaponView Create(IWeapon weapon)
         {
             CompositeWeaponView compositeWeaponView =
-                Object.Instantiate(Resources.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
+                Object.Instantiate(_resourceService.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
 
             WeaponView[] weaponViews = compositeWeaponView.WeaponViews;
 

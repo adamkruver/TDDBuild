@@ -1,6 +1,7 @@
 ﻿using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.Factories.Domain.Bullets;
+using Sources.InfrastructureInterfaces.Providers;
 using Sources.InfrastructureInterfaces.Services.Times;
 
 namespace Sources.Infrastructure.Factories.Domain.Weapons
@@ -11,10 +12,11 @@ namespace Sources.Infrastructure.Factories.Domain.Weapons
         private readonly UpgradeSystem _bulletUpgradeSystem;
 
         public MiniTwiceGunFactory(
+            IResourceProvider resourceProvider,
             BulletFactory bulletFactory,
             ITimeService timeService,
             UpgradeSystem bulletUpgradeSystem
-        ) : base(timeService)
+        ) : base(resourceProvider, timeService)
         {
             _bulletFactory = bulletFactory;
             _bulletUpgradeSystem = bulletUpgradeSystem;

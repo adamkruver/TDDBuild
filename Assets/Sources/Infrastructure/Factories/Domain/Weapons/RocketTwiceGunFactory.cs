@@ -1,6 +1,7 @@
 ﻿using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
 using Sources.Infrastructure.Factories.Domain.Bullets;
+using Sources.InfrastructureInterfaces.Providers;
 using Sources.InfrastructureInterfaces.Services.Times;
 
 namespace Sources.Infrastructure.Factories.Domain.Weapons
@@ -11,10 +12,11 @@ namespace Sources.Infrastructure.Factories.Domain.Weapons
         private readonly UpgradeSystem _rocketUpgradeSystem;
 
         public RocketTwiceGunFactory(
+            IResourceProvider resourceProvider,
             RocketFactory rocketFactory,
             ITimeService timeService,
             UpgradeSystem rocketUpgradeSystem
-        ) : base(timeService)
+        ) : base(resourceProvider, timeService)
         {
             _rocketFactory = rocketFactory;
             _rocketUpgradeSystem = rocketUpgradeSystem;

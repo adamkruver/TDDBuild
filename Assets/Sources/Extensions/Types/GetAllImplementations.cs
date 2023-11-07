@@ -9,6 +9,6 @@ namespace Sources.Extensions.Types
         public static IEnumerable<Type> GetAllImplementations(this Type desiredType) =>
             desiredType.Assembly
                 .GetTypes()
-                .Where(type => desiredType.IsAssignableFrom(type) && type.IsInterface == false);
+                .Where(type => desiredType.IsAssignableFrom(type) && type.IsInterface == false && type.IsAbstract == false);
     }
 }

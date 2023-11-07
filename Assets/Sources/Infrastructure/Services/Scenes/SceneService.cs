@@ -4,22 +4,24 @@ using Cysharp.Threading.Tasks;
 using Sources.Controllers.Scenes;
 using Sources.Infrastructure.Services.Scenes.Events;
 using Sources.Infrastructure.StateMachines;
+using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.InfrastructureInterfaces.Services;
 using Sources.InfrastructureInterfaces.Services.Scenes;
 using Sources.InfrastructureInterfaces.Services.Scenes.Events;
+using Sources.InfrastructureInterfaces.StateMachines;
 
 namespace Sources.Infrastructure.Services.Scenes
 {
     public class SceneService : ISceneChangeService, IUpdatable, ILateUpdatable, IFixedUpdatable
     {
         private readonly List<IEventHandler> _eventHandlers = new List<IEventHandler>();
-        private readonly StateMachine<SceneState> _stateMachine;
-        private readonly Dictionary<string, SceneState> _states;
+        private readonly StateMachine<IScene> _stateMachine;
+        private readonly Dictionary<string, ISceneFactory> _sceneFactories;
 
-        public SceneService(StateMachine<SceneState> stateMachine, Dictionary<string, SceneState> states)
+        public SceneService(StateMachine<IScene> stateMachine, Dictionary<string, ISceneFactory> sceneFactories)
         {
             _stateMachine = stateMachine;
-            _states = states;
+            _sceneFactories = sceneFactories;
         }
 
         public void AddEventListener(IEventHandler eventHandler) =>
@@ -38,7 +40,8 @@ namespace Sources.Infrastructure.Services.Scenes
             await NotifyAfterExitListeners(sceneName);
 
             await NotifyBeforeEnterListeners(sceneName);
-            _stateMachine.EnterState(_states[sceneName], payload);
+            IScene scene = await _sceneFactories[sceneName].Create(payload);
+            _stateMachine.EnterState(scene, payload);
             await NotifyAfterEnterListeners(sceneName);
         }
 
@@ -80,6 +83,6 @@ namespace Sources.Infrastructure.Services.Scenes
         }
 
         private bool ContainState(string stateName) =>
-            _states.ContainsKey(stateName);
+            _sceneFactories.ContainsKey(stateName);
     }
 }

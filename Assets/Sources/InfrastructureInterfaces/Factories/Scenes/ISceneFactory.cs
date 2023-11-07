@@ -1,9 +1,10 @@
-﻿using Sources.Controllers.Scenes;
+﻿using Cysharp.Threading.Tasks;
+using Sources.Controllers.Scenes;
 
 namespace Sources.InfrastructureInterfaces.Factories.Scenes
 {
     public interface ISceneFactory
     {
-        IScene Create(object payload);
+        UniTask<IScene> Create(object payload);
     }
 }
