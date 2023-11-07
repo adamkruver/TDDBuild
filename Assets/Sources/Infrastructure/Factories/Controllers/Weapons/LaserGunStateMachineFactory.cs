@@ -4,8 +4,6 @@ using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.FiniteStateMachines;
 using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Weapons;
-using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
-using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Factories.Controllers.Weapons
 {
@@ -13,18 +11,27 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
     {
         protected override IFiniteState CreateStates(
             ICompositeWeaponView compositeView,
-            IWeaponView[] views,
             IWeapon weapon,
-            ITargetTrackerSystem targetTrackerSystem,
-            IWeaponService service
+            IWeaponService weaponService,
+            ITargetProvider targetProvider
         )
         {
-            TrackTargetState trackTargetState =
-                new TrackTargetState(weapon, targetTrackerSystem, service, compositeView);
+            TrackTargetState trackTargetState = new TrackTargetState(
+                weapon,
+                weaponService,
+                compositeView,
+                targetProvider
+            );
+
+            //TODO: Replace "shootsAtOnce: n"
             ShootState shootState = new ShootState(compositeView, weapon, shootsAtOnce: 1);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
-                shootState, weapon, targetTrackerSystem, service, compositeView
+                shootState,
+                weapon,
+                targetProvider,
+                weaponService,
+                compositeView
             );
 
             CooldownState cooldownState = new CooldownState();

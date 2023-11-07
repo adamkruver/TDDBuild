@@ -6,7 +6,6 @@ using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.FiniteStateMachines;
 using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Weapons;
-using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
 using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Factories.Controllers.Weapons
@@ -15,21 +14,20 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
     {
         public IPresenter Create(
             ICompositeWeaponView compositeView,
-            IWeaponView[] views,
             IWeapon weapon,
-            ITargetTrackerSystem targetTrackerSystem
+            ITargetProvider targetProvider
         )
         {
             WeaponStateMachine stateMachine = new WeaponStateMachine();
             IWeaponService service = CreateWeaponService(weapon, compositeView.RotationSystem);
-            IFiniteState firstState  = CreateStates(compositeView, views, weapon, targetTrackerSystem, service);
-            
+            IFiniteState firstState = CreateStates(compositeView, weapon, service, targetProvider);
+
             stateMachine.SetFirstState(firstState);
 
             return stateMachine;
         }
-        
-        protected virtual IWeaponService CreateWeaponService(IWeapon weapon, IWeaponRotationSystem rotationSystem) => 
+
+        protected virtual IWeaponService CreateWeaponService(IWeapon weapon, IWeaponRotationSystem rotationSystem) =>
             new WeaponService(weapon, rotationSystem);
 
         /// <summary>
@@ -38,10 +36,9 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
         /// </summary>
         protected abstract IFiniteState CreateStates(
             ICompositeWeaponView compositeView,
-            IWeaponView[] views,
             IWeapon weapon,
-            ITargetTrackerSystem targetTrackerSystem,
-            IWeaponService service
+            IWeaponService weaponService,
+            ITargetProvider targetProvider
         );
     }
 }

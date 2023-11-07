@@ -52,6 +52,9 @@ namespace Sources.Infrastructure.Services.Weapons
 
         private float CalculateAngleCorrection(Vector3 enemyPosition, Vector3 position, float gunpointXOffset)
         {
+            if (gunpointXOffset == 0)
+                return 0;
+
             float distanceToEnemy = (enemyPosition - position).magnitude;
             float turnRadians = Mathf.Asin(gunpointXOffset / distanceToEnemy);
             float angle = turnRadians * Mathf.Rad2Deg;
