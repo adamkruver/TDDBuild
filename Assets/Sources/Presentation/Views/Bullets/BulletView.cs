@@ -12,7 +12,10 @@ namespace Sources.Presentation.Views.Bullets
         private void OnParticleCollision(GameObject other)
         {
             if (other.TryGetComponent(out IDamageable damageable))
+            {
                 Presenter.Fire(damageable);
+                _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
         }
     }
 }

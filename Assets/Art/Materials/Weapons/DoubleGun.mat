@@ -21,7 +21,7 @@ Material:
   - TCP2_OUTLINE_TEXTURED
   - TCP2_UV_NORMALS_FULL
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -139,7 +139,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffTint: {r: 0.7, g: 0.8, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0.9210683, b: 0.80722845, a: 1}
+    - _EmissionColor: {r: 0.71374077, g: 0.66547287, b: 4.5509763, a: 1}
     - _HColor: {r: 0.6282484, g: 0.69861746, b: 0.735849, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.44852942, g: 0, b: 0, a: 0.734}
