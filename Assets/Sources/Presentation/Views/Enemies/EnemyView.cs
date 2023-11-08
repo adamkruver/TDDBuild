@@ -11,7 +11,7 @@ namespace Sources.Presentation.Views.Enemies
 
         public Vector3 Position => Transform.position;
         public Vector3 Forward => Transform.forward;
-        public bool IsVisible => gameObject.activeSelf;
+        public bool IsVisible { get; protected set; }
 
         public void TakeDamage(float damage) =>
             DamageableSystemView.TakeDamage(damage);
