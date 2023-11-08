@@ -1,8 +1,10 @@
-﻿using Sources.Domain.Systems.Aggressive;
+﻿using Sources.Domain.Credits;
+using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Systems.Progresses;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.FiniteStateMachines.States;
 using Sources.Infrastructure.Repositories;
+using Sources.Infrastructure.Services.Payments;
 using Sources.InfrastructureInterfaces.Assessors;
 using Sources.Presentation.Views.Zombies;
 
@@ -17,6 +19,8 @@ namespace Sources.Controllers.Zombies.StateMachines.States
         private readonly EnemyRepository _enemyRepository;
         private readonly IEnemyAssessor _enemyDeathAggressiveAssessor;
         private readonly IEnemyAssessor _enemyDeathProgressAssessor;
+        private readonly IEnemyAssessor _enemyRewardAssessor;
+        private readonly PaymentService _paymentService;
 
         public DeathState(
             ZombieView zombieView,
@@ -25,7 +29,9 @@ namespace Sources.Controllers.Zombies.StateMachines.States
             AggressiveSystem aggressiveSystem,
             EnemyRepository enemyRepository,
             IEnemyAssessor enemyDeathAggressiveAssessor,
-            IEnemyAssessor enemyDeathProgressAssessor
+            IEnemyAssessor enemyDeathProgressAssessor,
+            IEnemyAssessor enemyRewardAssessor,
+            PaymentService paymentService
         )
         {
             _zombieView = zombieView;
@@ -35,6 +41,8 @@ namespace Sources.Controllers.Zombies.StateMachines.States
             _enemyRepository = enemyRepository;
             _enemyDeathAggressiveAssessor = enemyDeathAggressiveAssessor;
             _enemyDeathProgressAssessor = enemyDeathProgressAssessor;
+            _enemyRewardAssessor = enemyRewardAssessor;
+            _paymentService = paymentService;
         }
 
         protected override void OnEnter()
@@ -43,6 +51,7 @@ namespace Sources.Controllers.Zombies.StateMachines.States
             _progressSystem.AddProgress(_enemyDeathProgressAssessor.Assess(_zombie));
             _enemyRepository.Remove(_zombie);
             _zombieView.Die();
+            _paymentService.Add(_enemyRewardAssessor.Assess(_zombie));
         }
     }
 }

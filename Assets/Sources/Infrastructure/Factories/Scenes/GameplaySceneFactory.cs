@@ -18,6 +18,7 @@ using Sources.Infrastructure.Assessors;
 using Sources.Infrastructure.Factories.Controllers.Bullets;
 using Sources.Infrastructure.Factories.Controllers.Constructions;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
+using Sources.Infrastructure.Factories.Controllers.HealthPoints;
 using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Turrets;
 using Sources.Infrastructure.Factories.Controllers.Weapons;
@@ -142,6 +143,13 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #region Assessors
 
+            EnemyAssessor enemyRewardAssessor = new EnemyAssessor(
+                new Dictionary<Type, int>()
+                {
+                    [typeof(Zombie)] = 1,
+                }
+            );
+            
             EnemyAssessor enemyDeathAggressiveAssessor = new EnemyAssessor(
                 new Dictionary<Type, int>()
                 {
@@ -191,7 +199,9 @@ namespace Sources.Infrastructure.Factories.Scenes
             BulletFactory bulletFactory = new BulletFactory(bulletUpgradeSystem);
             RocketFactory rocketFactory = new RocketFactory(rocketUpgradeSystem);
 
-            LaserGunFactory laserGunFactory = new LaserGunFactory(resourceService, laserFactory, timeService, laserUpgradeSystem);
+            LaserGunFactory laserGunFactory = new LaserGunFactory(
+                resourceService, laserFactory, timeService, laserUpgradeSystem
+            );
             DoubleLaserGunFactory doubleLaserGunFactory =
                 new DoubleLaserGunFactory(resourceService, laserFactory, timeService, laserUpgradeSystem);
             DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory =
@@ -201,10 +211,18 @@ namespace Sources.Infrastructure.Factories.Scenes
             RocketTwiceGunFactory rocketTwiceGunFactory =
                 new RocketTwiceGunFactory(resourceService, rocketFactory, timeService, rocketUpgradeSystem);
 
-            SingleGunFactory singleGunFactory = new SingleGunFactory(resourceService, bulletFactory, timeService, bulletUpgradeSystem);
-            DoubleGunFactory doubleGunFactory = new DoubleGunFactory(resourceService, bulletFactory, timeService, bulletUpgradeSystem);
-            TripleGunFactory tripleGunFactory = new TripleGunFactory(resourceService, bulletFactory, timeService, bulletUpgradeSystem);
-            QuadGunFactory quadGunFactory = new QuadGunFactory(resourceService, bulletFactory, timeService, bulletUpgradeSystem);
+            SingleGunFactory singleGunFactory = new SingleGunFactory(
+                resourceService, bulletFactory, timeService, bulletUpgradeSystem
+            );
+            DoubleGunFactory doubleGunFactory = new DoubleGunFactory(
+                resourceService, bulletFactory, timeService, bulletUpgradeSystem
+            );
+            TripleGunFactory tripleGunFactory = new TripleGunFactory(
+                resourceService, bulletFactory, timeService, bulletUpgradeSystem
+            );
+            QuadGunFactory quadGunFactory = new QuadGunFactory(
+                resourceService, bulletFactory, timeService, bulletUpgradeSystem
+            );
 
             TurretFactory turretFactory = new TurretFactory(tileRepository);
 
@@ -233,7 +251,9 @@ namespace Sources.Infrastructure.Factories.Scenes
                 aggressiveSystem,
                 enemyRepository,
                 enemyDeathAggressiveAssessor,
-                enemyDeathProgressAssessor
+                enemyDeathProgressAssessor,
+                enemyRewardAssessor,
+                paymentService
             );
 
             #endregion
@@ -249,8 +269,8 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new AggressiveSystemPresenterFactory(enemyRepository);
 
             ProgressSystemPresenterFactory progressSystemPresenterFactory = new ProgressSystemPresenterFactory();
-
             UpgradeSystemPresenterFactory upgradeSystemPresenterFactory = new UpgradeSystemPresenterFactory();
+            HealthPresenterFactory healthPresenterFactory = new HealthPresenterFactory();
 
             #endregion
 
@@ -270,12 +290,16 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
                 resourceService,
-                weaponStateMachineFactory, 
-                bulletViewFactory, 
+                weaponStateMachineFactory,
+                bulletViewFactory,
                 targetTrackerSystem
             );
 
-            TurretViewFactory turretViewFactory = new TurretViewFactory(resourceService, turretPresenterFactory, weaponViewFactory);
+            HealthViewFactory healthViewFactory = new HealthViewFactory(healthPresenterFactory);
+
+            TurretViewFactory turretViewFactory = new TurretViewFactory(
+                resourceService, turretPresenterFactory, weaponViewFactory
+            );
 
             MovementSystemViewFactory movementSystemViewFactory =
                 new MovementSystemViewFactory(movementSystemPresenterFactory);
@@ -284,9 +308,13 @@ namespace Sources.Infrastructure.Factories.Scenes
                 new DamageableSystemViewFactory(damageableSystemPresenterFactory);
 
             ZombieViewFactory zombieViewFactory = new ZombieViewFactory(
+                healthViewFactory,
                 resourceService,
-                zombieStateMachineFactory, movementSystemViewFactory,
-                damageableSystemViewFactory, baseView
+                zombieStateMachineFactory,
+                movementSystemViewFactory,
+                damageableSystemViewFactory,
+                gameplayCamera,
+                baseView
             );
 
             EnemyViewFactory enemyViewFactory = new EnemyViewFactory(
@@ -327,7 +355,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                 );
 
             ConstructButtonUiFactory constructButtonUiFactory =
-                new ConstructButtonUiFactory(resourceService,constructButtonPresenterFactory);
+                new ConstructButtonUiFactory(resourceService, constructButtonPresenterFactory);
 
             #endregion
 
@@ -354,8 +382,9 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
 
-            SpawnNotifierUi spawnNotifierUi = Object.Instantiate(Resources.Load<SpawnNotifierUi>("Ui/Systems/Spawn/SpawnNotifierUi"));
-            
+            SpawnNotifierUi spawnNotifierUi =
+                Object.Instantiate(Resources.Load<SpawnNotifierUi>("Ui/Systems/Spawn/SpawnNotifierUi"));
+
             spawnSystemViewFactory.Create(spawnSystemView, spawnSystem, enemySpawnWaveCollectionFab, spawnNotifierUi);
             turretConstructionViews.Values.ToList().ForEach(view => view.Hide());
 
@@ -363,8 +392,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             //      upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Bullet, bulletUpgradeSystem);
             //    upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Rocket, rocketUpgradeSystem);
 
-            
-            
+
             hud.TopLeft.AddChild(progressSystemUiFactory.Create(progressSystem));
             hud.TopCenter.AddChild(moneyUiFactory.Create(money));
             hud.TopRight.AddChild(aggressiveSystemUiFactory.Create(aggressiveSystem));
@@ -376,7 +404,9 @@ namespace Sources.Infrastructure.Factories.Scenes
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
                 hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton));
 
-            return new GameplayScene(resourceService, pointerService, gameplayCameraService, spawnSystem, spawnNotifierUi);
+            return new GameplayScene(
+                resourceService, pointerService, gameplayCameraService, spawnSystem, spawnNotifierUi
+            );
         }
 
         private async UniTask LoadResourcesAsync(ResourceService resourceService) =>
@@ -391,7 +421,9 @@ namespace Sources.Infrastructure.Factories.Scenes
                 .Register<TextUi>("Ui/Credits/MoneyUi")
                 .Register<AggressiveSystemUi>("Ui/Systems/AggressiveSystemUi")
                 .Register<ProgressSystemUi>("Ui/Systems/ProgressSystemUi")
-                .RegisterInterfaceImplementationsByType<TurretConstructionPreview, IWeapon>("Previews/Weapons/{0}Preview")
+                .RegisterInterfaceImplementationsByType<TurretConstructionPreview, IWeapon>(
+                    "Previews/Weapons/{0}Preview"
+                )
                 .RegisterInterfaceImplementationsByType<CompositeWeaponView, IWeapon>("Views/Weapons/{0}View")
                 .RegisterInterfaceImplementationsByType<WeaponFab, IWeapon>("Fabs/Weapons/{0}Fab")
                 .LoadAllAsync();

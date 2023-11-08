@@ -7,9 +7,8 @@ namespace Sources.Domain.Zombies
 {
     public class Zombie : IEnemy
     {
-        public Zombie(float maxHealthPoints, MovementSystem movementSystem)
+        public Zombie(float maxHealthPoints)
         {
-            MovementSystem = movementSystem;
             Health = new Health(maxHealthPoints);
             Health.Points.AddListener(OnHealthPointsChanged);
         }
@@ -17,10 +16,6 @@ namespace Sources.Domain.Zombies
         public event Action Died;
 
         public Health Health { get; }
-        public MovementSystem MovementSystem { get; }
-
-        public void SetSpeed(float speed) =>
-            MovementSystem.SetSpeed(speed);
 
         private void OnHealthPointsChanged(float healthPoints)
         {
