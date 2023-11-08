@@ -10,6 +10,7 @@ using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Systems.EnemySpawn;
 using Sources.Domain.Systems.Progresses;
+using Sources.Domain.Systems.Spawn;
 using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
 using Sources.Domain.Zombies;
@@ -47,6 +48,7 @@ using Sources.Presentation.Ui;
 using Sources.Presentation.Ui.Constructs;
 using Sources.Presentation.Ui.Systems.Aggressive;
 using Sources.Presentation.Ui.Systems.Progresses;
+using Sources.Presentation.Ui.Systems.Spawn;
 using Sources.Presentation.Ui.Systems.Upgrades;
 using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Systems.Spawn;
@@ -165,6 +167,8 @@ namespace Sources.Infrastructure.Factories.Scenes
             UpgradeSystem rocketUpgradeSystem = new UpgradeSystem();
             TargetTrackerSystem targetTrackerSystem =
                 new TargetTrackerSystem(2000, Layers.Enemy, Layers.Obstacle);
+
+            SpawnSystem spawnSystem = new SpawnSystem();
 
             #endregion
 
@@ -350,16 +354,21 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
 
-            spawnSystemViewFactory.Create(spawnSystemView, enemySpawnWaveCollectionFab);
+            SpawnNotifierUi spawnNotifierUi = Object.Instantiate(Resources.Load<SpawnNotifierUi>("Ui/Systems/Spawn/SpawnNotifierUi"));
+            
+            spawnSystemViewFactory.Create(spawnSystemView, spawnSystem, enemySpawnWaveCollectionFab, spawnNotifierUi);
             turretConstructionViews.Values.ToList().ForEach(view => view.Hide());
 
             upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Laser, laserUpgradeSystem);
             //      upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Bullet, bulletUpgradeSystem);
             //    upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Rocket, rocketUpgradeSystem);
 
+            
+            
             hud.TopLeft.AddChild(progressSystemUiFactory.Create(progressSystem));
             hud.TopCenter.AddChild(moneyUiFactory.Create(money));
             hud.TopRight.AddChild(aggressiveSystemUiFactory.Create(aggressiveSystem));
+            hud.MiddleCenter.AddChild(spawnNotifierUi);
 
             hud.MiddleLeft.AddChild(upgradeSystemUiContainer);
 
@@ -367,7 +376,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
                 hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton));
 
-            return new GameplayScene(resourceService, pointerService, gameplayCameraService, aggressiveSystem);
+            return new GameplayScene(resourceService, pointerService, gameplayCameraService, spawnSystem, spawnNotifierUi);
         }
 
         private async UniTask LoadResourcesAsync(ResourceService resourceService) =>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sources.Domain.Systems.EnemySpawn;
+using Sources.Domain.Systems.Spawn;
 using Sources.InfrastructureInterfaces.Factories.Presentation.View;
 using Sources.PresentationInterfaces.Views.Systems.Spawn;
 using Random = UnityEngine.Random;
@@ -12,6 +13,7 @@ namespace Sources.Controllers.Systems
     public class SpawnSystemPresenter : PresenterBase
     {
         private readonly ISpawnSystemView _view;
+        private readonly SpawnSystem _spawnSystem;
         private readonly EnemySpawnWaveCollectionFab _collection;
         private readonly IEnemyViewFactory _enemyViewFactory;
 
@@ -19,24 +21,38 @@ namespace Sources.Controllers.Systems
 
         public SpawnSystemPresenter(
             ISpawnSystemView view,
+            SpawnSystem spawnSystem,
             EnemySpawnWaveCollectionFab collection,
             IEnemyViewFactory enemyViewFactory
         )
         {
             _view = view;
+            _spawnSystem = spawnSystem;
             _collection = collection;
             _enemyViewFactory = enemyViewFactory;
         }
 
         public override void Enable()
         {
+            _spawnSystem.SpawnStarted += OnSpawnStarted;
+            _spawnSystem.SpawnFinished += OnSpawnFinished;
+        }
+
+        public override void Disable()
+        {
+            _spawnSystem.SpawnStarted -= OnSpawnStarted;
+            _spawnSystem.SpawnFinished -= OnSpawnFinished;
+        }
+
+        private void OnSpawnStarted()
+        {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
             
             SpawnWaveCollection(_cancellationTokenSource.Token);
         }
-
-        public override void Disable() => 
+        
+        private void OnSpawnFinished() => 
             _cancellationTokenSource.Cancel();
 
         private async UniTask SpawnWaveCollection(CancellationToken cancellationToken)
@@ -66,15 +82,16 @@ namespace Sources.Controllers.Systems
             EnemySpawnCollectionFab spawnCollection
         )
         {
+            
             Queue<EnemySpawnObject> spawnObjects = new Queue<EnemySpawnObject>(spawnCollection.SpawnObjects);
 
             while (spawnObjects.TryDequeue(out EnemySpawnObject spawnObject) &&
                    cancellationToken.IsCancellationRequested == false)
             {
+                _view.ShowGroupSpawnMessage(""); // TODO: Group Spawn Message
                 await SpawnEnemy(cancellationToken, spawnObject);
                 await UniTask.Delay(TimeSpan.FromSeconds(spawnObject.GroupDelay), cancellationToken: cancellationToken);
             }
-
         }
 
         private async UniTask SpawnEnemy(CancellationToken cancellationToken, EnemySpawnObject spawnObject)
@@ -86,7 +103,7 @@ namespace Sources.Controllers.Systems
                 float spawnInterval = Random.Range(
                     spawnObject.SpawnIntervalMin, spawnObject.SpawnIntervalMax
                 );
-
+     
                 await UniTask.Delay(TimeSpan.FromSeconds(spawnInterval), cancellationToken: cancellationToken);
             }
         }
