@@ -1,5 +1,4 @@
 ﻿using Sources.Infrastructure.FiniteStateMachines.States;
-using Sources.Presentation.Views.Zombies;
 using Sources.PresentationInterfaces.Views.Zombies;
 using UnityEngine;
 
@@ -16,14 +15,7 @@ namespace Sources.Controllers.Zombies.StateMachines.States
             _destination = destination;
         }
 
-        protected override void OnEnter()
-        {
+        protected override void OnEnter() => 
             _zombieView.SetDestination(_destination);
-        }
-
-        protected override void OnExit()
-        {
-            _zombieView.Stop();
-        }
     }
 }

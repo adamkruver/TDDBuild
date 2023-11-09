@@ -14,7 +14,7 @@ namespace Sources.Controllers.Zombies.StateMachines.Transitions
             _health = health.Points;
         }
 
-        protected override bool CanMoveNextState() => 
+        protected override bool CanMoveNextState() =>
             _health.Value <= 0;
     }
 }

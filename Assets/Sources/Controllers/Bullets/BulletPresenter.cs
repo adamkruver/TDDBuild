@@ -1,6 +1,7 @@
 ﻿using Sources.Domain.Bullets;
 using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Bullets;
+using UnityEngine;
 
 namespace Sources.Controllers.Bullets
 {
@@ -15,9 +16,7 @@ namespace Sources.Controllers.Bullets
             _bullet = bullet;
         }
 
-        public void Fire(IDamageable damageable)
-        {
-            _bullet.Attack(damageable);
-        }
+        public void Fire(IDamageable damageable, Vector3 direction) => 
+            _bullet.Attack(damageable, direction);
     }
 }

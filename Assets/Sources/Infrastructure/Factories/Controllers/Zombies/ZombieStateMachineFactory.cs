@@ -62,6 +62,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
         private void CreateStates(ZombieView view, Zombie zombie, ZombieStateMachine stateMachine, Vector3 destination)
         {
             MoveState moveState = new MoveState(view, destination);
+            HitState hitState = new HitState(view);
             DeathState deathState = new DeathState(
                 view,
                 zombie,
@@ -75,8 +76,13 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
             );
 
             ToDeathTransition toDeathTransition = new ToDeathTransition(deathState, zombie.Health);
-
+            ToHitTransition toHitTransition = new ToHitTransition(hitState, zombie.Health);
+            ToAnyOneFrameTransition toAnyOneFrameTransition = new ToAnyOneFrameTransition(moveState);
+            
+            moveState.AddTransition(toHitTransition);
             moveState.AddTransition(toDeathTransition);
+            hitState.AddTransition(toDeathTransition);
+            hitState.AddTransition(toAnyOneFrameTransition);
 
             stateMachine.SetFirstState(moveState);
         }

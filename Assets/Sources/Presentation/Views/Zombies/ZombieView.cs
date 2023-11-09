@@ -1,4 +1,5 @@
 ﻿using Sources.Controllers.Zombies;
+using Sources.Presentation.Animations.Enemies;
 using Sources.Presentation.Views.Enemies;
 using Sources.Presentation.Views.HealthPoints;
 using Sources.PresentationInterfaces.Views.Zombies;
@@ -10,6 +11,14 @@ namespace Sources.Presentation.Views.Zombies
     public class ZombieView : EnemyView<ZombieStateMachine>, IZombieView
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
+        [SerializeField] private ZombieAnimation _zombieAnimation;
+
+        protected override void OnConstruct()
+        {
+            base.OnConstruct();
+            _zombieAnimation.ResetToIdle();
+            IsVisible = true;
+        }
 
         [field: SerializeField] public HealthView Health { get; private set; }
         
@@ -29,11 +38,19 @@ namespace Sources.Presentation.Views.Zombies
 
         public void SetPosition(Vector3 spawnPosition) =>
             Transform.position = spawnPosition;
-        
-        public void Die()
+
+        public void Hit(float lastHitForwardProjection) => 
+            _zombieAnimation.Hit(lastHitForwardProjection);
+
+        public async void Die(float lastHitForwardProjection)
         {
             Presenter.Disable();
             Presenter = null;
+            
+            IsVisible = false;
+            
+            await _zombieAnimation.Die(lastHitForwardProjection);
+            
             Destroy();
         }
     }

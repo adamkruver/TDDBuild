@@ -1,5 +1,6 @@
 ﻿using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Systems.Damageable;
+using UnityEngine;
 
 namespace Sources.Controllers.Systems
 {
@@ -26,8 +27,8 @@ namespace Sources.Controllers.Systems
             _health.NormalizedPoints.RemoveListener(OnHealthPointsNormalizedChanged);
         }
 
-        public void TakeDamage(float damage) => 
-            _health.TakeDamage(damage);
+        public void TakeDamage(float damage, Vector3 direction) =>
+            _health.TakeDamage(damage, direction);
 
         private void OnHealthPointsChanged(float healthPoints)
         {
