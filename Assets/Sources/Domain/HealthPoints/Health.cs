@@ -19,7 +19,7 @@ namespace Sources.Domain.HealthPoints
         public LiveData<float> Points => _points;
         public LiveData<float> NormalizedPoints => _normalizedPoints;
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, Vector3 _)
         {
             if (damage <= 0)
                 return;

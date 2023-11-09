@@ -6,6 +6,7 @@ namespace Sources.PresentationInterfaces.Views.Zombies
     {
         void SetDestination(Vector3 destination);
         void Stop();
-        void Die();
+        void Hit(float lastHitForwardProjection);
+        void Die(float lastHitForwardProjection);
     }
 }

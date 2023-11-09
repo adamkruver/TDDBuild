@@ -13,7 +13,7 @@ namespace Sources.Presentation.Views.Bullets
         {
             if (other.TryGetComponent(out IDamageable damageable))
             {
-                Presenter.Fire(damageable);
+                Presenter.Fire(damageable, transform.forward);
                 _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             }
         }

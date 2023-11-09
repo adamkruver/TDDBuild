@@ -1,4 +1,5 @@
 ﻿using Sources.Domain.HealthPoints;
+using UnityEngine;
 
 namespace Sources.Domain.Bullets
 {
@@ -7,6 +8,6 @@ namespace Sources.Domain.Bullets
         float Damage { get; }
 
         float Speed { get; }
-        void Attack(IDamageable damageable);
+        void Attack(IDamageable damageable, Vector3 direction);
     }
 }

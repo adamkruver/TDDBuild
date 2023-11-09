@@ -35,14 +35,19 @@ namespace Sources.Presentation.Views.Zombies
 
         public void SetPosition(Vector3 spawnPosition) =>
             Transform.position = spawnPosition;
-        
-        public async void Die()
+
+        public void Hit(float lastHitForwardProjection) => 
+            _zombieAnimation.Hit(lastHitForwardProjection);
+
+        public async void Die(float lastHitForwardProjection)
         {
             Presenter.Disable();
             Presenter = null;
+            
             IsVisible = false;
-            //TODO Klavikus: Стоит ли отсюда пробрасывать токен отмены?
-            await _zombieAnimation.Die();
+            
+            await _zombieAnimation.Die(lastHitForwardProjection);
+            
             Destroy();
         }
     }

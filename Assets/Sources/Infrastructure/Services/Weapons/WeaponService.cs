@@ -47,7 +47,10 @@ namespace Sources.Infrastructure.Services.Weapons
                 gunpointXOffset: gunpointXOffset
             );
 
-            return Quaternion.Euler(new Vector3(0, angle, 0)) * direction;
+            if (angle != 0) 
+                direction = Quaternion.Euler(new Vector3(0, angle, 0)) * direction;
+
+            return direction;
         }
 
         private float CalculateAngleCorrection(Vector3 enemyPosition, Vector3 position, float gunpointXOffset)

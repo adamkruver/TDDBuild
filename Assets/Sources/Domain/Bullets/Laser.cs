@@ -1,6 +1,7 @@
 ﻿using Sources.Domain.HealthPoints;
 using Sources.Domain.Systems.Upgrades;
 using Sources.Frameworks.LiveDatas;
+using UnityEngine;
 
 namespace Sources.Domain.Bullets
 {
@@ -16,7 +17,7 @@ namespace Sources.Domain.Bullets
         public float Damage => BaseDamage + _damageUpgrade.Value;
         public float Speed { get; } = 100;
 
-        public void Attack(IDamageable damageable) =>
-            damageable.TakeDamage(Damage);
+        public void Attack(IDamageable damageable, Vector3 direction) =>
+            damageable.TakeDamage(Damage, direction);
     }
 }
