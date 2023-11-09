@@ -9067,7 +9067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 177638, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11496292, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_keepAlive
@@ -19567,6 +19567,7 @@ MonoBehaviour:
   <TopCenter>k__BackingField: {fileID: 758799291}
   <TopRight>k__BackingField: {fileID: 378051154}
   <MiddleLeft>k__BackingField: {fileID: 1132999114}
+  <MiddleCenter>k__BackingField: {fileID: 1590382974}
   <Footer>k__BackingField: {fileID: 938087139}
 --- !u!4 &736254385 stripped
 Transform:
@@ -27712,6 +27713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1590382972}
   - component: {fileID: 1590382973}
+  - component: {fileID: 1590382974}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -27759,6 +27761,18 @@ MonoBehaviour:
   m_FlexibleWidth: 100000
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1590382974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590382971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52491d28e754f2ebe3db6f61415905a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1598168510
 PrefabInstance:
   m_ObjectHideFlags: 0

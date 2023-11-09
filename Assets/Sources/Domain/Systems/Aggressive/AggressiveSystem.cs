@@ -8,21 +8,19 @@ namespace Sources.Domain.Systems.Aggressive
         private readonly MutableLiveData<int> _progress = new MutableLiveData<int>(0);
         private readonly MutableLiveData<int> _levelProgress = new MutableLiveData<int>(0);
         private readonly MutableLiveData<float> _levelProgressNormalized = new MutableLiveData<float>(0);
-        private readonly MutableLiveData<string> _levelTitle;
-        private readonly MutableLiveData<float> _enemySpeed;
         private readonly AggressiveLevel[] _levels;
-        
+
         private int _levelIndex = 0;
 
         public AggressiveSystem(AggressiveLevelCollection levelCollection)
         {
             _levels = levelCollection.Levels.ToArray();
-            _levelTitle = new MutableLiveData<string>(_levels[0].Title);
-            _enemySpeed = new MutableLiveData<float>(_levels[0].EnemySpeed);
+            AdditionalHealth = 0;
+            OnLevelUpReached();
         }
 
-        public LiveData<string> LevelTitle => _levelTitle;
-        public LiveData<float> EnemySpeed => _enemySpeed;
+        public float AdditionalHealth { get; private set; }
+
         public LiveData<int> Progress => _progress;
         public LiveData<int> LevelProgress => _levelProgress;
         public LiveData<float> LevelProgressNormalized => _levelProgressNormalized;
@@ -36,17 +34,22 @@ namespace Sources.Domain.Systems.Aggressive
 
             int levelUpProgress = _levels[_levelIndex].UpProgress;
 
-            if (levelProgress >= levelUpProgress && _levelIndex < _levels.Length - 1)
+            if (levelProgress >= levelUpProgress)
             {
                 levelProgress -= levelUpProgress;
-                _levelIndex++;
+
+                if (_levelIndex < _levels.Length - 1)
+                    _levelIndex++;
+
                 levelUpProgress = _levels[_levelIndex].UpProgress;
+                OnLevelUpReached();
             }
 
             _levelProgress.Value = Mathf.Min(levelProgress, _levels[_levelIndex].UpProgress);
             _levelProgressNormalized.Value = Mathf.Min((float)levelProgress / levelUpProgress, 1);
-            _enemySpeed.Value = _levels[_levelIndex].EnemySpeed;
-            _levelTitle.Value = _levels[_levelIndex].Title;
         }
+
+        private void OnLevelUpReached() => 
+        AdditionalHealth += _levels[_levelIndex].AdditionalHealth;
     }
 }

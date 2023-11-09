@@ -8,10 +8,8 @@ namespace Sources.Infrastructure.Services.Payments
     {
         private readonly Money _money;
 
-        public PaymentService(Money money)
-        {
+        public PaymentService(Money money) => 
             _money = money;
-        }
 
         public event Action MoneyChanged; 
 
@@ -27,6 +25,12 @@ namespace Sources.Infrastructure.Services.Payments
             MoneyChanged?.Invoke();
             
             return true;
+        }
+        
+        public void Add(int money)
+        {
+            _money.Add(money);
+            MoneyChanged?.Invoke();
         }
         
         public bool IsEnough(int money) => 

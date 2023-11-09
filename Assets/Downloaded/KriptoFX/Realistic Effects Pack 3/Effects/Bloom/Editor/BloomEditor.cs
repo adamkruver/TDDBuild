@@ -18,7 +18,7 @@ namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Editor
         bool CheckHdr(UnityStandardAssets.CinematicEffects.Bloom target)
         {
             var camera = target.GetComponent<Camera>();
-            return camera != null && camera.hdr;
+            return camera != null && camera.allowHDR;
         }
 
         void OnEnable()

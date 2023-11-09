@@ -1,6 +1,7 @@
 ﻿using Sources.Controllers.Zombies;
 using Sources.Presentation.Animations.Enemies;
 using Sources.Presentation.Views.Enemies;
+using Sources.Presentation.Views.HealthPoints;
 using Sources.PresentationInterfaces.Views.Zombies;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,6 +20,8 @@ namespace Sources.Presentation.Views.Zombies
             IsVisible = true;
         }
 
+        [field: SerializeField] public HealthView Health { get; private set; }
+        
         public void Update() =>
             Presenter?.Update(Time.deltaTime);
 

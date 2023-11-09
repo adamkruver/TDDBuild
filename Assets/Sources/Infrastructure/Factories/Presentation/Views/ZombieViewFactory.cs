@@ -4,6 +4,7 @@ using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Presentation.Systems;
 using Sources.Infrastructure.ObjectPools;
 using Sources.Infrastructure.Resource;
+using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Zombies;
 using UnityEngine;
 
@@ -11,25 +12,31 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 {
     public class ZombieViewFactory
     {
+        private readonly HealthViewFactory _healthViewFactory;
         private readonly ResourceService _resourceService;
         private readonly ZombieStateMachineFactory _zombieStateMachineFactory;
         private readonly MovementSystemViewFactory _movementSystemViewFactory;
         private readonly DamageableSystemViewFactory _damageableSystemViewFactory;
+        private readonly GameplayCamera _gameplayCamera;
         private readonly BaseView _baseView;
         private readonly ObjectPool _objectPool = new ObjectPool();
 
         public ZombieViewFactory(
+            HealthViewFactory healthViewFactory,
             ResourceService resourceService,
             ZombieStateMachineFactory zombieStateMachineFactory,
             MovementSystemViewFactory movementSystemViewFactory,
             DamageableSystemViewFactory damageableSystemViewFactory,
+            GameplayCamera gameplayCamera,
             BaseView baseView
         )
         {
+            _healthViewFactory = healthViewFactory;
             _resourceService = resourceService;
             _zombieStateMachineFactory = zombieStateMachineFactory;
             _movementSystemViewFactory = movementSystemViewFactory;
             _damageableSystemViewFactory = damageableSystemViewFactory;
+            _gameplayCamera = gameplayCamera;
             _baseView = baseView;
         }
 
@@ -38,6 +45,10 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
             ZombieView view = _objectPool.Get<ZombieView>() ?? Object.Instantiate(
                 _resourceService.Load<ZombieView>("Views/Zombies/ZombieView"), spawnPosition, Quaternion.identity
             );
+
+            _healthViewFactory.Create(view.Health, zombie.Health);
+
+            view.Health.SetCamera(_gameplayCamera.Camera);
             view.Create(_objectPool);
             view.SetPosition(spawnPosition);
 
@@ -45,7 +56,6 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
 
             view.Construct(zombieStateMachine);
 
-            _movementSystemViewFactory.Create(view.gameObject, zombie.MovementSystem);
             _damageableSystemViewFactory.Create(view.DamageableSystemView, zombie.Health);
 
             return view;
