@@ -1,4 +1,5 @@
-﻿using Sources.Domain.Bullets;
+﻿using System.Linq;
+using Sources.Domain.Bullets;
 using Sources.Domain.Constructs;
 using Sources.Domain.Systems.Upgrades;
 using Sources.InfrastructureInterfaces.Services.Times;
@@ -13,7 +14,10 @@ namespace Sources.Domain.Weapons
             WeaponFab weaponFab,
             UpgradeSystem upgradeSystem
         ) : base(
-            bullet, timeService, weaponFab, upgradeSystem
+            Enumerable.Repeat(bullet, 3).ToArray(), 
+            timeService, 
+            weaponFab, 
+            upgradeSystem
         )
         {
         }

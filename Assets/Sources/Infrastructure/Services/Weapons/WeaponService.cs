@@ -20,16 +20,16 @@ namespace Sources.Infrastructure.Services.Weapons
                 weaponRotationSystem ?? throw new ArgumentNullException(nameof(weaponRotationSystem));
         }
 
-        public void UpdateLookDirectionWithPredict(IEnemyView enemy, float rotationSpeed, float gunpointXOffset) =>
-            _weaponRotationSystem.UpdateRotationBase(GetDirectionToEnemy(enemy, gunpointXOffset), rotationSpeed);
+        public void UpdateLookDirectionWithPredict(IEnemyView enemy, float rotationSpeed, float gunpointXOffset, Vector3 shootPoint) =>
+            _weaponRotationSystem.UpdateRotationBase(GetDirectionToEnemy(enemy, gunpointXOffset, shootPoint), rotationSpeed);
 
-        public bool HasLockedTarget(IEnemyView enemyView, float gunpointXOffset) =>
-            _weaponRotationSystem.HasTargetAtLook(GetDirectionToEnemy(enemyView, gunpointXOffset));
+        public bool HasLockedTarget(IEnemyView enemyView, float gunpointXOffset, Vector3 shootPoint) =>
+            _weaponRotationSystem.HasTargetAtLook(GetDirectionToEnemy(enemyView, gunpointXOffset, shootPoint));
 
-        private Vector3 GetDirectionToEnemy(IEnemyView enemy, float gunpointXOffset)
+        private Vector3 GetDirectionToEnemy(IEnemyView enemy, float gunpointXOffset, Vector3 shootPoint)
         {
-            Vector3 directionToEnemyNormalized = (enemy.Position - _weaponRotationSystem.Position).normalized;
-            Vector3 enemyForward = enemy.Forward;
+            Vector3 directionToEnemyNormalized = (enemy.Position - shootPoint).normalized;
+            Vector3 enemyForward = enemy.Forward * enemy.Speed;
 
             Vector3 enemyOrthogonal =
                 Vector3.Dot(directionToEnemyNormalized, enemyForward) * directionToEnemyNormalized;
@@ -44,7 +44,7 @@ namespace Sources.Infrastructure.Services.Weapons
             float angle = CalculateAngleCorrection(
                 enemy.Position,
                 _weaponRotationSystem.Position,
-                gunpointXOffset: gunpointXOffset
+                gunpointXOffset
             );
 
             if (angle != 0) 

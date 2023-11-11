@@ -21,7 +21,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
                 compositeView,
                 targetProvider
             );
-            ShootState shootState = new ShootState(compositeView, weapon);
+            ShootState shootState = new ShootState(weapon);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
                 shootState,

@@ -38,11 +38,16 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.States
         protected override void OnUpdate(float deltaTime)
         {
             _enemy = _targetProvider.GetTarget();
-            
+
             if (_enemy == null)
                 return;
 
-            _weaponService.UpdateLookDirectionWithPredict(_enemy, _weapon.HorizontalRotationSpeed, _gunPointOffset);
+            _weaponService.UpdateLookDirectionWithPredict(
+                _enemy, 
+                _weapon.HorizontalRotationSpeed, 
+                _gunPointOffset,
+                _compositeWeaponView.GetShootPoint(_weapon.BulletId)
+            );
         }
     }
 }

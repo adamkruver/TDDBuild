@@ -10,6 +10,6 @@ namespace Sources.Presentation.Views.Bullets
         public abstract void Shoot();
 
         protected void OnShootTarget(IDamageable damageable, Vector3 forward) =>
-            Presenter.Fire(damageable, forward);
+            Presenter?.Fire(damageable, forward);
     }
 }

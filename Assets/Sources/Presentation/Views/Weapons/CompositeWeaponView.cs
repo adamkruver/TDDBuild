@@ -1,4 +1,6 @@
-﻿using Sources.Controllers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Sources.Controllers;
 using Sources.PresentationInterfaces.Views.Weapons;
 using UnityEngine;
 
@@ -23,6 +25,9 @@ namespace Sources.Presentation.Views.Weapons
             _currentWeaponId = weaponId;
             WeaponViews[weaponId].Shoot();
         }
+        
+        public Vector3 GetShootPoint(int bulletId) =>
+            WeaponViews[_currentWeaponId].Bullet.transform.position;
 
         public void SetParent(Transform parent) =>
             transform.SetParent(parent, true);

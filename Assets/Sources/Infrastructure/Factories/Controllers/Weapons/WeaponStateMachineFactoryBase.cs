@@ -18,7 +18,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             ITargetProvider targetProvider
         )
         {
-            WeaponStateMachine stateMachine = new WeaponStateMachine();
+            WeaponStateMachine stateMachine = new WeaponStateMachine(weapon, compositeView);
             IWeaponService service = CreateWeaponService(weapon, compositeView.RotationSystem);
             IFiniteState firstState = CreateStates(compositeView, weapon, service, targetProvider);
 

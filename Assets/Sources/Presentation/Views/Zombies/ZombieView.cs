@@ -21,7 +21,9 @@ namespace Sources.Presentation.Views.Zombies
         }
 
         [field: SerializeField] public HealthView Health { get; private set; }
-        
+
+        public override float Speed => _navMeshAgent.speed;
+
         public void Update() =>
             Presenter?.Update(Time.deltaTime);
 
