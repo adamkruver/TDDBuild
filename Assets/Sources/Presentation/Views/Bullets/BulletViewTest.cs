@@ -5,16 +5,16 @@ namespace Sources.Presentation.Views.Bullets
 {
     public class BulletViewTest : MonoBehaviour
     {
-        [SerializeField] private BulletView _bulletView;
+        [SerializeField] private BulletViewBase _bulletViewBase;
         [SerializeField] private float _fireDelay = 1f;
 
         private IEnumerator Start()
         {
             while (true)
             {
-                _bulletView.Shoot();
+                _bulletViewBase.Shoot();
 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(_fireDelay);
             }
         }
     }

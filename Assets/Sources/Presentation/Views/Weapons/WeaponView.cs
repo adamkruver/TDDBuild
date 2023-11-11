@@ -10,7 +10,7 @@ namespace Sources.Presentation.Views.Weapons
     {
         [SerializeField] private WeaponAnimation _weaponAnimation;
 
-        [field: SerializeField] public BulletView Bullet { get; private set; }
+        [field: SerializeField] public BulletViewBase Bullet { get; private set; }
         [field: SerializeField] public float GunPointOffset { get; private set; }
 
         public void Shoot()

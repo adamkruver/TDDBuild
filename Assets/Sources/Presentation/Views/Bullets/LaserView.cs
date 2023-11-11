@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sources.Domain.Bullets;
 using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Bullets;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 namespace Sources.Presentation.Views.Bullets
 {
     [RequireComponent(typeof(LineRenderer))]
-    public class LaserView : BulletView, IBulletView
+    public class LaserView : BulletViewBase, IBulletView
     {
         [SerializeField] private float _maxDistance = 100f;
         [Range(.1f, 5)] [SerializeField] private float _time = 1f;
@@ -47,10 +48,6 @@ namespace Sources.Presentation.Views.Bullets
             _cancellationTokenSource = new CancellationTokenSource();
 
             ShootAsync(Position, CalculateDestination(), _cancellationTokenSource.Token);
-        }
-
-        public override void OnShootTarget(IDamageable damageable, Vector3 forward)
-        {
         }
 
         private async UniTask ShootAsync(Vector3 from, Vector3 to, CancellationToken token)
@@ -109,7 +106,7 @@ namespace Sources.Presentation.Views.Bullets
                 return Position +  _transform.rotation * new Vector3(0, 0, _maxDistance);
 
             if (hit.collider.TryGetComponent(out IDamageable target))
-                Presenter.Fire(target, -hit.normal);
+                OnShootTarget(target, -hit.normal);
 
             return hit.point;
         }

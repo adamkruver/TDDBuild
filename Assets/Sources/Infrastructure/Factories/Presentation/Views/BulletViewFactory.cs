@@ -11,12 +11,12 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         public BulletViewFactory(BulletPresenterFactory bulletPresenterFactory) =>
             _bulletPresenterFactory = bulletPresenterFactory;
 
-        public BulletView Create(BulletView bulletView, IBullet bullet)
+        public BulletViewBase Create(BulletViewBase bulletViewBase, IBullet bullet)
         {
-            var presenter = _bulletPresenterFactory.Create(bulletView, bullet);
-            bulletView.Construct(presenter);
+            var presenter = _bulletPresenterFactory.Create(bulletViewBase, bullet);
+            bulletViewBase.Construct(presenter);
 
-            return bulletView;
+            return bulletViewBase;
         }
     }
 }
