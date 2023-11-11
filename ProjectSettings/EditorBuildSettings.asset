@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Gameplay.unity
     guid: 87f2c4b9d94be604bba271e1edf37ab6
+  - enabled: 1
+    path: Assets/Scenes/BulletTest.unity
+    guid: cc2bd70f4ac214941b8c4dff82c59142
   m_configObjects: {}

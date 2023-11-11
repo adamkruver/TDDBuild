@@ -9,14 +9,13 @@ namespace Sources.Presentation.Views.Weapons
     public class WeaponView : PresentationViewBase<IPresenter>, IWeaponView
     {
         [SerializeField] private WeaponAnimation _weaponAnimation;
-        [SerializeField] private ParticleSystem _particleSystem;
 
         [field: SerializeField] public BulletView Bullet { get; private set; }
         [field: SerializeField] public float GunPointOffset { get; private set; }
 
         public void Shoot()
         {
-            _particleSystem.Play();
+            Bullet.Shoot();
             _weaponAnimation.Shoot();
         }
     }

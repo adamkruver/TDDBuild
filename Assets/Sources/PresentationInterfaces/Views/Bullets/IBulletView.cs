@@ -2,6 +2,6 @@
 {
     public interface IBulletView
     {
-        
+        void Shoot();
     }
 }

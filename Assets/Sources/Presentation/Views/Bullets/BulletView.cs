@@ -5,17 +5,25 @@ using UnityEngine;
 
 namespace Sources.Presentation.Views.Bullets
 {
-    public class BulletView : PresentationViewBase<BulletPresenter>, IBulletView
+    public abstract class BulletView : PresentationViewBase<BulletPresenter>, IBulletView
     {
-        [SerializeField] private ParticleSystem _particleSystem;
+        public abstract void Shoot();
 
-        private void OnParticleCollision(GameObject other)
-        {
-            if (other.TryGetComponent(out IDamageable damageable))
-            {
-                Presenter.Fire(damageable, transform.forward);
-                _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            }
-        }
+        public abstract void OnShootTarget(IDamageable damageable, Vector3 forward);
     }
+    /*     [SerializeField] private ParticleSystem _particleSystem;
+ 
+         public void Shoot()
+         {
+             _particleSystem.Play();
+         }
+         
+         private void OnParticleCollision(GameObject other)
+         {
+             if (other.TryGetComponent(out IDamageable damageable))
+             {
+                 Presenter.Fire(damageable, transform.forward);
+                 _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+             }
+         }*/
 }
