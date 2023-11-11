@@ -14,9 +14,6 @@ namespace Sources.Presentation.Views.Bullets
         [SerializeField] private LayerMask _mask;
         [SerializeField] private AnimationCurve _widthCurve;
         [Range(.01f, 5)] [SerializeField] private float _widthMultiplier = .2f;
-        [SerializeField] private AnimationCurve _colorCurve;
-        [SerializeField] private Color _startColor;
-        [SerializeField] private Color _endColor;
         [SerializeField] private ParticleSystem _distortionParticleSystem;
         [SerializeField] private ParticleSystem _targetParticleSystem;
         [SerializeField] private float _distortionRate = 20f;
@@ -61,14 +58,15 @@ namespace Sources.Presentation.Views.Bullets
             float time = 0;
 
             SetupVector(from, to);
-            
+
             _distortionParticleSystem.Play();
             _targetParticleSystem.Play();
+
             
             while (time < 1f)
             {
                 time = Mathf.MoveTowards(time, 1f, Time.deltaTime / _time);
-                Evaluate(from, to, time);
+                Evaluate(time);
 
                 await UniTask.Yield(token);
             }
@@ -85,9 +83,9 @@ namespace Sources.Presentation.Views.Bullets
             );
 
             Vector3 direction = to - from;
-            
+
             float halfDistance = direction.magnitude / 2;
-            
+
             _distortionShape.radius = halfDistance;
             _distortionTransform.localPosition = halfDistance * Vector3.forward;
             _distortionEmission.rateOverTime = halfDistance * _distortionRate;
@@ -95,15 +93,12 @@ namespace Sources.Presentation.Views.Bullets
             _targetTransform.forward = -direction.normalized;
         }
 
-        private void Evaluate(Vector3 from, Vector3 to, float time)
+        private void Evaluate(float time)
         {
             time = Mathf.Clamp01(time);
-            
-            Color color = Color.Lerp(_startColor, _endColor, Mathf.Clamp01(_colorCurve.Evaluate(time)));
+
             float width = _widthCurve.Evaluate(time) * _widthMultiplier;
-            
-            _lineRenderer.startColor = color;
-            _lineRenderer.endColor = color;
+
             _lineRenderer.startWidth = width;
             _lineRenderer.endWidth = width;
         }
@@ -111,9 +106,9 @@ namespace Sources.Presentation.Views.Bullets
         private Vector3 CalculateDestination()
         {
             if (Physics.Raycast(Position, Forward, out RaycastHit hit, _maxDistance, _mask) == false)
-                return Position + Forward * _maxDistance;
+                return Position +  _transform.rotation * new Vector3(0, 0, _maxDistance);
 
-            if (hit.collider.TryGetComponent(out IDamageable target)) 
+            if (hit.collider.TryGetComponent(out IDamageable target))
                 Presenter.Fire(target, -hit.normal);
 
             return hit.point;

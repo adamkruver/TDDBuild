@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -9833,7 +9833,7 @@ MonoBehaviour:
   _time: 0.52
   _mask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 128
   _widthCurve:
     serializedVersion: 2
     m_Curve:
@@ -9868,41 +9868,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _widthMultiplier: 0.05
-  _colorCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1.3264081
-      outSlope: 1.3264081
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5586523
-      value: 0.74100095
-      inSlope: 0.953869
-      outSlope: 0.953869
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0041809
-      value: 1
-      inSlope: -0.006152215
-      outSlope: -0.006152215
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.5856648
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _startColor: {r: 0.8962264, g: 0.38470095, b: 0.38470095, a: 1}
-  _endColor: {r: 1, g: 0, b: 0, a: 0}
   _distortionParticleSystem: {fileID: 149337627362574242}
   _targetParticleSystem: {fileID: 5846660093293430387}
   _distortionRate: 20
