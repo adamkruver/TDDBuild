@@ -1,8 +1,7 @@
 ﻿using System;
-using Sources.Controllers.Zombies;
-using Sources.Controllers.Zombies.StateMachines.States;
-using Sources.Controllers.Zombies.StateMachines.Transitions;
-using Sources.Domain.Credits;
+using Sources.Controllers.Zombies.FiniteStateMachines;
+using Sources.Controllers.Zombies.FiniteStateMachines.States;
+using Sources.Controllers.Zombies.FiniteStateMachines.Transitions;
 using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Systems.Progresses;
 using Sources.Domain.Zombies;
@@ -17,6 +16,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
 {
     public class ZombieStateMachineFactory
     {
+        private readonly ZombieAfterLifeStateMachineFactory _afterLifeStateMachineFactory;
         private readonly ProgressSystem _progressSystem;
         private readonly AggressiveSystem _aggressiveSystem;
         private readonly EnemyRepository _enemyRepository;
@@ -26,6 +26,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
         private readonly PaymentService _paymentService;
 
         public ZombieStateMachineFactory(
+            ZombieAfterLifeStateMachineFactory afterLifeStateMachineFactory,
             ProgressSystem progressSystem,
             AggressiveSystem aggressiveSystem,
             EnemyRepository enemyRepository,
@@ -35,6 +36,8 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
             PaymentService paymentService
         )
         {
+            _afterLifeStateMachineFactory = afterLifeStateMachineFactory ??
+                                            throw new ArgumentNullException(nameof(afterLifeStateMachineFactory));
             _progressSystem = progressSystem ?? throw new ArgumentNullException(nameof(progressSystem));
             _aggressiveSystem = aggressiveSystem ?? throw new ArgumentNullException(nameof(aggressiveSystem));
             _enemyRepository = enemyRepository ?? throw new ArgumentNullException(nameof(enemyRepository));
@@ -74,15 +77,20 @@ namespace Sources.Infrastructure.Factories.Controllers.Zombies
                 _enemyRewardAccessor,
                 _paymentService
             );
+            ChangePresenterState changePresenterState =
+                new ChangePresenterState(view, _afterLifeStateMachineFactory);
 
             ToDeathTransition toDeathTransition = new ToDeathTransition(deathState, zombie.Health);
             ToHitTransition toHitTransition = new ToHitTransition(hitState, zombie.Health);
-            ToAnyOneFrameTransition toAnyOneFrameTransition = new ToAnyOneFrameTransition(moveState);
-            
+            ToAnyOneFrameTransition toMoveOneFrameTransition = new ToAnyOneFrameTransition(moveState);
+            ToChangePresenterTransition toChangePresenterTransition =
+                new ToChangePresenterTransition(changePresenterState, zombie);
+
             moveState.AddTransition(toHitTransition);
             moveState.AddTransition(toDeathTransition);
             hitState.AddTransition(toDeathTransition);
-            hitState.AddTransition(toAnyOneFrameTransition);
+            hitState.AddTransition(toMoveOneFrameTransition);
+            deathState.AddTransition(toChangePresenterTransition);
 
             stateMachine.SetFirstState(moveState);
         }

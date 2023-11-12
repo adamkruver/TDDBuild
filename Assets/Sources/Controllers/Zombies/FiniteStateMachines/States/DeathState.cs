@@ -1,5 +1,4 @@
-﻿using Sources.Domain.Credits;
-using Sources.Domain.Systems.Aggressive;
+﻿using Sources.Domain.Systems.Aggressive;
 using Sources.Domain.Systems.Progresses;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.FiniteStateMachines.States;
@@ -8,9 +7,8 @@ using Sources.Infrastructure.Services.Payments;
 using Sources.InfrastructureInterfaces.Assessors;
 using Sources.Presentation.Views.Systems.Damageable;
 using Sources.Presentation.Views.Zombies;
-using UnityEngine;
 
-namespace Sources.Controllers.Zombies.StateMachines.States
+namespace Sources.Controllers.Zombies.FiniteStateMachines.States
 {
     public class DeathState : FiniteStateBase
     {
@@ -46,8 +44,6 @@ namespace Sources.Controllers.Zombies.StateMachines.States
             _enemyDeathProgressAssessor = enemyDeathProgressAssessor;
             _enemyRewardAssessor = enemyRewardAssessor;
             _paymentService = paymentService;
-
-            _damageableSystemView = zombieView.DamageableSystemView;
         }
 
         protected override void OnEnter()
@@ -55,19 +51,10 @@ namespace Sources.Controllers.Zombies.StateMachines.States
             _aggressiveSystem.AddProgress(_enemyDeathAggressiveAssessor.Assess(_zombie));
             _progressSystem.AddProgress(_enemyDeathProgressAssessor.Assess(_zombie));
             _enemyRepository.Remove(_zombie);
-            _zombieView.Die(CalculateHitProjection());
-            _zombieView.Stop();
             _paymentService.Add(_enemyRewardAssessor.Assess(_zombie));
-        }
-
-        private float CalculateHitProjection()
-        {
-            float result = Vector3.Dot(_damageableSystemView.LastHitDirection, _zombieView.Forward);
-            
-            if (result == 0)
-                return 1;
-            
-            return result;
+            _zombieView.Stop();
+            _zombieView.DisablePhysics();
+            _zombie.Decay();
         }
     }
 }

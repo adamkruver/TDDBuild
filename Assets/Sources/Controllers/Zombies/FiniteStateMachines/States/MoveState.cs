@@ -2,7 +2,7 @@
 using Sources.PresentationInterfaces.Views.Zombies;
 using UnityEngine;
 
-namespace Sources.Controllers.Zombies.StateMachines.States
+namespace Sources.Controllers.Zombies.FiniteStateMachines.States
 {
     public class MoveState : FiniteStateBase
     {

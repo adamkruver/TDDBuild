@@ -1,8 +1,8 @@
 ﻿using Sources.Infrastructure.FiniteStateMachines;
 
-namespace Sources.Controllers.Zombies
+namespace Sources.Controllers.Zombies.FiniteStateMachines
 {
-    public class ZombieStateMachine : FiniteStateMachine, IPresenter
+    public class ZombieStateMachine : FiniteStateMachine, IZombieStateMachine
     {
         public void Enable() =>
             Run();

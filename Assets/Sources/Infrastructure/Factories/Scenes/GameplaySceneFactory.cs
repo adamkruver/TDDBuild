@@ -149,7 +149,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                     [typeof(Zombie)] = 1,
                 }
             );
-            
+
             EnemyAssessor enemyDeathAggressiveAssessor = new EnemyAssessor(
                 new Dictionary<Type, int>()
                 {
@@ -246,7 +246,11 @@ namespace Sources.Infrastructure.Factories.Scenes
                     }
                 );
 
+            ZombieAfterLifeStateMachineFactory zombieAfterLifeStateMachineFactory =
+                new ZombieAfterLifeStateMachineFactory();
+            
             ZombieStateMachineFactory zombieStateMachineFactory = new ZombieStateMachineFactory(
+                zombieAfterLifeStateMachineFactory,
                 progressSystem,
                 aggressiveSystem,
                 enemyRepository,

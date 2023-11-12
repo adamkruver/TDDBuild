@@ -1,4 +1,4 @@
-﻿using Sources.Controllers.Zombies;
+﻿using Sources.Controllers.Zombies.FiniteStateMachines;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
 using Sources.Infrastructure.Factories.Presentation.Systems;

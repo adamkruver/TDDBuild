@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Sources.PresentationInterfaces.Animations.Enemies;
 using UnityEngine;
 
@@ -28,20 +29,31 @@ namespace Sources.Presentation.Animations.Enemies
             _animator.SetTrigger(s_hitHash);
         }
 
-        public UniTask Die(float lastHitForwardProjection)
+        public UniTask Fall(float lastHitForwardProjection)
         {
             _animator.applyRootMotion = true;
             _animator.SetFloat(s_hitProjectionHash, lastHitForwardProjection);
-            _animator.SetTrigger(s_dieHash);
+            _animator.SetBool(s_dieHash, true);
             float animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
             return UniTask.Delay(TimeSpan.FromSeconds(animationLength),
                 cancellationToken: _cancellationTokenSource.Token);
+        }
+
+        public UniTask Decay()
+        {
+            _animator.applyRootMotion = false;
+            
+            return transform
+                .DOMove(transform.position + Vector3.down * 2, 1f)
+                .AsyncWaitForCompletion()
+                .AsUniTask();
         }
 
         private void OnDestroy()
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
+            transform.DOKill();
         }
     }
 }

@@ -3,7 +3,7 @@ using Sources.Presentation.Views.Systems.Damageable;
 using Sources.Presentation.Views.Zombies;
 using UnityEngine;
 
-namespace Sources.Controllers.Zombies.StateMachines.States
+namespace Sources.Controllers.Zombies.FiniteStateMachines.States
 {
     public class HitState : FiniteStateBase
     {
