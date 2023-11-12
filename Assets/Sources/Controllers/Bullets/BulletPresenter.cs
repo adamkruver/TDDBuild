@@ -18,5 +18,7 @@ namespace Sources.Controllers.Bullets
 
         public void Fire(IDamageable damageable, Vector3 direction) => 
             _bullet.Attack(damageable, direction);
+        
+        public float Speed => _bullet.Speed;
     }
 }

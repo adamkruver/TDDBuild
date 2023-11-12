@@ -38,7 +38,9 @@ namespace Sources.Controllers.Weapons.StateMachines.Lasers.Transitions
             if (enemyView == null)
                 return false;
 
-            return _weaponService.HasLockedTarget(enemyView, _compositeWeaponView.GunPointOffset);
+            return _weaponService.HasLockedTarget(
+                enemyView, _compositeWeaponView.GunPointOffset, _compositeWeaponView.GetShootPoint(_weapon.BulletId)
+            );
         }
     }
 }

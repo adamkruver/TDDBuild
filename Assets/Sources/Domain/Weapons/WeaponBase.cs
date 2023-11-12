@@ -10,17 +10,19 @@ namespace Sources.Domain.Weapons
     public abstract class WeaponBase : IWeapon
     {
         private const float MinCooldown = .2f;
-        
+
         private readonly ITimeService _timeSource;
         private readonly float _baseCooldown;
         private readonly float _baseMaxFireDistance;
-
-        private float _lastShootTime;
         private readonly LiveData<float> _maxFireDistance;
         private readonly LiveData<float> _cooldown;
+        private readonly int _shootAtOnce;
+
+        private int _currentBulletId;
+        private float _lastShootTime;
 
         private WeaponBase(
-            IBullet bullet,
+            IBullet[] bullets,
             ITimeService timeSource,
             UpgradeSystem upgradeSystem,
             float cooldown,
@@ -32,27 +34,27 @@ namespace Sources.Domain.Weapons
         )
         {
             _timeSource = timeSource;
-            Bullet = bullet;
+            Bullets = bullets;
             _baseCooldown = cooldown;
             MinFireDistance = minFireDistance;
             _baseMaxFireDistance = maxFireDistance;
-            ShootAtOnce = shootAtOnce;
+            _shootAtOnce = shootAtOnce;
             HorizontalRotationSpeed = horizontalRotationSpeed;
             VerticalRotationSpeed = verticalRotationSpeed;
             _maxFireDistance = upgradeSystem.MaxFireDistance.Value;
             _cooldown = upgradeSystem.Cooldown.Value;
-            
+
             Debug.Log(_baseCooldown + _cooldown.Value);
         }
 
         protected WeaponBase(
-            IBullet bullet,
+            IBullet[] bullets,
             ITimeService timeService,
             WeaponFab weaponFab,
             UpgradeSystem upgradeSystem
         )
             : this(
-                bullet,
+                bullets,
                 timeService,
                 upgradeSystem,
                 weaponFab.Cooldown,
@@ -66,17 +68,28 @@ namespace Sources.Domain.Weapons
         }
 
         public event Action Shooting;
-        public IBullet Bullet { get; }
+        public IBullet[] Bullets { get; }
+        public IBullet Bullet => Bullets[_currentBulletId];
         public float MinFireDistance { get; }
         public float MaxFireDistance => _baseMaxFireDistance + _maxFireDistance.Value;
         public float HorizontalRotationSpeed { get; }
         public float VerticalRotationSpeed { get; }
-        public int ShootAtOnce { get; }
+        public int BulletId => _currentBulletId;
         public float Cooldown => Mathf.Max(_baseCooldown + _cooldown.Value, MinCooldown);
 
         public bool CanShoot => _lastShootTime < _timeSource.Time - Cooldown;
 
-        public virtual void Shoot() =>
+        public virtual void Shoot()
+        {
             _lastShootTime = _timeSource.Time;
+
+            for (int i = 0; i < _shootAtOnce; i++)
+            {
+                Shooting?.Invoke();
+                
+                if (++_currentBulletId == Bullets.Length)
+                    _currentBulletId = 0;
+            }
+        }
     }
 }

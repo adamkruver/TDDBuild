@@ -16,6 +16,9 @@ namespace Sources.Presentation.Views.Zombies
 
         [field: SerializeField] public HealthView Health { get; private set; }
 
+
+        public override float Speed => _navMeshAgent.speed;
+
         public void Update() =>
             Presenter?.Update(Time.deltaTime);
 
@@ -36,7 +39,7 @@ namespace Sources.Presentation.Views.Zombies
         public void Hit(float lastHitForwardProjection) =>
             _zombieAnimation.Hit(lastHitForwardProjection);
 
-        public UniTask Fall(float lastHitForwardProjection) => 
+        public UniTask Fall(float lastHitForwardProjection) =>
             _zombieAnimation.Fall(lastHitForwardProjection);
 
         public void DisablePhysics()
@@ -44,8 +47,8 @@ namespace Sources.Presentation.Views.Zombies
             _navMeshAgent.enabled = false;
             IsVisible = false;
         }
-        
-        public UniTask Decay() => 
+
+        public UniTask Decay() =>
             _zombieAnimation.Decay();
 
         protected override void OnAfterCreate()

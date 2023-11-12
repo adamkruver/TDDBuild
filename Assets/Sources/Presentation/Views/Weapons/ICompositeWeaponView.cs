@@ -11,5 +11,6 @@ namespace Sources.Presentation.Views.Weapons
         Vector3 HeadPosition { get; }
         
         void Shoot(int weaponId);
+        Vector3 GetShootPoint(int bulletId);
     }
 }
