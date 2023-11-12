@@ -28,7 +28,7 @@ namespace Sources.Infrastructure.Services.Weapons
 
         private Vector3 GetDirectionToEnemy(IEnemyView enemy, float gunpointXOffset, Vector3 shootPoint)
         {
-            Vector3 directionToEnemyNormalized = (enemy.Position - shootPoint).normalized;
+            Vector3 directionToEnemyNormalized = (enemy.Position - _weaponRotationSystem.Position).normalized;
             Vector3 enemyForward = enemy.Forward * enemy.Speed;
 
             Vector3 enemyOrthogonal =
