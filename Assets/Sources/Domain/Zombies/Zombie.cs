@@ -1,7 +1,6 @@
 ﻿using System;
 using Sources.Domain.Enemies;
 using Sources.Domain.HealthPoints;
-using Sources.Domain.Systems;
 
 namespace Sources.Domain.Zombies
 {
@@ -16,6 +15,10 @@ namespace Sources.Domain.Zombies
         public event Action Died;
 
         public Health Health { get; }
+        public bool IsDecaying { get; private set; }
+
+        public void Decay() => 
+            IsDecaying = true;
 
         private void OnHealthPointsChanged(float healthPoints)
         {

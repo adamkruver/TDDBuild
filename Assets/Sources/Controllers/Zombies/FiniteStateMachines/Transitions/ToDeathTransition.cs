@@ -3,7 +3,7 @@ using Sources.Frameworks.LiveDatas;
 using Sources.Infrastructure.FiniteStateMachines.Transitions;
 using Sources.InfrastructureInterfaces.FiniteStateMachines;
 
-namespace Sources.Controllers.Zombies.StateMachines.Transitions
+namespace Sources.Controllers.Zombies.FiniteStateMachines.Transitions
 {
     public class ToDeathTransition : TransitionBase
     {
