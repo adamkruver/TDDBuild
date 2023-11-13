@@ -70,7 +70,7 @@ namespace Sources.Infrastructure.Factories.Scenes
         {
             ResourceService resourceService = new ResourceService();
 
-            Money money = new Money(220);
+            Money money = new Money(22220);
 
             await LoadResourcesAsync(resourceService);
 
@@ -265,6 +265,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             #region Presenter Factories
 
             BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
+            RocketPresenterFactory rocketPresenterFactory = new RocketPresenterFactory();
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
             DamageableSystemPresenterFactory damageableSystemPresenterFactory = new DamageableSystemPresenterFactory();
@@ -290,7 +291,7 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #region View Factories
 
-            BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory);
+            BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory, rocketPresenterFactory);
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
                 resourceService,

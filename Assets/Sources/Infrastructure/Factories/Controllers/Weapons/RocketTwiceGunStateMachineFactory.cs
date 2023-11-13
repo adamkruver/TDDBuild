@@ -1,4 +1,5 @@
-﻿using Sources.Controllers.Weapons.StateMachines.Lasers.States;
+﻿using System;
+using Sources.Controllers.Weapons.StateMachines.Lasers.States;
 using Sources.Controllers.Weapons.StateMachines.Lasers.Transitions;
 using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.FiniteStateMachines;
@@ -15,6 +16,8 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             ITargetProvider targetProvider
         )
         {
+            RocketTwiceGun rocketGun = weapon as RocketTwiceGun ?? throw new InvalidCastException(nameof(weapon));
+            
             TrackTargetState trackTargetState = new TrackTargetState(
                 weapon,
                 weaponService,
@@ -22,7 +25,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
                 targetProvider
             );
 
-            ShootState shootState = new ShootState(weapon);
+            RocketShootState shootState = new RocketShootState(rocketGun, compositeView, targetProvider);
 
             ToShootStateTransition toShootStateTransition = new ToShootStateTransition(
                 shootState,

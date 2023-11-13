@@ -44,7 +44,7 @@ namespace Sources.Presentation.Animations.Enemies
             _animator.applyRootMotion = false;
             
             return transform
-                .DOMove(transform.position + Vector3.down * 2, 1f)
+                .DOMove(transform.position + Vector3.down/2, 6f)
                 .AsyncWaitForCompletion()
                 .AsUniTask();
         }

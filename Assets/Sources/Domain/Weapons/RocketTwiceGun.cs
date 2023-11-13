@@ -14,12 +14,14 @@ namespace Sources.Domain.Weapons
             WeaponFab weaponFab,
             UpgradeSystem upgradeSystem
         ) : base(
-            Enumerable.Repeat(bullet, 2).ToArray(), 
+            Enumerable.Repeat(bullet, 4).ToArray(), 
             timeService, 
             weaponFab, 
             upgradeSystem
         )
         {
         }
+        
+        public Rocket Rocket => Bullet as Rocket;
     }
 }
