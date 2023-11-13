@@ -13,6 +13,9 @@ namespace Sources.Presentation.Views.Bullets
         [SerializeField] private AnimationCurve _heightCurve;
         [SerializeField] private AnimationCurve _speedCurve;
 
+        [SerializeField] private ParticleSystem _fireParticleSystem;
+        [SerializeField] private ParticleSystem _explosionParticleSystem;
+
         private CancellationTokenSource _cancellationTokenSource;
         private Vector3 _enemyPosition;
 
@@ -23,6 +26,7 @@ namespace Sources.Presentation.Views.Bullets
 
         public override void Shoot()
         {
+            StopFire();
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -40,6 +44,8 @@ namespace Sources.Presentation.Views.Bullets
             Vector3 lastPosition = startPosition;
 
             float progress = 0;
+            
+            RunFire();
 
             while (progress < 1)
             {
@@ -54,6 +60,25 @@ namespace Sources.Presentation.Views.Bullets
                 
                 await UniTask.Yield(cancellationToken);
             }
+            
+            StopFire();
+            OnReachTarget();
+        }
+
+        private void RunFire()
+        {
+            _fireParticleSystem.Play();
+        }
+
+        private void StopFire()
+        {
+            _fireParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        private void OnReachTarget()
+        {
+            print("OnReachTarget");
+            _explosionParticleSystem.Play();
         }
     }
 }
