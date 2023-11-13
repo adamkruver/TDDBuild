@@ -14,9 +14,12 @@ namespace Sources.Presentation.Views.Bullets
         [SerializeField] private AnimationCurve _speedCurve;
 
         private CancellationTokenSource _cancellationTokenSource;
+        private Vector3 _enemyPosition;
 
-        private Vector3 EnemyPosition => (Presenter as RocketPresenter)?.Enemy?.Position
-                                         ?? Transform.position + Transform.forward * 100;
+        public void SetEnemyPosition(Vector3 position)
+        {
+            _enemyPosition = position;
+        }
 
         public override void Shoot()
         {
@@ -30,7 +33,7 @@ namespace Sources.Presentation.Views.Bullets
         {
             Transform.parent = null;
             Vector3 startPosition = Transform.position;
-            Vector3 endPosition = EnemyPosition;
+            Vector3 endPosition = _enemyPosition;
             endPosition.y = 0;
             
             Vector3 flyDirection = endPosition - startPosition;

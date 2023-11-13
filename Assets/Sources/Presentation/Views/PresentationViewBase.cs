@@ -1,4 +1,5 @@
-﻿using Sources.Controllers;
+﻿using System;
+using Sources.Controllers;
 using Sources.Presentation.Components;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace Sources.Presentation.Views
         public void Construct(T presenter)
         {
             Hide();
-            Presenter = presenter;
+            Presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
             Show();
             OnConstruct();
         }
