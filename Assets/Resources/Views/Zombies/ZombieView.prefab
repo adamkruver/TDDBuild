@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DamageableSystemView>k__BackingField: {fileID: 5277823081139978213}
   _navMeshAgent: {fileID: 344446195224669742}
+  _characterController: {fileID: 344446195224669741}
   _zombieAnimation: {fileID: 7679442489145542416}
   <Health>k__BackingField: {fileID: 7147753477685838153}
 --- !u!114 &7679442489145542416

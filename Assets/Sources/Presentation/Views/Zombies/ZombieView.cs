@@ -12,10 +12,10 @@ namespace Sources.Presentation.Views.Zombies
     public class ZombieView : EnemyView<IZombieStateMachine>, IZombieView
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
+        [SerializeField] private CharacterController _characterController;
         [SerializeField] private ZombieAnimation _zombieAnimation;
 
         [field: SerializeField] public HealthView Health { get; private set; }
-
 
         public override float Speed => _navMeshAgent.speed;
 
@@ -45,6 +45,7 @@ namespace Sources.Presentation.Views.Zombies
         public void DisablePhysics()
         {
             _navMeshAgent.enabled = false;
+            _characterController.enabled = false;
             IsVisible = false;
         }
 
@@ -55,6 +56,7 @@ namespace Sources.Presentation.Views.Zombies
         {
             base.OnAfterCreate();
             _navMeshAgent.enabled = true;
+            _characterController.enabled = true;
             IsVisible = true;
             _zombieAnimation.ResetToIdle();
         }
