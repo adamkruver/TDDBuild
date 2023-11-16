@@ -15,6 +15,6 @@ MonoBehaviour:
   <Cooldown>k__BackingField: 0.3
   <MinFireDistance>k__BackingField: 1
   <MaxFireDistance>k__BackingField: 10
-  <HorizontalRotationSpeed>k__BackingField: 0.3
+  <HorizontalRotationSpeed>k__BackingField: 0.1
   <VerticalRotationSpeed>k__BackingField: 0.3
   <ShootAtOnce>k__BackingField: 2

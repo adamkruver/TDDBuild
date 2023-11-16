@@ -18,6 +18,7 @@ namespace Sources.Presentation.Views.Bullets
         [SerializeField] private ParticleSystem _distortionParticleSystem;
         [SerializeField] private ParticleSystem _targetParticleSystem;
         [SerializeField] private float _distortionRate = 20f;
+        [SerializeField] private AudioSource _shootSource;
 
         private LineRenderer _lineRenderer;
         private CancellationTokenSource _cancellationTokenSource;
@@ -40,6 +41,7 @@ namespace Sources.Presentation.Views.Bullets
             _targetTransform = _targetParticleSystem.transform;
             _lineRenderer.startWidth = 0;
             _lineRenderer.endWidth = 0;
+            _shootSource.pitch = Random.Range(.95f, 1.1f);
         }
 
         public override void Shoot()
@@ -58,6 +60,7 @@ namespace Sources.Presentation.Views.Bullets
 
             _distortionParticleSystem.Play();
             _targetParticleSystem.Play();
+            _shootSource.Play();
 
             
             while (time < 1f)

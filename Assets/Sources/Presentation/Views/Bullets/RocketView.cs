@@ -13,13 +13,20 @@ namespace Sources.Presentation.Views.Bullets
         [SerializeField] private AnimationCurve _heightCurve;
         [SerializeField] private AnimationCurve _speedCurve;
 
-        private CancellationTokenSource _cancellationTokenSource;
+        [SerializeField] private ParticleSystem _fireParticleSystem;
+        [SerializeField] private ParticleSystem _explosionParticleSystem;
 
-        private Vector3 EnemyPosition => (Presenter as RocketPresenter)?.Enemy?.Position
-                                         ?? Transform.position + Transform.forward * 100;
+        private CancellationTokenSource _cancellationTokenSource;
+        private Vector3 _enemyPosition;
+
+        public void SetEnemyPosition(Vector3 position)
+        {
+            _enemyPosition = position;
+        }
 
         public override void Shoot()
         {
+            StopFire();
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -30,13 +37,15 @@ namespace Sources.Presentation.Views.Bullets
         {
             Transform.parent = null;
             Vector3 startPosition = Transform.position;
-            Vector3 endPosition = EnemyPosition;
+            Vector3 endPosition = _enemyPosition;
             endPosition.y = 0;
             
             Vector3 flyDirection = endPosition - startPosition;
             Vector3 lastPosition = startPosition;
 
             float progress = 0;
+            
+            RunFire();
 
             while (progress < 1)
             {
@@ -51,6 +60,25 @@ namespace Sources.Presentation.Views.Bullets
                 
                 await UniTask.Yield(cancellationToken);
             }
+            
+            StopFire();
+            OnReachTarget();
+        }
+
+        private void RunFire()
+        {
+            _fireParticleSystem.Play();
+        }
+
+        private void StopFire()
+        {
+            _fireParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        private void OnReachTarget()
+        {
+            print("OnReachTarget");
+            _explosionParticleSystem.Play();
         }
     }
 }

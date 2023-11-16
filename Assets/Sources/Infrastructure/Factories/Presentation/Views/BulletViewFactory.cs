@@ -21,7 +21,7 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         public BulletViewBase Create(BulletViewBase bulletViewBase, IBullet bullet)
         {
             if (bullet is Rocket rocket)
-                bulletViewBase.Construct(_rocketPresenterFactory.Create(bulletViewBase, rocket));
+                bulletViewBase.Construct(_rocketPresenterFactory.Create(bulletViewBase as RocketView, rocket));
             else
                 bulletViewBase.Construct(_bulletPresenterFactory.Create(bulletViewBase, bullet));
 
