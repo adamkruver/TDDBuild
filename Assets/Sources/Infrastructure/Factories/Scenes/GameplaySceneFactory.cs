@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
+using Sources.Controllers.Systems;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
@@ -37,6 +38,7 @@ using Sources.Infrastructure.Handlers.Pointers;
 using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Resource;
 using Sources.Infrastructure.Services.Cameras;
+using Sources.Infrastructure.Services.NavMeshes;
 using Sources.Infrastructure.Services.Payments;
 using Sources.Infrastructure.Services.Pointers;
 using Sources.Infrastructure.Services.Raycasts;
@@ -248,7 +250,7 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             ZombieAfterLifeStateMachineFactory zombieAfterLifeStateMachineFactory =
                 new ZombieAfterLifeStateMachineFactory();
-            
+
             ZombieStateMachineFactory zombieStateMachineFactory = new ZombieStateMachineFactory(
                 zombieAfterLifeStateMachineFactory,
                 progressSystem,
@@ -385,6 +387,16 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #endregion
 
+            #region Path Draw System Presenter And View Factories
+
+            NavMeshService navMeshService = new NavMeshService();
+            PathDrawSystemPresenterFactory pathDrawSystemPresenterFactory = new PathDrawSystemPresenterFactory();
+            PathPointViewFactory pathPointViewFactory = new PathPointViewFactory();
+            PathDrawViewFactory pathDrawViewFactory =
+                new PathDrawViewFactory(pathDrawSystemPresenterFactory, pathPointViewFactory);
+
+            #endregion
+
             pointerService.RegisterHandler(1, new CameraRotationPointerHandler(gameplayCameraService));
 
             SpawnNotifierUi spawnNotifierUi =
@@ -397,7 +409,6 @@ namespace Sources.Infrastructure.Factories.Scenes
             //      upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Bullet, bulletUpgradeSystem);
             //    upgradeSystemUiFactory.Create(upgradeSystemUiContainer.Rocket, rocketUpgradeSystem);
 
-
             hud.TopLeft.AddChild(progressSystemUiFactory.Create(progressSystem));
             hud.TopCenter.AddChild(moneyUiFactory.Create(money));
             hud.TopRight.AddChild(aggressiveSystemUiFactory.Create(aggressiveSystem));
@@ -405,9 +416,10 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             hud.MiddleLeft.AddChild(upgradeSystemUiContainer);
 
-
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
                 hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton));
+
+            pathDrawViewFactory.Create(navMeshService);
 
             return new GameplayScene(
                 resourceService, pointerService, gameplayCameraService, spawnSystem, spawnNotifierUi
