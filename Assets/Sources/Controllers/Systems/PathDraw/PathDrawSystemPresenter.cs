@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sources.Infrastructure.Factories.Presentation.Systems.PathDraw;
@@ -38,20 +39,26 @@ namespace Sources.Controllers.Systems.PathDraw
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
 
+            CancellationToken cancellationToken = _cancellationTokenSource.Token;
             Vector3 startPoint = _pathDrawSystemView.StartPoint;
             Vector3 endPoint = _pathDrawSystemView.EndPoint;
             float interval = _pathDrawSystemView.Distance;
 
-            foreach (Vector3 point in _navMeshService.CalculatePathPoints(startPoint, endPoint, interval))
+            try
             {
-                PathDrawSystemPointView pointView = _pathDrawSystemPointViewFactory.Create(point, Vector3.forward);
+                foreach (Vector3 point in _navMeshService.CalculatePathPoints(startPoint, endPoint, interval))
+                {
+                    PathDrawSystemPointView pointView = _pathDrawSystemPointViewFactory.Create(point, Vector3.forward);
+                    pointView.Show(cancellationToken);
 
-                pointView.Show(_cancellationTokenSource.Token).SuppressCancellationThrow();
-
-                await UniTask.Delay(
-                    TimeSpan.FromSeconds(_pathDrawSystemView.SpawnInterval),
-                    cancellationToken: _cancellationTokenSource.Token
-                );
+                    await UniTask.Delay(
+                        TimeSpan.FromSeconds(_pathDrawSystemView.SpawnInterval),
+                        cancellationToken: cancellationToken
+                    );
+                }
+            }
+            catch (OperationCanceledException)
+            {
             }
         }
     }

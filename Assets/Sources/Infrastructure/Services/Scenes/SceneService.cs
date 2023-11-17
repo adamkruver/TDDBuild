@@ -8,21 +8,18 @@ using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.InfrastructureInterfaces.Services;
 using Sources.InfrastructureInterfaces.Services.Scenes;
 using Sources.InfrastructureInterfaces.Services.Scenes.Events;
-using Sources.InfrastructureInterfaces.StateMachines;
 
 namespace Sources.Infrastructure.Services.Scenes
 {
     public class SceneService : ISceneChangeService, IUpdatable, ILateUpdatable, IFixedUpdatable
     {
+        private readonly StateMachine<IScene> _stateMachine = new StateMachine<IScene>();
         private readonly List<IEventHandler> _eventHandlers = new List<IEventHandler>();
-        private readonly StateMachine<IScene> _stateMachine;
-        private readonly Dictionary<string, ISceneFactory> _sceneFactories;
 
-        public SceneService(StateMachine<IScene> stateMachine, Dictionary<string, ISceneFactory> sceneFactories)
-        {
-            _stateMachine = stateMachine;
+        private readonly IReadOnlyDictionary<string, ISceneFactory> _sceneFactories;
+
+        public SceneService(IReadOnlyDictionary<string, ISceneFactory> sceneFactories) =>
             _sceneFactories = sceneFactories;
-        }
 
         public void AddEventListener(IEventHandler eventHandler) =>
             _eventHandlers.Add(eventHandler);
@@ -30,7 +27,7 @@ namespace Sources.Infrastructure.Services.Scenes
         public void RemoveEventListener(IEventHandler eventHandler) =>
             _eventHandlers.Remove(eventHandler);
 
-        public async UniTask ChangeStateAsync(string sceneName, object payload = null)
+        public async UniTask ChangeSceneAsync(string sceneName, object payload = null)
         {
             if (ContainState(sceneName) == false)
                 throw new InvalidOperationException(nameof(sceneName));
@@ -45,15 +42,15 @@ namespace Sources.Infrastructure.Services.Scenes
             await NotifyAfterEnterListeners(sceneName);
         }
 
-        public void Update(float deltaTime) => 
+        public void Update(float deltaTime) =>
             _stateMachine.Update(deltaTime);
 
-        public void UpdateFixed(float fixedDeltaTime) => 
+        public void UpdateFixed(float fixedDeltaTime) =>
             _stateMachine.UpdateFixed(fixedDeltaTime);
 
-        public void UpdateLate(float deltaTime) => 
+        public void UpdateLate(float deltaTime) =>
             _stateMachine.UpdateLate(deltaTime);
-        
+
         private async UniTask NotifyBeforeEnterListeners(string sceneName)
         {
             foreach (IEventHandler listener in _eventHandlers)

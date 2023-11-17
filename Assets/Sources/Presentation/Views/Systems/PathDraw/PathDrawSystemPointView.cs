@@ -12,11 +12,8 @@ namespace Sources.Presentation.Views.Systems.PathDraw
         [field: SerializeField] public AnimationCurve ScaleCurve { get; private set; }
         [field: SerializeField] public AnimationCurve YPositionCurve { get; private set; }
 
-        public async UniTask Show(CancellationToken cancellationToken) => 
-            await Presenter.Show(cancellationToken);
-
-        protected override void OnAfterDisable() =>
-            Hide();
+        public void Show(CancellationToken cancellationToken) => 
+            Presenter.ShowAsync(cancellationToken);
 
         public void SetPosition(Vector3 position) =>
             Transform.position = position;

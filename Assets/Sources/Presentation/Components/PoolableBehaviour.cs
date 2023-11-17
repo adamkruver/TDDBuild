@@ -28,8 +28,6 @@ namespace Sources.Presentation.Components
 
             gameObject.SetActive(false);
             _objectPool.Add(this);
-
-            return;
         }
 
         protected virtual void OnAfterCreate()

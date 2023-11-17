@@ -14,7 +14,7 @@ namespace Sources.App.Core
             DontDestroyOnLoad(this);
 
         private IEnumerator Start() =>
-            _sceneService.ChangeStateAsync(SceneManager.GetActiveScene().name).ToCoroutine();
+            _sceneService.ChangeSceneAsync(SceneManager.GetActiveScene().name).ToCoroutine();
 
         private void Update() =>
             _sceneService?.Update(Time.deltaTime);

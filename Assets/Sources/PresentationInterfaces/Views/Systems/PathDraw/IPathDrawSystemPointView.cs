@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Sources.PresentationInterfaces.Views.Systems.PathDraw
@@ -10,7 +9,7 @@ namespace Sources.PresentationInterfaces.Views.Systems.PathDraw
         AnimationCurve ScaleCurve { get; }
         AnimationCurve YPositionCurve { get; }
 
-        UniTask Show(CancellationToken cancellationToken);
+        void Show(CancellationToken cancellationToken);
 
         void Show();
 

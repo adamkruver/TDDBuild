@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using Sources.Constants;
 using Sources.Controllers.Scenes;
 using Sources.Controllers.Scenes.Gameplay;
-using Sources.Controllers.Systems;
 using Sources.Domain.Constructs;
 using Sources.Domain.Credits;
 using Sources.Domain.Systems.Aggressive;
@@ -48,6 +47,7 @@ using Sources.Infrastructure.Services.Tilemaps;
 using Sources.Infrastructure.Services.Times;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
+using Sources.InfrastructureInterfaces.Services.Scenes;
 using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Ui.Constructs;
@@ -71,6 +71,11 @@ namespace Sources.Infrastructure.Factories.Scenes
 {
     public class GameplaySceneFactory : ISceneFactory
     {
+        private readonly ISceneChangeService _sceneChangeService;
+
+        public GameplaySceneFactory(ISceneChangeService sceneChangeService) =>
+            _sceneChangeService = sceneChangeService;
+
         public async UniTask<IScene> Create(object payload)
         {
             ResourceService resourceService = new ResourceService();
