@@ -1,6 +1,6 @@
+using Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.ImageEffects.Scripts;
 using UnityEditor;
 using UnityEngine;
-using UnityStandardAssets.ImageEffects;
 
 namespace KriptoFX.Realistic_Effects_Pack_3.Editor.ImageEffects
 {

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Share;
+using UnityEditor;
 using UnityEngine;
 
 namespace KriptoFX.Realistic_Effects_Pack_3.Scripts.Editor

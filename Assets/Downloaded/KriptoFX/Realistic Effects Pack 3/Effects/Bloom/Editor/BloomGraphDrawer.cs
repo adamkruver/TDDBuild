@@ -9,7 +9,7 @@ namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Editor
         #region Public Methods
 
         // Update internal state from given settings.
-        public void Prepare(UnityStandardAssets.CinematicEffects.Bloom.Settings settings, bool isHdr)
+        public void Prepare(Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Bloom.Settings settings, bool isHdr)
         {
             if (isHdr)
             {

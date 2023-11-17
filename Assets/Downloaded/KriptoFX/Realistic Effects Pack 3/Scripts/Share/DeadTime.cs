@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class DeadTime: MonoBehaviour
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Share
 {
-  public float deadTime = 1.5f;
-  public bool destroyRoot;
-  void Awake()
+  public class DeadTime: MonoBehaviour
   {
-    Destroy(!destroyRoot ? gameObject : transform.root.gameObject, deadTime);
+    public float deadTime = 1.5f;
+    public bool destroyRoot;
+    void Awake()
+    {
+      Destroy(!destroyRoot ? gameObject : transform.root.gameObject, deadTime);
+    }
   }
 }

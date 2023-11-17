@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 2521534279874742512}
   - component: {fileID: 5137386696180873827}
   m_Layer: 0
-  m_Name: PathDrawView
+  m_Name: PathDrawSystemView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -369,7 +369,8 @@ MonoBehaviour:
   _startPoint: {fileID: 4409311183740980815}
   _endPoint: {fileID: 8795522201608390704}
   _drawButton: {fileID: 1281190790047403937}
-  <Interval>k__BackingField: 1
+  <Distance>k__BackingField: 1.5
+  <SpawnInterval>k__BackingField: 0.15
 --- !u!1 &8508941074782386844
 GameObject:
   m_ObjectHideFlags: 0

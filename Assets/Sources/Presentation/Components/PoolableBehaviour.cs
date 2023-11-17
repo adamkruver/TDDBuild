@@ -6,11 +6,13 @@ namespace Sources.Presentation.Components
     public class PoolableBehaviour : MonoBehaviour
     {
         private ObjectPool _objectPool;
-        
-        public void Create(ObjectPool objectPool)
+
+        public PoolableBehaviour SetPool(ObjectPool objectPool)
         {
             _objectPool = objectPool;
             OnAfterCreate();
+
+            return this;
         }
 
         public void Destroy()
@@ -21,11 +23,13 @@ namespace Sources.Presentation.Components
 
                 return;
             }
-            
+
             OnBeforeDestroy();
-            
+
             gameObject.SetActive(false);
             _objectPool.Add(this);
+
+            return;
         }
 
         protected virtual void OnAfterCreate()

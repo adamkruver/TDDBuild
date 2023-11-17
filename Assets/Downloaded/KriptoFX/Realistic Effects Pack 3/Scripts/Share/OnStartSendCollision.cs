@@ -1,30 +1,32 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class OnStartSendCollision : MonoBehaviour
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Share
 {
-
-  private EffectSettings effectSettings;
-  private bool isInitialized;
-
-  private void GetEffectSettingsComponent(Transform tr)
+  public class OnStartSendCollision : MonoBehaviour
   {
-    var parent = tr.parent;
-    if (parent != null)
+
+    private EffectSettings effectSettings;
+    private bool isInitialized;
+
+    private void GetEffectSettingsComponent(Transform tr)
     {
-      effectSettings = parent.GetComponentInChildren<EffectSettings>();
-      if (effectSettings == null)
-        GetEffectSettingsComponent(parent.transform);
+      var parent = tr.parent;
+      if (parent != null)
+      {
+        effectSettings = parent.GetComponentInChildren<EffectSettings>();
+        if (effectSettings == null)
+          GetEffectSettingsComponent(parent.transform);
+      }
     }
-  }
-	void Start () {
-    GetEffectSettingsComponent(transform);
-    effectSettings.OnCollisionHandler(new CollisionInfo());
-	  isInitialized = true;
-	}
+    void Start () {
+      GetEffectSettingsComponent(transform);
+      effectSettings.OnCollisionHandler(new CollisionInfo());
+      isInitialized = true;
+    }
 
-  void OnEnable()
-  {
-    if (isInitialized) effectSettings.OnCollisionHandler(new CollisionInfo());
+    void OnEnable()
+    {
+      if (isInitialized) effectSettings.OnCollisionHandler(new CollisionInfo());
+    }
   }
 }

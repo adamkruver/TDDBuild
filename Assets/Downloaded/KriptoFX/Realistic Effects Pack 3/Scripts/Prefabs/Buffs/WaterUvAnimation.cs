@@ -1,39 +1,41 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WaterUvAnimation : MonoBehaviour
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Prefabs.Buffs
 {
-  public bool IsReverse;
-  public float Speed = 1;
-  public int MaterialNomber = 0;
+  public class WaterUvAnimation : MonoBehaviour
+  {
+    public bool IsReverse;
+    public float Speed = 1;
+    public int MaterialNomber = 0;
 
-  private Material mat;
-  private float deltaFps;
-  private bool isVisible;
-  private bool isCorutineStarted;
-  private float offset, delta;
+    private Material mat;
+    private float deltaFps;
+    private bool isVisible;
+    private bool isCorutineStarted;
+    private float offset, delta;
   
-  private void Awake()
-  {
-    mat = GetComponent<Renderer>().materials[MaterialNomber];
-  }
+    private void Awake()
+    {
+      mat = GetComponent<Renderer>().materials[MaterialNomber];
+    }
 
-  private void Update()
-  {
-    if (IsReverse)
+    private void Update()
     {
-      offset -= Time.deltaTime*Speed;
-      if (offset < 0)
-        offset = 1;
+      if (IsReverse)
+      {
+        offset -= Time.deltaTime*Speed;
+        if (offset < 0)
+          offset = 1;
+      }
+      else
+      {
+        offset += Time.deltaTime * Speed;
+        if (offset > 1)
+          offset = 0;
+      }
+      var vec = new Vector2(0, offset);
+      mat.SetTextureOffset("_BumpMap", vec);
+      mat.SetFloat("_OffsetYHeightMap", offset);
     }
-    else
-    {
-      offset += Time.deltaTime * Speed;
-      if (offset > 1)
-        offset = 0;
-    }
-    var vec = new Vector2(0, offset);
-    mat.SetTextureOffset("_BumpMap", vec);
-    mat.SetFloat("_OffsetYHeightMap", offset);
   }
 }

@@ -1,6 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using MinAttribute = UnityStandardAssets.CinematicEffects.MinAttribute;
+using MinAttribute = Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Common.MinAttribute;
 
 namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Common.Editor
 {

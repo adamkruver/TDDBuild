@@ -1,9 +1,7 @@
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
+using UnityEngine;
 
-namespace UnityStandardAssets.CinematicEffects
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Common
 {
     public static class ImageEffectHelper
     {

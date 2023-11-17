@@ -8,18 +8,23 @@ namespace Sources.Presentation.Views.Bullets
     {
         [SerializeField] private ParticleSystem _bulletParticleSystem;
         [SerializeField] private float _bulletSpeed = 1f;
+        [SerializeField] private AudioSource _shootSource;
 
         private ParticleSystem.MainModule _bulletMain;
 
         private float Speed => Presenter?.Speed ?? _bulletSpeed;
 
-        protected override void OnAwake() =>
+        protected override void OnAwake()
+        {
             _bulletMain = _bulletParticleSystem.main;
+        }
 
         public override void Shoot()
         {
             Setup();
             _bulletParticleSystem.Play();
+            _shootSource.pitch = Random.Range(.9f, 1f);
+            _shootSource.Play();
         }
 
         private void OnParticleCollision(GameObject other)

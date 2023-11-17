@@ -5,5 +5,6 @@ namespace Sources.InfrastructureInterfaces.ObjectPools
     public interface IObjectPool
     {
         T Get<T>() where T : PoolableBehaviour;
+        bool Contain<T>() where T : PoolableBehaviour;
     }
 }

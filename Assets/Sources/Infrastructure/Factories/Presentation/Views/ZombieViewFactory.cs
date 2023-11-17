@@ -19,7 +19,7 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
         private readonly DamageableSystemViewFactory _damageableSystemViewFactory;
         private readonly GameplayCamera _gameplayCamera;
         private readonly BaseView _baseView;
-        private readonly ObjectPool _objectPool = new ObjectPool();
+        private readonly ObjectPool _objectPool;
 
         public ZombieViewFactory(
             HealthViewFactory healthViewFactory,
@@ -38,18 +38,23 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
             _damageableSystemViewFactory = damageableSystemViewFactory;
             _gameplayCamera = gameplayCamera;
             _baseView = baseView;
+            _objectPool = new ObjectPool(" ==== Enemy Pool ==== ");
         }
+
+        private ZombieView Prefab =>
+            _resourceService.Load<ZombieView>("Views/Zombies/ZombieView");
 
         public ZombieView Create(Zombie zombie, Vector3 spawnPosition)
         {
-            ZombieView view = _objectPool.Get<ZombieView>() ?? Object.Instantiate(
-                _resourceService.Load<ZombieView>("Views/Zombies/ZombieView"), spawnPosition, Quaternion.identity
-            );
+            if (_objectPool.Contain<ZombieView>() == false)
+                Object.Instantiate(Prefab).SetPool(_objectPool).Destroy();
+
+            ZombieView view = _objectPool.Get<ZombieView>();
 
             _healthViewFactory.Create(view.Health, zombie.Health);
 
             view.Health.SetCamera(_gameplayCamera.Camera);
-            view.Create(_objectPool);
+            view.SetPool(_objectPool);
             view.SetPosition(spawnPosition);
 
             ZombieStateMachine zombieStateMachine = _zombieStateMachineFactory.Create(view, zombie, _baseView);

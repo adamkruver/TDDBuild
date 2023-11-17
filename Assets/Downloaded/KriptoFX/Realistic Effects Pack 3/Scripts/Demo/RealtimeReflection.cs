@@ -1,28 +1,30 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class RealtimeReflection : MonoBehaviour {
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Demo
+{
+    public class RealtimeReflection : MonoBehaviour {
 
- #if UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 
+#if UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 
 #else
-    ReflectionProbe probe;
-    private Transform camT;
+        ReflectionProbe probe;
+        private Transform camT;
 
-    void Awake()
-    {
-        probe = GetComponent<ReflectionProbe>();
-        camT = Camera.main.transform;
-    }
+        void Awake()
+        {
+            probe = GetComponent<ReflectionProbe>();
+            camT = Camera.main.transform;
+        }
 
-    void Update()
-    {
-        var pos = camT.position;
-        probe.transform.position = new Vector3(
-            pos.x,
-            pos.y * -1,
-            pos.z
-        );
-        probe.RenderProbe();
-    }
+        void Update()
+        {
+            var pos = camT.position;
+            probe.transform.position = new Vector3(
+                pos.x,
+                pos.y * -1,
+                pos.z
+            );
+            probe.RenderProbe();
+        }
 #endif
+    }
 }

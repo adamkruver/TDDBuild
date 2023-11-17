@@ -21,6 +21,7 @@ using Sources.Infrastructure.Factories.Controllers.Constructions;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
 using Sources.Infrastructure.Factories.Controllers.HealthPoints;
 using Sources.Infrastructure.Factories.Controllers.Systems;
+using Sources.Infrastructure.Factories.Controllers.Systems.PathDraw;
 using Sources.Infrastructure.Factories.Controllers.Turrets;
 using Sources.Infrastructure.Factories.Controllers.Weapons;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
@@ -31,6 +32,7 @@ using Sources.Infrastructure.Factories.Domain.Weapons;
 using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Systems;
+using Sources.Infrastructure.Factories.Presentation.Systems.PathDraw;
 using Sources.Infrastructure.Factories.Presentation.Ui;
 using Sources.Infrastructure.Factories.Presentation.Ui.Systems;
 using Sources.Infrastructure.Factories.Presentation.Views;
@@ -54,6 +56,7 @@ using Sources.Presentation.Ui.Systems.Progresses;
 using Sources.Presentation.Ui.Systems.Spawn;
 using Sources.Presentation.Ui.Systems.Upgrades;
 using Sources.Presentation.Views.Cameras;
+using Sources.Presentation.Views.Systems.PathDraw;
 using Sources.Presentation.Views.Systems.Spawn;
 using Sources.Presentation.Views.Systems.TargetTrackers;
 using Sources.Presentation.Views.Turrets;
@@ -278,6 +281,9 @@ namespace Sources.Infrastructure.Factories.Scenes
             ProgressSystemPresenterFactory progressSystemPresenterFactory = new ProgressSystemPresenterFactory();
             UpgradeSystemPresenterFactory upgradeSystemPresenterFactory = new UpgradeSystemPresenterFactory();
             HealthPresenterFactory healthPresenterFactory = new HealthPresenterFactory();
+            PathDrawSystemPresenterFactory pathDrawSystemPresenterFactory = new PathDrawSystemPresenterFactory();
+            PathDrawSystemPointPresenterFactory pathDrawSystemPointPresenterFactory =
+                new PathDrawSystemPointPresenterFactory();
 
             #endregion
 
@@ -330,6 +336,14 @@ namespace Sources.Infrastructure.Factories.Scenes
                     ["Zombie"] = position => zombieViewFactory.Create(zombieFactory.Create(), position),
                 }
             );
+
+            PathDrawSystemPointViewFactory pathDrawSystemPointViewFactory =
+                new PathDrawSystemPointViewFactory(resourceService, pathDrawSystemPointPresenterFactory);
+
+            PathDrawSystemViewFactory pathDrawSystemViewFactory =
+                new PathDrawSystemViewFactory(
+                    resourceService, pathDrawSystemPresenterFactory, pathDrawSystemPointViewFactory
+                );
 
             #endregion
 
@@ -390,10 +404,6 @@ namespace Sources.Infrastructure.Factories.Scenes
             #region Path Draw System Presenter And View Factories
 
             NavMeshService navMeshService = new NavMeshService();
-            PathDrawSystemPresenterFactory pathDrawSystemPresenterFactory = new PathDrawSystemPresenterFactory();
-            PathPointViewFactory pathPointViewFactory = new PathPointViewFactory();
-            PathDrawViewFactory pathDrawViewFactory =
-                new PathDrawViewFactory(pathDrawSystemPresenterFactory, pathPointViewFactory);
 
             #endregion
 
@@ -419,7 +429,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             foreach (ConstructButton constructButton in constructButtonCollection.ConstructButtons)
                 hud.Footer.AddChild(constructButtonUiFactory.Create(constructButton));
 
-            pathDrawViewFactory.Create(navMeshService);
+            pathDrawSystemViewFactory.Create(navMeshService);
 
             return new GameplayScene(
                 resourceService, pointerService, gameplayCameraService, spawnSystem, spawnNotifierUi
@@ -437,6 +447,8 @@ namespace Sources.Infrastructure.Factories.Scenes
                 .Register<ConstructButtonUi>("Ui/Buttons/Constructs/ConstructButtonUi")
                 .Register<TextUi>("Ui/Credits/MoneyUi")
                 .Register<AggressiveSystemUi>("Ui/Systems/AggressiveSystemUi")
+                .Register<PathDrawSystemView>("Systems/PathDraw/PathDrawSystemView")
+                .Register<PathDrawSystemPointView>("Systems/PathDraw/PathDrawSystemPointView")
                 .Register<ProgressSystemUi>("Ui/Systems/ProgressSystemUi")
                 .RegisterInterfaceImplementationsByType<TurretConstructionPreview, IWeapon>(
                     "Previews/Weapons/{0}Preview"

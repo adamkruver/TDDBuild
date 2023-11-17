@@ -1,18 +1,21 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Share;
+using UnityEngine;
 
-public class ResetPositionOnDiactivated : MonoBehaviour
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Prefabs.Objects
 {
-
-  public EffectSettings EffectSettings;
-
-  void Start()
+  public class ResetPositionOnDiactivated : MonoBehaviour
   {
-    EffectSettings.EffectDeactivated += EffectSettings_EffectDeactivated;
-  }
 
-  void EffectSettings_EffectDeactivated(object sender, System.EventArgs e)
-  {
-    transform.localPosition = Vector3.zero;
+    public EffectSettings EffectSettings;
+
+    void Start()
+    {
+      EffectSettings.EffectDeactivated += EffectSettings_EffectDeactivated;
+    }
+
+    void EffectSettings_EffectDeactivated(object sender, System.EventArgs e)
+    {
+      transform.localPosition = Vector3.zero;
+    }
   }
 }

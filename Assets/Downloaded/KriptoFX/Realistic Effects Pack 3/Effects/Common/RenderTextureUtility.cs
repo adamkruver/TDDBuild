@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityStandardAssets.CinematicEffects
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Common
 {
     public class RenderTextureUtility
     {

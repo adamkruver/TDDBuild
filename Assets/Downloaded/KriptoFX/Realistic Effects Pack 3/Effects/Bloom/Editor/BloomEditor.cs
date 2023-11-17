@@ -7,7 +7,7 @@ using UnityEngine;
 namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Editor
 {
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(UnityStandardAssets.CinematicEffects.Bloom))]
+    [CustomEditor(typeof(Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Bloom))]
     public class BloomEditor : UnityEditor.Editor
     {
         [NonSerialized]
@@ -15,7 +15,7 @@ namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Editor
 
         BloomGraphDrawer _graph;
 
-        bool CheckHdr(UnityStandardAssets.CinematicEffects.Bloom target)
+        bool CheckHdr(Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Bloom target)
         {
             var camera = target.GetComponent<Camera>();
             return camera != null && camera.allowHDR;
@@ -23,7 +23,7 @@ namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Editor
 
         void OnEnable()
         {
-            var settings = FieldFinder<UnityStandardAssets.CinematicEffects.Bloom>.GetField(x => x.settings);
+            var settings = FieldFinder<Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Bloom>.GetField(x => x.settings);
             foreach (var setting in settings.FieldType.GetFields())
             {
                 var prop = settings.Name + "." + setting.Name;
@@ -40,7 +40,7 @@ namespace KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Editor
             if (!serializedObject.isEditingMultipleObjects)
             {
                 EditorGUILayout.Space();
-                var bloom = (UnityStandardAssets.CinematicEffects.Bloom)target;
+                var bloom = (Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom.Bloom)target;
                 _graph.Prepare(bloom.settings, CheckHdr(bloom));
                 _graph.DrawGraph();
                 EditorGUILayout.Space();

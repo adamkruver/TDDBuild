@@ -1,7 +1,7 @@
-namespace UnityStandardAssets.CinematicEffects
-{
-    using UnityEngine;
+using UnityEngine;
 
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Common
+{
     public sealed class MinAttribute : PropertyAttribute
     {
         public readonly float min;

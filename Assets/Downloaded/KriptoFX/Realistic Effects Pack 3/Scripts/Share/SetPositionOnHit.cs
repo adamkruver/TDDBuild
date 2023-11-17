@@ -1,51 +1,52 @@
-﻿using System.ComponentModel;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 
-public class SetPositionOnHit : MonoBehaviour
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Scripts.Share
 {
-
-  public float OffsetPosition;
-
-  private EffectSettings effectSettings;
-  private Transform tRoot;
-  private bool isInitialized;
-
-  void GetEffectSettingsComponent(Transform tr)
+  public class SetPositionOnHit : MonoBehaviour
   {
-    var parent = tr.parent;
-    if (parent != null)
+
+    public float OffsetPosition;
+
+    private EffectSettings effectSettings;
+    private Transform tRoot;
+    private bool isInitialized;
+
+    void GetEffectSettingsComponent(Transform tr)
     {
-      effectSettings = parent.GetComponentInChildren<EffectSettings>();
-      if (effectSettings == null)
-        GetEffectSettingsComponent(parent.transform);
+      var parent = tr.parent;
+      if (parent != null)
+      {
+        effectSettings = parent.GetComponentInChildren<EffectSettings>();
+        if (effectSettings == null)
+          GetEffectSettingsComponent(parent.transform);
+      }
+    }
+
+    void Start()
+    {
+      GetEffectSettingsComponent(transform);
+      if (effectSettings==null)
+        Debug.Log("Prefab root or children have not script \"PrefabSettings\"");
+      tRoot = effectSettings.transform;
+    }
+
+    void effectSettings_CollisionEnter(object sender, CollisionInfo e)
+    {
+      var direction = (tRoot.position + Vector3.Normalize(e.Hit.point - tRoot.position) * (effectSettings.MoveDistance + 1)).normalized;
+      transform.position = e.Hit.point - direction*OffsetPosition;
+    }
+
+    void Update()
+    {
+      if (!isInitialized) {
+        isInitialized = true;
+        effectSettings.CollisionEnter += effectSettings_CollisionEnter;
+      }
+    }
+    // Update is called once per frame
+    void OnDisable ()
+    {
+      transform.position = Vector3.zero;
     }
   }
-
-  void Start()
-  {
-    GetEffectSettingsComponent(transform);
-    if (effectSettings==null)
-      Debug.Log("Prefab root or children have not script \"PrefabSettings\"");
-    tRoot = effectSettings.transform;
-  }
-
-  void effectSettings_CollisionEnter(object sender, CollisionInfo e)
-  {
-    var direction = (tRoot.position + Vector3.Normalize(e.Hit.point - tRoot.position) * (effectSettings.MoveDistance + 1)).normalized;
-    transform.position = e.Hit.point - direction*OffsetPosition;
-  }
-
-  void Update()
-  {
-    if (!isInitialized) {
-      isInitialized = true;
-      effectSettings.CollisionEnter += effectSettings_CollisionEnter;
-    }
-  }
-	// Update is called once per frame
-	void OnDisable ()
-	{
-	  transform.position = Vector3.zero;
-	}
 }

@@ -1,7 +1,8 @@
 using System;
+using Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Common;
 using UnityEngine;
 
-namespace UnityStandardAssets.CinematicEffects
+namespace Downloaded.KriptoFX.Realistic_Effects_Pack_3.Effects.Bloom
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(Camera))]
@@ -53,7 +54,7 @@ namespace UnityStandardAssets.CinematicEffects
             [Tooltip("Dirtiness texture to add smudges or dust to the lens.")]
             public Texture dirtTexture;
 
-            [Min(0f), Tooltip("Amount of lens dirtiness.")]
+            [Common.Min(0f), Tooltip("Amount of lens dirtiness.")]
             public float dirtIntensity;
 
             public static Settings defaultSettings

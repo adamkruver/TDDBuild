@@ -9,6 +9,12 @@ namespace Sources.Infrastructure.ObjectPools
     public class ObjectPool : IObjectPool
     {
         private readonly List<PoolableBehaviour> _objects = new List<PoolableBehaviour>();
+        private readonly GameObject _group;
+
+        public ObjectPool(string groupName)
+        {
+            _group = new GameObject(groupName);
+        }
 
         public T Get<T>() where T : PoolableBehaviour
         {
@@ -22,7 +28,13 @@ namespace Sources.Infrastructure.ObjectPools
             return @object.GetComponent<T>();
         }
 
-        public void Add(PoolableBehaviour @object) =>
+        public bool Contain<T>() where T : PoolableBehaviour =>
+            _objects.FirstOrDefault(gameObject => gameObject.GetComponent<T>() != null) != null;
+
+        public void Add(PoolableBehaviour @object)
+        {
             _objects.Add(@object);
+            @object.transform.SetParent(_group.transform);
+        }
     }
 }
