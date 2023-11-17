@@ -8,15 +8,14 @@ namespace Sources.Infrastructure.Services.NavMeshes
     {
         private const float RemainingDistanceThreshold = 0.3f;
 
-        public List<Vector3> CalculatePathPoints(Vector3 startPosition, Vector3 endPosition, float pointsInterval)
+        public IEnumerable<(Vector3 position, Vector3 direction)> CalculatePathPoints(Vector3 startPosition, Vector3 endPosition, float pointsInterval)
         {
-            List<Vector3> result = new List<Vector3>();
             NavMeshPath path = new NavMeshPath();
 
             bool isExist = NavMesh.CalculatePath(startPosition, endPosition, NavMesh.AllAreas, path);
 
             if (isExist == false)
-                return result;
+                yield break;
 
             Vector3 previousCorner = path.corners[0];
             float accumulatedDistance = 0.0f;
@@ -35,7 +34,7 @@ namespace Sources.Infrastructure.Services.NavMeshes
                     Vector3 spawnPosition =
                         previousCorner + directionToNextCorner * (accumulatedDistance + remainingDistance);
 
-                    result.Add(spawnPosition);
+                    yield return (spawnPosition, directionToNextCorner);
 
                     accumulatedDistance += pointsInterval;
                 }
@@ -48,8 +47,6 @@ namespace Sources.Infrastructure.Services.NavMeshes
                 accumulatedDistance -= distanceToNextCorner;
                 previousCorner = corner;
             }
-
-            return result;
         }
     }
 }

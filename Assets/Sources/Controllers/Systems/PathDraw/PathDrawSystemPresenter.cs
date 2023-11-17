@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Sources.Infrastructure.Factories.Presentation.Systems.PathDraw;
 using Sources.Infrastructure.Services.NavMeshes;
+using Sources.InfrastructureInterfaces.Factories.Presentation.View;
 using Sources.Presentation.Views.Systems.PathDraw;
 using Sources.PresentationInterfaces.Views.Systems.PathDraw;
 using UnityEngine;
@@ -14,13 +14,13 @@ namespace Sources.Controllers.Systems.PathDraw
     {
         private readonly IPathDrawSystemView _pathDrawSystemView;
         private readonly NavMeshService _navMeshService;
-        private readonly PathDrawSystemPointViewFactory _pathDrawSystemPointViewFactory;
+        private readonly IPathDrawSystemPointViewFactory _pathDrawSystemPointViewFactory;
         private CancellationTokenSource _cancellationTokenSource;
 
         public PathDrawSystemPresenter(
             IPathDrawSystemView pathDrawSystemView,
             NavMeshService navMeshService,
-            PathDrawSystemPointViewFactory pathDrawSystemPointViewFactory
+            IPathDrawSystemPointViewFactory pathDrawSystemPointViewFactory
         )
         {
             _pathDrawSystemView = pathDrawSystemView;
@@ -44,12 +44,15 @@ namespace Sources.Controllers.Systems.PathDraw
             Vector3 endPoint = _pathDrawSystemView.EndPoint;
             float interval = _pathDrawSystemView.Distance;
 
+            IEnumerable<(Vector3 position, Vector3 direction)> pathPoints =
+                _navMeshService.CalculatePathPoints(startPoint, endPoint, interval);
+
             try
             {
-                foreach (Vector3 point in _navMeshService.CalculatePathPoints(startPoint, endPoint, interval))
+                foreach ((Vector3 position, Vector3 direction) in pathPoints)
                 {
-                    PathDrawSystemPointView pointView = _pathDrawSystemPointViewFactory.Create(point, Vector3.forward);
-                    pointView.Show(cancellationToken);
+                    PathDrawSystemPointView pointView = _pathDrawSystemPointViewFactory.Create(position, direction);
+                    pointView.ShowAsync(cancellationToken);
 
                     await UniTask.Delay(
                         TimeSpan.FromSeconds(_pathDrawSystemView.SpawnInterval),

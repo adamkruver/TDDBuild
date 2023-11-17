@@ -9,7 +9,6 @@ namespace Sources.Infrastructure.Factories.Presentation.Systems.PathDraw
 {
     public class PathDrawSystemViewFactory
     {
-        private readonly IResourceProvider _resourceProvider;
         private readonly PathDrawSystemPresenterFactory _pathDrawSystemPresenterFactory;
         private readonly PathDrawSystemPointViewFactory _pathDrawSystemPointViewFactory;
 
@@ -19,13 +18,12 @@ namespace Sources.Infrastructure.Factories.Presentation.Systems.PathDraw
             PathDrawSystemPointViewFactory pathDrawSystemPointViewFactory
         )
         {
-            _resourceProvider = resourceProvider;
             _pathDrawSystemPresenterFactory = pathDrawSystemPresenterFactory;
             _pathDrawSystemPointViewFactory = pathDrawSystemPointViewFactory;
+            Prefab = resourceProvider.Load<PathDrawSystemView>("Systems/PathDraw/PathDrawSystemView");
         }
 
-        private PathDrawSystemView Prefab =>
-            _resourceProvider.Load<PathDrawSystemView>("Systems/PathDraw/PathDrawSystemView");
+        private PathDrawSystemView Prefab { get; }
 
         public PathDrawSystemView Create(NavMeshService navMeshService)
         {

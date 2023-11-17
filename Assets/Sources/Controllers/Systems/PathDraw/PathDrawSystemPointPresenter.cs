@@ -11,7 +11,7 @@ namespace Sources.Controllers.Systems.PathDraw
     {
         private readonly IPathDrawSystemPointView _view;
         private readonly PathDrawSystemPoint _point;
-        
+
         private float _progress;
 
         public PathDrawSystemPointPresenter(IPathDrawSystemPointView view, PathDrawSystemPoint point)
@@ -27,7 +27,7 @@ namespace Sources.Controllers.Systems.PathDraw
 
         private float Progress => Mathf.Clamp01(_progress);
 
-        public async void ShowAsync(CancellationToken cancellationToken)
+        public async UniTask ShowAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -49,11 +49,11 @@ namespace Sources.Controllers.Systems.PathDraw
             while (_progress <= 1)
             {
                 _progress += Time.deltaTime / _point.SpawnTime;
-                await Evaluate(cancellationToken);
+                await Evaluate(cancellationToken, _view.FadeInPositionYCurve);
             }
 
             _progress = 1;
-            await Evaluate(cancellationToken);
+            await Evaluate(cancellationToken, _view.FadeInPositionYCurve);
         }
 
         private async UniTask FadeOut(CancellationToken cancellationToken)
@@ -61,17 +61,18 @@ namespace Sources.Controllers.Systems.PathDraw
             while (_progress >= 0)
             {
                 _progress -= Time.deltaTime / _point.SpawnTime;
-                await Evaluate(cancellationToken);
+                await Evaluate(cancellationToken, _view.FadeOutPositionYCurve);
             }
 
             _progress = 0;
-            await Evaluate(cancellationToken);
+            await Evaluate(cancellationToken, _view.FadeOutPositionYCurve);
         }
 
-        private async UniTask Evaluate(CancellationToken cancellationToken)
+        private async UniTask Evaluate(CancellationToken cancellationToken, AnimationCurve positionYCurve)
         {
             _view.SetLocalScale(_view.NativeScale * _view.ScaleCurve.Evaluate(Progress));
-            _view.SetPosition(_point.Position + _view.YPositionCurve.Evaluate(Progress) * Vector3.up);
+            _view.SetPosition(_point.Position + positionYCurve.Evaluate(Progress) * Vector3.up);
+            _view.SetDirection(_point.Direction);
 
             await UniTask.Yield(cancellationToken: cancellationToken);
         }
