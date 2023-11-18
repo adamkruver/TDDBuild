@@ -1,4 +1,5 @@
 ﻿using Sources.Domain.Bullets;
+using Sources.Presentation.Audio;
 using Sources.Presentation.Views.Bullets;
 
 namespace Sources.Controllers.Bullets
@@ -8,7 +9,7 @@ namespace Sources.Controllers.Bullets
         private readonly RocketView _view;
         private readonly Rocket _bullet;
 
-        public RocketPresenter(RocketView view, Rocket bullet) : base(view, bullet)
+        public RocketPresenter(RocketView view, Rocket bullet, AudioMixerView audioMixerView) : base(view, bullet, audioMixerView)
         {
             _view = view;
             _bullet = bullet;

@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using Sources.Domain.Bullets;
 using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Bullets;
 using UnityEngine;
@@ -18,7 +17,6 @@ namespace Sources.Presentation.Views.Bullets
         [SerializeField] private ParticleSystem _distortionParticleSystem;
         [SerializeField] private ParticleSystem _targetParticleSystem;
         [SerializeField] private float _distortionRate = 20f;
-        [SerializeField] private AudioSource _shootSource;
 
         private LineRenderer _lineRenderer;
         private CancellationTokenSource _cancellationTokenSource;
@@ -28,10 +26,9 @@ namespace Sources.Presentation.Views.Bullets
         private ParticleSystem.EmissionModule _distortionEmission;
         private Transform _targetTransform;
 
-        private Vector3 Position => _transform.position;
         private Vector3 Forward => _transform.forward;
 
-        private void Awake()
+        protected override void OnAwake()
         {
             _lineRenderer = GetComponent<LineRenderer>();
             _transform = GetComponent<Transform>();
@@ -41,7 +38,6 @@ namespace Sources.Presentation.Views.Bullets
             _targetTransform = _targetParticleSystem.transform;
             _lineRenderer.startWidth = 0;
             _lineRenderer.endWidth = 0;
-            _shootSource.pitch = Random.Range(.95f, 1.1f);
         }
 
         public override void Shoot()
@@ -60,9 +56,8 @@ namespace Sources.Presentation.Views.Bullets
 
             _distortionParticleSystem.Play();
             _targetParticleSystem.Play();
-            _shootSource.Play();
+            Presenter?.PlaySound();
 
-            
             while (time < 1f)
             {
                 time = Mathf.MoveTowards(time, 1f, Time.deltaTime / _time);
@@ -106,7 +101,7 @@ namespace Sources.Presentation.Views.Bullets
         private Vector3 CalculateDestination()
         {
             if (Physics.Raycast(Position, Forward, out RaycastHit hit, _maxDistance, _mask) == false)
-                return Position +  _transform.rotation * new Vector3(0, 0, _maxDistance);
+                return Position + _transform.rotation * new Vector3(0, 0, _maxDistance);
 
             if (hit.collider.TryGetComponent(out IDamageable target))
                 OnShootTarget(target, -hit.normal);

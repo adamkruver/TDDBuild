@@ -8,7 +8,6 @@ namespace Sources.Presentation.Views.Bullets
     {
         [SerializeField] private ParticleSystem _bulletParticleSystem;
         [SerializeField] private float _bulletSpeed = 1f;
-        [SerializeField] private AudioSource _shootSource;
 
         private ParticleSystem.MainModule _bulletMain;
 
@@ -23,8 +22,7 @@ namespace Sources.Presentation.Views.Bullets
         {
             Setup();
             _bulletParticleSystem.Play();
-            _shootSource.pitch = Random.Range(.9f, 1f);
-            _shootSource.Play();
+            Presenter?.PlaySound();
         }
 
         private void OnParticleCollision(GameObject other)

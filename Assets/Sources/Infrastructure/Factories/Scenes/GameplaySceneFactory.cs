@@ -15,6 +15,7 @@ using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
+using Sources.Infrastructure.Factories.Controllers.Audio;
 using Sources.Infrastructure.Factories.Controllers.Bullets;
 using Sources.Infrastructure.Factories.Controllers.Constructions;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
@@ -30,6 +31,7 @@ using Sources.Infrastructure.Factories.Domain.Turrets;
 using Sources.Infrastructure.Factories.Domain.Weapons;
 using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
+using Sources.Infrastructure.Factories.Presentation.Audio;
 using Sources.Infrastructure.Factories.Presentation.Systems;
 using Sources.Infrastructure.Factories.Presentation.Systems.PathDraw;
 using Sources.Infrastructure.Factories.Presentation.Ui;
@@ -48,6 +50,7 @@ using Sources.Infrastructure.Services.Times;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Factories.Scenes;
 using Sources.InfrastructureInterfaces.Services.Scenes;
+using Sources.Presentation.Audio;
 using Sources.Presentation.Previews.Constructions;
 using Sources.Presentation.Ui;
 using Sources.Presentation.Ui.Constructs;
@@ -289,6 +292,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             PathDrawSystemPresenterFactory pathDrawSystemPresenterFactory = new PathDrawSystemPresenterFactory();
             PathDrawSystemPointPresenterFactory pathDrawSystemPointPresenterFactory =
                 new PathDrawSystemPointPresenterFactory();
+            AudioMixerPresenterFactory audioMixerPresenterFactory = new AudioMixerPresenterFactory();
 
             #endregion
 
@@ -304,7 +308,11 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #region View Factories
 
-            BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory, rocketPresenterFactory);
+            AudioMixerViewFactory audioMixerViewFactory = new AudioMixerViewFactory(audioMixerPresenterFactory);
+
+            AudioMixerView audioMixerView = audioMixerViewFactory.Create();
+            
+            BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory, rocketPresenterFactory, audioMixerView);
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
                 resourceService,
