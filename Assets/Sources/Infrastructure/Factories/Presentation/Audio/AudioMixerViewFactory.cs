@@ -14,7 +14,6 @@ namespace Sources.Infrastructure.Factories.Presentation.Audio
         public AudioMixerViewFactory(AudioMixerPresenterFactory audioMixerPresenterFactory)
         {
             _audioMixerPresenterFactory = audioMixerPresenterFactory;
-            _objectPool = new ObjectPool(" ==== Audio Mixer Pool ==== ");
         }
 
         public AudioMixerView Create()

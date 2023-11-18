@@ -1,12 +1,21 @@
 ﻿using System.Collections.Generic;
+using Sources.InfrastructureInterfaces.Factories.Presentation.Audio;
+using Sources.Presentation.Audio;
+using Sources.PresentationInterfaces.Audio;
 using UnityEngine;
 
 namespace Sources.Domain.Audio
 {
     public class AudioMixer
     {
-        private readonly List<AudioSourcePoint> _sources = new List<AudioSourcePoint>();
+        private readonly IAudioSourceViewFactory _audioSourceViewFactory;
+        private readonly List<IAudioSourceView> _sources = new List<IAudioSourceView>();
         private float _thresholdDistance;
+
+        public AudioMixer(IAudioSourceViewFactory audioSourceViewFactory)
+        {
+            _audioSourceViewFactory = audioSourceViewFactory;
+        }
 
         public void Play(AudioPoint audioPoint)
         {
@@ -14,23 +23,24 @@ namespace Sources.Domain.Audio
 
             var audioSources = GetAudioFromPoint(audioPoint.Position, _thresholdDistance);
 
-            foreach (AudioSourcePoint audio in audioSources)
+            foreach (AudioSourceView audio in audioSources)
             {
                 audio.Source.Stop();
                 _sources.Remove(audio);
             }
 
-            var audioSource = new GameObject("OneShootAudioClip").AddComponent<AudioSource>();
-            audioSource.clip = audioPoint.Clip;
-            _sources.Add(new AudioSourcePoint(audioSource, audioPoint.Position));
+            var audioSource = _audioSourceViewFactory.Create(audioPoint.Position);
+
+            audioSource.Source.clip = audioPoint.Clip;
+            _sources.Add(audioSource);
             audioSource.Play();
         }
 
-        private IEnumerable<AudioSourcePoint> GetAudioFromPoint(Vector3 position, float radius)
+        private IEnumerable<AudioSourceView> GetAudioFromPoint(Vector3 position, float radius)
         {
-            List<AudioSourcePoint> audioPoints = new List<AudioSourcePoint>();
+            List<AudioSourceView> audioPoints = new List<AudioSourceView>();
 
-            foreach (AudioSourcePoint source in _sources)
+            foreach (AudioSourceView source in _sources)
                 if (Vector3.Distance(source.Position, position) <= radius)
                     audioPoints.Add(source);
 

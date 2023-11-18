@@ -8,10 +8,10 @@ namespace Sources.Controllers.Audio
         private readonly IAudioMixerView _view;
         private readonly AudioMixer _mixer;
 
-        public AudioMixerPresenter(IAudioMixerView view)
+        public AudioMixerPresenter(IAudioMixerView view, AudioMixer audioMixer)
         {
             _view = view;
-            _mixer = new AudioMixer();
+            _mixer = audioMixer;
         }
 
         public void Play(AudioPoint audioPoint)
