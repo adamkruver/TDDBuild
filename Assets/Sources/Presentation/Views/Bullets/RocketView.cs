@@ -22,9 +22,13 @@ namespace Sources.Presentation.Views.Bullets
         public void SetPosition(Vector3 position) =>
             Transform.position = position;
 
-        public void SetParent(Transform parent) => 
+        public void SetParent(Transform parent)
+        {
             Transform.SetParent(parent, false);
-        
+            Transform.localPosition = Vector3.zero;
+            Transform.localRotation = Quaternion.identity;
+        }
+
         public void SetDirection(Vector3 direction) =>
             Transform.forward = direction.normalized;
 
@@ -33,8 +37,11 @@ namespace Sources.Presentation.Views.Bullets
         public void Shoot() =>
             Presenter?.Shoot();
 
-        public void Explode() =>
+        public void Explode()
+        {
             _explosionParticleSystem.Play();
+            Invoke(nameof(Destroy), .5f);
+        }
 
         public void StartFireEngine() =>
             _fireParticleSystem.Play();

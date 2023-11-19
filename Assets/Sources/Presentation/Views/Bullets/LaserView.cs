@@ -40,7 +40,7 @@ namespace Sources.Presentation.Views.Bullets
         public void Shoot() =>
             Presenter?.Shoot();
 
-        public void SetParent(Transform parent) => 
+        public void SetParent(Transform parent) =>
             Transform.SetParent(parent, false);
 
         public void SetLaserPositions(Vector3 from, Vector3 to) =>
@@ -81,7 +81,7 @@ namespace Sources.Presentation.Views.Bullets
             Raycast(Ray ray, float maxDistance) // TODO: Move To Raycast Service
         {
             if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, _layerMask) == false)
-                return (Position + _transform.rotation * new Vector3(0, 0, _maxDistance), null);
+                return (Position + Forward * _maxDistance, null);
 
             if (hit.collider.TryGetComponent(out IDamageable target) == false)
                 return (hit.point, null);
