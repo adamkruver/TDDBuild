@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Cysharp.Threading.Tasks;
+using Sources.Controllers.Projectiles;
 using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Bullets;
 using UnityEngine;
@@ -7,16 +7,24 @@ using UnityEngine;
 namespace Sources.Presentation.Views.Bullets
 {
     [RequireComponent(typeof(LineRenderer))]
-    public class LaserView : BulletViewBase, IBulletView
+    public class LaserView : PresentationViewBase<LaserPresenter>, ILaserView, IProjectileView
     {
+        [SerializeField] private LayerMask _layerMask;
         [SerializeField] private float _maxDistance = 100f;
-        [Range(.1f, 5)] [SerializeField] private float _time = 1f;
-        [SerializeField] private LayerMask _mask;
-        [SerializeField] private AnimationCurve _widthCurve;
-        [Range(.01f, 5)] [SerializeField] private float _widthMultiplier = .2f;
+        [SerializeField] private float _distortionRate = 20f;
         [SerializeField] private ParticleSystem _distortionParticleSystem;
         [SerializeField] private ParticleSystem _targetParticleSystem;
-        [SerializeField] private float _distortionRate = 20f;
+
+        [field: Range(.1f, 5)]
+        [field: SerializeField]
+        public float Duration { get; private set; } = 1f;
+
+        [field: Range(.01f, 5)]
+        [field: SerializeField]
+        public float NativeWidth { get; private set; } = .2f;
+
+        [field: SerializeField] public AnimationCurve WidthCurve { get; private set; }
+        [field: SerializeField] public AudioClip AudioClip { get; private set; }
 
         private LineRenderer _lineRenderer;
         private CancellationTokenSource _cancellationTokenSource;
@@ -26,7 +34,60 @@ namespace Sources.Presentation.Views.Bullets
         private ParticleSystem.EmissionModule _distortionEmission;
         private Transform _targetTransform;
 
-        private Vector3 Forward => _transform.forward;
+        public Vector3 Forward => _transform.forward;
+        public Vector3 Position => Transform.position;
+
+        public void Shoot() =>
+            Presenter?.Shoot();
+
+        public void SetParent(Transform parent) => 
+            Transform.SetParent(parent, false);
+
+        public void SetLaserPositions(Vector3 from, Vector3 to) =>
+            _lineRenderer.SetPositions(new Vector3[] { from, to });
+
+        public void SetLaserWidth(float width)
+        {
+            _lineRenderer.startWidth = width;
+            _lineRenderer.endWidth = width;
+        }
+
+        public void StartBurnTarget(Vector3 position, Vector3 direction)
+        {
+            _targetTransform.position = position;
+            _targetTransform.forward = direction;
+
+            _targetParticleSystem.Play();
+        }
+
+        public void FinishBurnTarget() =>
+            _targetParticleSystem.Stop();
+
+        public void StartDistortion(Vector3 from, Vector3 to)
+        {
+            float halfDistance = (to - from).magnitude / 2;
+
+            _distortionShape.radius = halfDistance;
+            _distortionTransform.localPosition = halfDistance * Vector3.forward;
+            _distortionEmission.rateOverTime = halfDistance * _distortionRate;
+
+            _distortionParticleSystem.Play();
+        }
+
+        public void FinishDistortion() =>
+            _distortionParticleSystem.Stop();
+
+        public (Vector3 position, IDamageable target)
+            Raycast(Ray ray, float maxDistance) // TODO: Move To Raycast Service
+        {
+            if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, _layerMask) == false)
+                return (Position + _transform.rotation * new Vector3(0, 0, _maxDistance), null);
+
+            if (hit.collider.TryGetComponent(out IDamageable target) == false)
+                return (hit.point, null);
+
+            return (hit.point, target);
+        }
 
         protected override void OnAwake()
         {
@@ -38,75 +99,6 @@ namespace Sources.Presentation.Views.Bullets
             _targetTransform = _targetParticleSystem.transform;
             _lineRenderer.startWidth = 0;
             _lineRenderer.endWidth = 0;
-        }
-
-        public override void Shoot()
-        {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource = new CancellationTokenSource();
-
-            ShootAsync(Position, CalculateDestination(), _cancellationTokenSource.Token);
-        }
-
-        private async UniTask ShootAsync(Vector3 from, Vector3 to, CancellationToken token)
-        {
-            float time = 0;
-
-            SetupVector(from, to);
-
-            _distortionParticleSystem.Play();
-            _targetParticleSystem.Play();
-            Presenter?.PlaySound();
-
-            while (time < 1f)
-            {
-                time = Mathf.MoveTowards(time, 1f, Time.deltaTime / _time);
-                Evaluate(time);
-
-                await UniTask.Yield(token);
-            }
-        }
-
-        private void SetupVector(Vector3 from, Vector3 to)
-        {
-            _lineRenderer.SetPositions(
-                new Vector3[]
-                {
-                    from,
-                    to
-                }
-            );
-
-            Vector3 direction = to - from;
-
-            float halfDistance = direction.magnitude / 2;
-
-            _distortionShape.radius = halfDistance;
-            _distortionTransform.localPosition = halfDistance * Vector3.forward;
-            _distortionEmission.rateOverTime = halfDistance * _distortionRate;
-            _targetTransform.position = to;
-            _targetTransform.forward = -direction.normalized;
-        }
-
-        private void Evaluate(float time)
-        {
-            time = Mathf.Clamp01(time);
-
-            float width = _widthCurve.Evaluate(time) * _widthMultiplier;
-
-            _lineRenderer.startWidth = width;
-            _lineRenderer.endWidth = width;
-        }
-
-        private Vector3 CalculateDestination()
-        {
-            if (Physics.Raycast(Position, Forward, out RaycastHit hit, _maxDistance, _mask) == false)
-                return Position + _transform.rotation * new Vector3(0, 0, _maxDistance);
-
-            if (hit.collider.TryGetComponent(out IDamageable target))
-                OnShootTarget(target, -hit.normal);
-
-            return hit.point;
         }
     }
 }

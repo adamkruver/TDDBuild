@@ -3,31 +3,32 @@ using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Weapons;
 using Sources.PresentationInterfaces.Views.Enemies;
 using Sources.PresentationInterfaces.Views.Systems.TargetTrackers;
+using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Services.Weapons
 {
     public class TargetProvider : ITargetProvider
     {
         private readonly ITargetTrackerSystem _targetTrackerSystem;
-        private readonly ICompositeWeaponView _compositeWeaponView;
+        private readonly IWeaponView _weaponView;
         private readonly IWeapon _weapon;
 
         private IEnemyView _enemyView;
 
         public TargetProvider(
             ITargetTrackerSystem targetTrackerSystem,
-            ICompositeWeaponView compositeWeaponView,
+            IWeaponView weaponView,
             IWeapon weapon
         )
         {
             _targetTrackerSystem = targetTrackerSystem;
-            _compositeWeaponView = compositeWeaponView;
+            _weaponView = weaponView;
             _weapon = weapon;
         }
 
         private bool CanSeeEnemy =>
             _targetTrackerSystem.CanSeeEnemy(
-                _compositeWeaponView.HeadPosition,
+                _weaponView.HeadPosition,
                 _enemyView,
                 _weapon.MinFireDistance,
                 _weapon.MaxFireDistance
@@ -43,7 +44,7 @@ namespace Sources.Infrastructure.Services.Weapons
 
         private bool TryGetEnemy(out IEnemyView enemyView)
         {
-            enemyView = _targetTrackerSystem.Track(_compositeWeaponView.HeadPosition, _weapon.MinFireDistance,
+            enemyView = _targetTrackerSystem.Track(_weaponView.HeadPosition, _weapon.MinFireDistance,
                 _weapon.MaxFireDistance);
 
             return enemyView != null;

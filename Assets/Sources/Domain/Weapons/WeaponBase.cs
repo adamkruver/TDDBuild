@@ -1,5 +1,4 @@
 ﻿using System;
-using Sources.Domain.Bullets;
 using Sources.Domain.Systems.Upgrades;
 using Sources.Frameworks.LiveDatas;
 using Sources.InfrastructureInterfaces.Services.Times;
@@ -11,18 +10,17 @@ namespace Sources.Domain.Weapons
     {
         private const float MinCooldown = .2f;
 
+        private readonly int _shootPoints;
         private readonly ITimeService _timeSource;
         private readonly float _baseCooldown;
         private readonly float _baseMaxFireDistance;
         private readonly LiveData<float> _maxFireDistance;
         private readonly LiveData<float> _cooldown;
-        private readonly int _shootAtOnce;
 
-        private int _currentBulletId;
         private float _lastShootTime;
 
         private WeaponBase(
-            IBullet[] bullets,
+            int shootPoints,
             ITimeService timeSource,
             UpgradeSystem upgradeSystem,
             float cooldown,
@@ -33,28 +31,27 @@ namespace Sources.Domain.Weapons
             int shootAtOnce
         )
         {
+            _shootPoints = shootPoints;
             _timeSource = timeSource;
-            Bullets = bullets;
             _baseCooldown = cooldown;
             MinFireDistance = minFireDistance;
             _baseMaxFireDistance = maxFireDistance;
-            _shootAtOnce = shootAtOnce;
+            ShootAtOnce = shootAtOnce;
             HorizontalRotationSpeed = horizontalRotationSpeed;
             VerticalRotationSpeed = verticalRotationSpeed;
             _maxFireDistance = upgradeSystem.MaxFireDistance.Value;
             _cooldown = upgradeSystem.Cooldown.Value;
-            _lastShootTime = -Cooldown;
-            Debug.Log(_baseCooldown + _cooldown.Value);
+            _lastShootTime = _timeSource.Time - Cooldown;
         }
 
         protected WeaponBase(
-            IBullet[] bullets,
+            int shootPoints,
             ITimeService timeService,
             WeaponFab weaponFab,
             UpgradeSystem upgradeSystem
         )
             : this(
-                bullets,
+                shootPoints,
                 timeService,
                 upgradeSystem,
                 weaponFab.Cooldown,
@@ -67,14 +64,17 @@ namespace Sources.Domain.Weapons
         {
         }
 
+
         public event Action Shooting;
-        public IBullet[] Bullets { get; }
-        public IBullet Bullet => Bullets[_currentBulletId];
+        public event Action ShootPointChanged;
+
+        public int ShootAtOnce { get; }
+        public int ShootPointIndex { get; private set; }
         public float MinFireDistance { get; }
         public float MaxFireDistance => _baseMaxFireDistance + _maxFireDistance.Value;
         public float HorizontalRotationSpeed { get; }
         public float VerticalRotationSpeed { get; }
-        public int BulletId => _currentBulletId;
+        public float ShootSpeed => GetShootSpeed();
         public float Cooldown => Mathf.Max(_baseCooldown + _cooldown.Value, MinCooldown);
 
         public bool CanShoot => _lastShootTime < _timeSource.Time - Cooldown;
@@ -82,14 +82,22 @@ namespace Sources.Domain.Weapons
         public virtual void Shoot()
         {
             _lastShootTime = _timeSource.Time;
+            OnShoot();
+        }
 
-            for (int i = 0; i < _shootAtOnce; i++)
-            {
-                Shooting?.Invoke();
-                
-                if (++_currentBulletId == Bullets.Length)
-                    _currentBulletId = 0;
-            }
+        protected abstract void OnShoot();
+
+        protected abstract float GetShootSpeed();
+
+        protected void InvokeShootingEvent() =>
+            Shooting?.Invoke();
+
+        protected void SetNextShootPoint()
+        {
+            ShootPointIndex++;
+            ShootPointIndex %= _shootPoints;
+
+            ShootPointChanged?.Invoke();
         }
     }
 }

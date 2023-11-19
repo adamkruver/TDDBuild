@@ -1,43 +1,39 @@
-﻿using Sources.Domain.HealthPoints;
+﻿using Sources.Controllers.Projectiles;
+using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Bullets;
 using UnityEngine;
 
 namespace Sources.Presentation.Views.Bullets
 {
-    public class BulletView : BulletViewBase, IBulletView
+    public class BulletView : PresentationViewBase<BulletPresenter>, IBulletView, IProjectileView
     {
         [SerializeField] private ParticleSystem _bulletParticleSystem;
-        [SerializeField] private float _bulletSpeed = 1f;
+
+        [field: SerializeField] public AudioClip ShootAudioClip { get; private set; }
 
         private ParticleSystem.MainModule _bulletMain;
 
-        private float Speed => Presenter?.Speed ?? _bulletSpeed;
+        public Vector3 Position => Transform.position;
 
-        protected override void OnAwake()
-        {
-            _bulletMain = _bulletParticleSystem.main;
-        }
+        private void OnParticleCollision(GameObject other) =>
+            Presenter?.Collide(other.GetComponent<IDamageable>);
 
-        public override void Shoot()
-        {
-            Setup();
+        public void Shoot() =>
+            Presenter?.Shoot();
+
+        public void SetParent(Transform parent) => 
+            Transform.SetParent(parent, false);
+
+        public void StartProjectile() =>
             _bulletParticleSystem.Play();
-            Presenter?.PlaySound();
-        }
 
-        private void OnParticleCollision(GameObject other)
-        {
-            if (other.TryGetComponent(out IDamageable target) == false)
-                return;
-
-            OnShootTarget(target, Transform.forward);
+        public void FinishProjectile() =>
             _bulletParticleSystem.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
-        }
 
-        private void Setup() =>
-            SetSpeed(Speed);
-
-        private void SetSpeed(float speed) =>
+        public void SetSpeed(float speed) =>
             _bulletMain.simulationSpeed = speed;
+
+        protected override void OnAwake() =>
+            _bulletMain = _bulletParticleSystem.main;
     }
 }

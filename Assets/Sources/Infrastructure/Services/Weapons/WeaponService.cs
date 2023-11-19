@@ -43,7 +43,7 @@ namespace Sources.Infrastructure.Services.Weapons
             Vector3 enemyOrthogonal = Vector3.Project(enemyForward, directionToEnemyNormalized);
 
             Vector3 enemyTangent = enemyForward - enemyOrthogonal;
-            float sqrBulletSpeed = _weapon.Bullet.Speed * _weapon.Bullet.Speed;
+            float sqrBulletSpeed = _weapon.ShootSpeed * _weapon.ShootSpeed;
             Vector3 weaponTangent = directionToEnemyNormalized * Mathf.Sqrt(sqrBulletSpeed - enemyTangent.sqrMagnitude);
             Vector3 direction = enemyTangent + weaponTangent;
 

@@ -46,5 +46,10 @@ namespace Sources.Domain.Audio
 
             return audioPoints;
         }
+
+        public void Stop(AudioPoint audioPoint)
+        {
+            // TODO: stop audio
+        }
     }
 }

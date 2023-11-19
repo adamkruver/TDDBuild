@@ -1,8 +1,17 @@
-﻿namespace Sources.PresentationInterfaces.Views.Weapons
+﻿using UnityEngine;
+
+namespace Sources.PresentationInterfaces.Views.Weapons
 {
     public interface IWeaponView
     {
-        void Shoot();
+        IShootPointView[] ShootPoints { get; }
+        IWeaponRotationSystem RotationSystem { get; }
+        int BarrelsAmount { get; }
         float GunPointOffset { get; }
+        Vector3 HeadPosition { get; }
+        
+        void Shoot();
+        Vector3 GetShootPointPosition();
+        void SetActiveShootPoint(int index);
     }
 }

@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationSystem: {fileID: 8990116113355438891}
-  <WeaponViews>k__BackingField:
+  <ShootPointsView>k__BackingField:
   - {fileID: 5490137240295273216}
   - {fileID: 3440665380267478845}
 --- !u!114 &8990116113355438891
@@ -431,7 +431,7 @@ PrefabInstance:
       objectReference: {fileID: 3891684584903426629}
     - target: {fileID: 5312092402913359364, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: m_Name
-      value: WeaponViewTop
+      value: TopShootPoint
       objectReference: {fileID: 0}
     - target: {fileID: 5312092402913359365, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: m_LocalPosition.x
@@ -443,7 +443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5312092402913359365, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.7044
+      value: 0.7013999
       objectReference: {fileID: 0}
     - target: {fileID: 5312092402913359365, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: m_LocalRotation.w
@@ -474,12 +474,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8578077468076068408, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
+      propertyPath: _shootAnimation
+      value: 
+      objectReference: {fileID: 5878561764490841366}
+    - target: {fileID: 8578077468076068408, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: _weaponAnimation
       value: 
       objectReference: {fileID: 5878561764490841366}
     m_RemovedComponents:
     - {fileID: 2896681753854000999, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6942108890910276930, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
@@ -513,7 +518,7 @@ PrefabInstance:
       objectReference: {fileID: 3891684584903426629}
     - target: {fileID: 5312092402913359364, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: m_Name
-      value: WeaponViewBottom
+      value: BottomShootPoint
       objectReference: {fileID: 0}
     - target: {fileID: 5312092402913359365, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: m_LocalPosition.x
@@ -556,12 +561,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8578077468076068408, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
+      propertyPath: _shootAnimation
+      value: 
+      objectReference: {fileID: 5878561764490841366}
+    - target: {fileID: 8578077468076068408, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
       propertyPath: _weaponAnimation
       value: 
       objectReference: {fileID: 5878561764490841366}
     m_RemovedComponents:
     - {fileID: 2896681753854000999, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6942108890910276930, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 342f5dcb67681b540918c81f5e2aeb07, type: 3}

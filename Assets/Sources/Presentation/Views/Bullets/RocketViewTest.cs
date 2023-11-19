@@ -27,24 +27,24 @@ namespace Sources.Presentation.Views.Bullets
         }
 
 
-        private IEnumerator Start()
-        {
-            while (true)
-            {
-                RocketView rocketView = _rocketViews.Dequeue();
-                _rocketViews.Enqueue(rocketView);
-                Vector3 rocketPosition = _startPositions.Dequeue();
-                _startPositions.Enqueue(rocketPosition);
-                Vector3 rocketDirection = _startDirections.Dequeue();
-                _startDirections.Enqueue(rocketDirection);
-                
-                rocketView.transform.position = rocketPosition;
-                rocketView.transform.forward = rocketDirection;
-                rocketView.SetEnemyPosition(_enemy.position);
-                rocketView.Shoot();
-
-                yield return new WaitForSeconds(_fireDelay);
-            }
-        }
+        // private IEnumerator Start()
+        // {
+        //     while (true)
+        //     {
+        //         RocketView rocketView = _rocketViews.Dequeue();
+        //         _rocketViews.Enqueue(rocketView);
+        //         Vector3 rocketPosition = _startPositions.Dequeue();
+        //         _startPositions.Enqueue(rocketPosition);
+        //         Vector3 rocketDirection = _startDirections.Dequeue();
+        //         _startDirections.Enqueue(rocketDirection);
+        //         
+        //         rocketView.transform.position = rocketPosition;
+        //         rocketView.transform.forward = rocketDirection;
+        //         rocketView.SetEnemyPosition(_enemy.position);
+        //         rocketView.Shoot();
+        //
+        //         yield return new WaitForSeconds(_fireDelay);
+        //     }
+        // }
     }
 }

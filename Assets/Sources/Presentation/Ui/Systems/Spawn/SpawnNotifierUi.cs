@@ -23,8 +23,6 @@ namespace Sources.Presentation.Ui.Systems.Spawn
 
         public void Show()
         {
-            Debug.Log("asdasd");
-            
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
 

@@ -14,9 +14,10 @@ namespace Sources.Controllers.Audio
             _mixer = audioMixer;
         }
 
-        public void Play(AudioPoint audioPoint)
-        {
+        public void Play(AudioPoint audioPoint) => 
             _mixer.Play(audioPoint);
-        }
+
+        public void Stop(AudioPoint audioPoint) => 
+            _mixer.Stop(audioPoint);
     }
 }

@@ -7,21 +7,21 @@ namespace Sources.Infrastructure.Factories.Handlers
 {
     public class TilemapUntouchablePointerHandlerFactory
     {
-        private readonly RaycastService _raycastService;
+        private readonly ScreenRaycastService _screenRaycastService;
         private readonly TilemapService _tilemapService;
 
         public TilemapUntouchablePointerHandlerFactory(
-            RaycastService raycastService,
+            ScreenRaycastService screenRaycastService,
             TilemapService tilemapService
         )
         {
-            _raycastService = raycastService;
+            _screenRaycastService = screenRaycastService;
             _tilemapService = tilemapService;
         }
 
         public TilemapUntouchablePointerHandler Create(IConstructionView view) =>
             new TilemapUntouchablePointerHandler(
-                _raycastService, _tilemapService, view
+                _screenRaycastService, _tilemapService, view
             );
     }
 }

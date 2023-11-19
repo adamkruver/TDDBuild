@@ -10,17 +10,17 @@ namespace Sources.Infrastructure.Handlers.Pointers.Untouchable
 {
     public class TilemapUntouchablePointerHandler : IUntouchablePointerHandler
     {
-        private readonly RaycastService _raycastService;
+        private readonly ScreenRaycastService _screenRaycastService;
         private readonly TilemapService _tilemapService;
         private readonly IConstructionView _constructionView;
 
         public TilemapUntouchablePointerHandler(
-            RaycastService raycastService,
+            ScreenRaycastService screenRaycastService,
             TilemapService tilemapService,
             IConstructionView constructionView
         )
         {
-            _raycastService = raycastService;
+            _screenRaycastService = screenRaycastService;
             _tilemapService = tilemapService;
             _constructionView = constructionView;
         }
@@ -40,7 +40,7 @@ namespace Sources.Infrastructure.Handlers.Pointers.Untouchable
 
         private bool TryGetTileWorldPosition(Vector3 screenPosition, out Vector3 tileWorldPosition)
         {
-            if (_raycastService.TryRaycastFromScreen(screenPosition, out RaycastHit hit) == false
+            if (_screenRaycastService.TryRaycastFromScreen(screenPosition, out RaycastHit hit) == false
                 || _tilemapService.TryGetTilePosition(hit.point, out Vector2Int tilePosition) == false)
             {
                 tileWorldPosition = default;

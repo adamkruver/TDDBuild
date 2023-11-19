@@ -13,14 +13,14 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
     public abstract class WeaponStateMachineFactoryBase : IWeaponStateMachineFactory
     {
         public IPresenter Create(
-            ICompositeWeaponView compositeView,
+            IWeaponView view,
             IWeapon weapon,
             ITargetProvider targetProvider
         )
         {
-            WeaponStateMachine stateMachine = new WeaponStateMachine(weapon, compositeView);
-            IWeaponService service = CreateWeaponService(weapon, compositeView.RotationSystem);
-            IFiniteState firstState = CreateStates(compositeView, weapon, service, targetProvider);
+            WeaponStateMachine stateMachine = new WeaponStateMachine(weapon, view);
+            IWeaponService service = CreateWeaponService(weapon, view.RotationSystem);
+            IFiniteState firstState = CreateStates(view, weapon, service, targetProvider);
 
             stateMachine.SetFirstState(firstState);
 
@@ -35,7 +35,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
         /// returns first state
         /// </summary>
         protected abstract IFiniteState CreateStates(
-            ICompositeWeaponView compositeView,
+            IWeaponView view,
             IWeapon weapon,
             IWeaponService weaponService,
             ITargetProvider targetProvider

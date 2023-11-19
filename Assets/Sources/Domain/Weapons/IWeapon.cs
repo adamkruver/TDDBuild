@@ -1,19 +1,19 @@
 ﻿using System;
-using Sources.Domain.Bullets;
 
 namespace Sources.Domain.Weapons
 {
     public interface IWeapon
     {
         event Action Shooting;
+        event Action ShootPointChanged;
         
-        IBullet Bullet { get; }
+        float ShootSpeed { get; }
+        int ShootPointIndex { get; }
         float Cooldown { get; }
         float MinFireDistance { get; }
         float MaxFireDistance { get; }
         float HorizontalRotationSpeed { get; }
         float VerticalRotationSpeed { get; }
-        int BulletId { get; }
         bool CanShoot { get; }
         void Shoot();
     }

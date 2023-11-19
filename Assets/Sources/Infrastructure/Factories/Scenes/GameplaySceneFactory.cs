@@ -13,22 +13,30 @@ using Sources.Domain.Systems.Progresses;
 using Sources.Domain.Systems.Spawn;
 using Sources.Domain.Systems.Upgrades;
 using Sources.Domain.Weapons;
+using Sources.Domain.Weapons.Bullets;
+using Sources.Domain.Weapons.Lasers;
+using Sources.Domain.Weapons.Rockets;
 using Sources.Domain.Zombies;
 using Sources.Infrastructure.Assessors;
 using Sources.Infrastructure.Factories.Controllers.Audio;
-using Sources.Infrastructure.Factories.Controllers.Bullets;
 using Sources.Infrastructure.Factories.Controllers.Constructions;
 using Sources.Infrastructure.Factories.Controllers.Constructs;
 using Sources.Infrastructure.Factories.Controllers.HealthPoints;
+using Sources.Infrastructure.Factories.Controllers.Projectiles;
 using Sources.Infrastructure.Factories.Controllers.Systems;
 using Sources.Infrastructure.Factories.Controllers.Systems.PathDraw;
 using Sources.Infrastructure.Factories.Controllers.Turrets;
 using Sources.Infrastructure.Factories.Controllers.Weapons;
+using Sources.Infrastructure.Factories.Controllers.Weapons.Bullets;
+using Sources.Infrastructure.Factories.Controllers.Weapons.Lasers;
+using Sources.Infrastructure.Factories.Controllers.Weapons.Rockets;
 using Sources.Infrastructure.Factories.Controllers.Zombies;
-using Sources.Infrastructure.Factories.Domain.Bullets;
+using Sources.Infrastructure.Factories.Domain.Projectiles;
 using Sources.Infrastructure.Factories.Domain.Systems;
 using Sources.Infrastructure.Factories.Domain.Turrets;
-using Sources.Infrastructure.Factories.Domain.Weapons;
+using Sources.Infrastructure.Factories.Domain.Weapons.Bullets;
+using Sources.Infrastructure.Factories.Domain.Weapons.Lasers;
+using Sources.Infrastructure.Factories.Domain.Weapons.Rockets;
 using Sources.Infrastructure.Factories.Domain.Zombies;
 using Sources.Infrastructure.Factories.Handlers;
 using Sources.Infrastructure.Factories.Presentation.Audio;
@@ -37,6 +45,7 @@ using Sources.Infrastructure.Factories.Presentation.Systems.PathDraw;
 using Sources.Infrastructure.Factories.Presentation.Ui;
 using Sources.Infrastructure.Factories.Presentation.Ui.Systems;
 using Sources.Infrastructure.Factories.Presentation.Views;
+using Sources.Infrastructure.Factories.Presentation.Views.Bullets;
 using Sources.Infrastructure.Handlers.Pointers;
 using Sources.Infrastructure.Repositories;
 using Sources.Infrastructure.Resource;
@@ -58,6 +67,7 @@ using Sources.Presentation.Ui.Systems.Aggressive;
 using Sources.Presentation.Ui.Systems.Progresses;
 using Sources.Presentation.Ui.Systems.Spawn;
 using Sources.Presentation.Ui.Systems.Upgrades;
+using Sources.Presentation.Views.Bullets;
 using Sources.Presentation.Views.Cameras;
 using Sources.Presentation.Views.Systems.PathDraw;
 using Sources.Presentation.Views.Systems.Spawn;
@@ -196,7 +206,7 @@ namespace Sources.Infrastructure.Factories.Scenes
             #region Services
 
             PaymentService paymentService = new PaymentService(money);
-            RaycastService raycastService = new RaycastService(gameplayCamera, Layers.GameplayGrid);
+            ScreenRaycastService screenRaycastService = new ScreenRaycastService(gameplayCamera, Layers.GameplayGrid);
             TilemapService tilemapService = new TilemapService(tilemap);
             GameplayCameraService gameplayCameraService = new GameplayCameraService(gameplayCamera);
             PointerService pointerService = new PointerService();
@@ -212,50 +222,46 @@ namespace Sources.Infrastructure.Factories.Scenes
             BulletFactory bulletFactory = new BulletFactory(bulletUpgradeSystem);
             RocketFactory rocketFactory = new RocketFactory(rocketUpgradeSystem);
 
-            LaserGunFactory laserGunFactory = new LaserGunFactory(
-                resourceService, laserFactory, timeService, laserUpgradeSystem
-            );
+            LaserGunFactory laserGunFactory = new LaserGunFactory(resourceService, timeService, laserUpgradeSystem);
+
             DoubleLaserGunFactory doubleLaserGunFactory =
-                new DoubleLaserGunFactory(resourceService, laserFactory, timeService, laserUpgradeSystem);
+                new DoubleLaserGunFactory(resourceService, timeService, laserUpgradeSystem);
             DoubleLaserTwiceGunFactory doubleLaserTwiceGunFactory =
-                new DoubleLaserTwiceGunFactory(resourceService, laserFactory, timeService, laserUpgradeSystem);
+                new DoubleLaserTwiceGunFactory(resourceService, timeService, laserUpgradeSystem);
             MiniTwiceGunFactory miniTwiceGunFactory =
-                new MiniTwiceGunFactory(resourceService, bulletFactory, timeService, bulletUpgradeSystem);
+                new MiniTwiceGunFactory(resourceService, timeService, bulletUpgradeSystem);
             RocketTwiceGunFactory rocketTwiceGunFactory =
-                new RocketTwiceGunFactory(resourceService, rocketFactory, timeService, rocketUpgradeSystem);
+                new RocketTwiceGunFactory(resourceService, timeService, rocketUpgradeSystem);
 
-            SingleGunFactory singleGunFactory = new SingleGunFactory(
-                resourceService, bulletFactory, timeService, bulletUpgradeSystem
-            );
-            DoubleGunFactory doubleGunFactory = new DoubleGunFactory(
-                resourceService, bulletFactory, timeService, bulletUpgradeSystem
-            );
-            TripleGunFactory tripleGunFactory = new TripleGunFactory(
-                resourceService, bulletFactory, timeService, bulletUpgradeSystem
-            );
-            QuadGunFactory quadGunFactory = new QuadGunFactory(
-                resourceService, bulletFactory, timeService, bulletUpgradeSystem
-            );
-
+            SingleGunFactory singleGunFactory = new SingleGunFactory(resourceService, timeService, bulletUpgradeSystem);
+            DoubleGunFactory doubleGunFactory = new DoubleGunFactory(resourceService, timeService, bulletUpgradeSystem);
+            TripleGunFactory tripleGunFactory = new TripleGunFactory(resourceService, timeService, bulletUpgradeSystem);
+            QuadGunFactory quadGunFactory = new QuadGunFactory(resourceService, timeService, bulletUpgradeSystem);
             TurretFactory turretFactory = new TurretFactory(tileRepository);
 
             #endregion
 
+            AudioMixerView audioMixer = new AudioMixerViewFactory(new AudioMixerPresenterFactory()).Create();
+            
             #region StateMachine Factories
+            
+            LaserViewFactory laserViewFactory = new LaserViewFactory(new LaserPresenterFactory(audioMixer), resourceService);
+            BulletViewFactory bulletViewFactory = new BulletViewFactory(new BulletPresenterFactory(audioMixer), resourceService);
+            RocketViewFactory rocketViewFactory = new RocketViewFactory(new RocketPresenterFactory(audioMixer), resourceService);
 
             WeaponStateMachineFactory weaponStateMachineFactory =
                 new WeaponStateMachineFactory(
                     new Dictionary<Type, IWeaponStateMachineFactory>()
                     {
-                        [typeof(LaserGun)] = new LaserGunStateMachineFactory(),
-                        [typeof(DoubleLaserGun)] = new DoubleLaserGunStateMachineFactory(),
-                        [typeof(DoubleLaserTwiceGun)] = new DoubleLaserTwiceGunStateMachineFactory(),
-                        [typeof(MiniTwiceGun)] = new MiniTwiceGunStateMachineFactory(),
-                        [typeof(RocketTwiceGun)] = new RocketTwiceGunStateMachineFactory(),
-                        [typeof(SingleGun)] = new SingleGunStateMachineFactory(),
-                        [typeof(DoubleGun)] = new DoubleGunStateMachineFactory(),
-                        [typeof(TripleGun)] = new TripleGunStateMachineFactory(),
-                        [typeof(QuadGun)] = new QuadGunStateMachineFactory(),
+                        [typeof(LaserGun)] = new LaserWeaponGunStateMachineFactory(laserViewFactory, laserFactory),
+                        [typeof(DoubleLaserGun)] = new DoubleLaserWeaponGunStateMachineFactory(laserViewFactory, laserFactory),
+                        [typeof(DoubleLaserTwiceGun)] = new DoubleLaserWeaponTwiceGunStateMachineFactory(laserViewFactory, laserFactory),
+                        [typeof(MiniTwiceGun)] = new MiniTwiceGunStateMachineFactory(bulletViewFactory, bulletFactory),
+                        [typeof(SingleGun)] = new SingleGunStateMachineFactory(bulletViewFactory, bulletFactory),
+                        [typeof(DoubleGun)] = new DoubleGunStateMachineFactory(bulletViewFactory, bulletFactory),
+                        [typeof(TripleGun)] = new TripleGunStateMachineFactory(bulletViewFactory, bulletFactory),
+                        [typeof(QuadGun)] = new QuadGunStateMachineFactory(bulletViewFactory, bulletFactory),
+                        [typeof(RocketTwiceGun)] = new RocketTwiceGunStateMachineFactory(rocketViewFactory, rocketFactory),
                     }
                 );
 
@@ -277,8 +283,8 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #region Presenter Factories
 
-            BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory();
-            RocketPresenterFactory rocketPresenterFactory = new RocketPresenterFactory();
+            BulletPresenterFactory bulletPresenterFactory = new BulletPresenterFactory(audioMixer);
+            RocketPresenterFactory rocketPresenterFactory = new RocketPresenterFactory(audioMixer);
             TurretPresenterFactory turretPresenterFactory = new TurretPresenterFactory();
             MovementSystemPresenterFactory movementSystemPresenterFactory = new MovementSystemPresenterFactory();
             DamageableSystemPresenterFactory damageableSystemPresenterFactory = new DamageableSystemPresenterFactory();
@@ -292,7 +298,6 @@ namespace Sources.Infrastructure.Factories.Scenes
             PathDrawSystemPresenterFactory pathDrawSystemPresenterFactory = new PathDrawSystemPresenterFactory();
             PathDrawSystemPointPresenterFactory pathDrawSystemPointPresenterFactory =
                 new PathDrawSystemPointPresenterFactory();
-            AudioMixerPresenterFactory audioMixerPresenterFactory = new AudioMixerPresenterFactory();
 
             #endregion
 
@@ -300,7 +305,7 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             TilemapUntouchablePointerHandlerFactory tilemapUntouchablePointerHandlerFactory =
                 new TilemapUntouchablePointerHandlerFactory(
-                    raycastService,
+                    screenRaycastService,
                     tilemapService
                 );
 
@@ -308,16 +313,10 @@ namespace Sources.Infrastructure.Factories.Scenes
 
             #region View Factories
 
-            AudioMixerViewFactory audioMixerViewFactory = new AudioMixerViewFactory(audioMixerPresenterFactory);
-
-            AudioMixerView audioMixerView = audioMixerViewFactory.Create();
-            
-            BulletViewFactory bulletViewFactory = new BulletViewFactory(bulletPresenterFactory, rocketPresenterFactory, audioMixerView);
 
             WeaponViewFactory weaponViewFactory = new WeaponViewFactory(
                 resourceService,
                 weaponStateMachineFactory,
-                bulletViewFactory,
                 targetTrackerSystem
             );
 
@@ -457,6 +456,9 @@ namespace Sources.Infrastructure.Factories.Scenes
                 .Register<UpgradeSystemUiContainer>("Ui/Systems/UpgradeSystemUiContainer")
                 .Register<TurretView>("Views/Turrets/TurretView")
                 .Register<ZombieView>("Views/Zombies/ZombieView")
+                .Register<LaserView>("Views/Bullets/LaserView")
+                .Register<BulletView>("Views/Bullets/BulletView")
+                .Register<RocketView>("Views/Bullets/RocketView")
                 .Register<ConstructButtonUi>("Ui/Buttons/Constructs/ConstructButtonUi")
                 .Register<TextUi>("Ui/Credits/MoneyUi")
                 .Register<AggressiveSystemUi>("Ui/Systems/AggressiveSystemUi")
@@ -466,7 +468,7 @@ namespace Sources.Infrastructure.Factories.Scenes
                 .RegisterInterfaceImplementationsByType<TurretConstructionPreview, IWeapon>(
                     "Previews/Weapons/{0}Preview"
                 )
-                .RegisterInterfaceImplementationsByType<CompositeWeaponView, IWeapon>("Views/Weapons/{0}View")
+                .RegisterInterfaceImplementationsByType<WeaponView, IWeapon>("Views/Weapons/{0}View")
                 .RegisterInterfaceImplementationsByType<WeaponFab, IWeapon>("Fabs/Weapons/{0}Fab")
                 .LoadAllAsync();
     }

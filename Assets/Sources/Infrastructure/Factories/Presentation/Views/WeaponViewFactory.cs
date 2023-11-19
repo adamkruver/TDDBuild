@@ -14,43 +14,40 @@ namespace Sources.Infrastructure.Factories.Presentation.Views
     {
         private readonly ResourceService _resourceService;
         private readonly IWeaponStateMachineFactory _weaponStateMachineFactory;
-        private readonly BulletViewFactory _bulletViewFactory;
         private readonly TargetTrackerSystem _targetTrackerSystem;
 
         public WeaponViewFactory(
             ResourceService resourceService,
             IWeaponStateMachineFactory weaponStateMachineFactory,
-            BulletViewFactory bulletViewFactory,
             TargetTrackerSystem targetTrackerSystem
         )
         {
             _resourceService = resourceService;
             _weaponStateMachineFactory = weaponStateMachineFactory;
-            _bulletViewFactory = bulletViewFactory;
             _targetTrackerSystem = targetTrackerSystem;
         }
 
-        public CompositeWeaponView Create(IWeapon weapon)
+        public WeaponView Create(IWeapon weapon)
         {
-            CompositeWeaponView compositeWeaponView =
-                Object.Instantiate(_resourceService.Load<CompositeWeaponView>(GetPrefabPath(weapon)));
+            WeaponView weaponView =
+                Object.Instantiate(_resourceService.Load<WeaponView>(GetPrefabPath(weapon)));
 
-            WeaponView[] weaponViews = compositeWeaponView.WeaponViews;
+            // ShootPointView[] weaponViews = compositeWeaponView.ShootPoints;
 
-            ITargetProvider targetProvider = new TargetProvider(_targetTrackerSystem, compositeWeaponView, weapon);
+            ITargetProvider targetProvider = new TargetProvider(_targetTrackerSystem, weaponView, weapon);
 
             IPresenter stateMachine = _weaponStateMachineFactory.Create(
-                compositeWeaponView,
+                weaponView,
                 weapon,
                 targetProvider
             );
 
-            foreach (WeaponView view in weaponViews)
-                _bulletViewFactory.Create(view.Bullet, weapon.Bullet);
+//            foreach (WeaponView view in weaponViews)
+  //              _bulletViewFactory.Create(view.ProjectileView, weapon.Bullet);
 
-            compositeWeaponView.Construct(stateMachine);
+            weaponView.Construct(stateMachine);
 
-            return compositeWeaponView;
+            return weaponView;
         }
 
         private string GetPrefabPath(IWeapon weapon) =>

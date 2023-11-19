@@ -5,6 +5,7 @@ using Sources.Domain.Weapons;
 using Sources.InfrastructureInterfaces.Factories.Controllers;
 using Sources.InfrastructureInterfaces.Services.Weapons;
 using Sources.Presentation.Views.Weapons;
+using Sources.PresentationInterfaces.Views.Weapons;
 
 namespace Sources.Infrastructure.Factories.Controllers.Weapons
 {
@@ -16,7 +17,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             _factories = factories ?? throw new ArgumentNullException(nameof(factories));
 
         public IPresenter Create(
-            ICompositeWeaponView compositeView,
+            IWeaponView view,
             IWeapon weapon,
             ITargetProvider targetProvider
         )
@@ -26,7 +27,7 @@ namespace Sources.Infrastructure.Factories.Controllers.Weapons
             if (_factories.ContainsKey(weaponType) == false)
                 throw new KeyNotFoundException(weaponType.Name);
 
-            return _factories[weaponType].Create(compositeView, weapon, targetProvider);
+            return _factories[weaponType].Create(view, weapon, targetProvider);
         }
     }
 }

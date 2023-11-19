@@ -1,84 +1,53 @@
-﻿using System.Threading;
-using Cysharp.Threading.Tasks;
-using Sources.Controllers.Bullets;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Sources.Controllers.Projectiles;
+using Sources.Domain.HealthPoints;
 using Sources.PresentationInterfaces.Views.Bullets;
 using UnityEngine;
 
 namespace Sources.Presentation.Views.Bullets
 {
-    public class RocketView : BulletViewBase, IBulletView
+    public class RocketView : PresentationViewBase<RocketPresenter>, IRocketView, IProjectileView
     {
-        [SerializeField] private float _flyHeight;
-        [SerializeField] private float _flyDuration;
-        [SerializeField] private AnimationCurve _heightCurve;
-        [SerializeField] private AnimationCurve _speedCurve;
-
         [SerializeField] private ParticleSystem _fireParticleSystem;
         [SerializeField] private ParticleSystem _explosionParticleSystem;
 
-        private CancellationTokenSource _cancellationTokenSource;
-        private Vector3 _enemyPosition;
+        [field: SerializeField] public float FlyDuration { get; private set; } = 2;
+        [field: SerializeField] public float FlyHeight { get; private set; } = 3;
+        [field: SerializeField] public AnimationCurve HeightCurve { get; private set; }
+        [field: SerializeField] public AnimationCurve SpeedCurve { get; private set; }
+        [field: SerializeField] public AudioClip ExplosionAudioClip { get; set; }
+        [field: SerializeField] public AudioClip EngineAudioClip { get; set; }
 
-        public void SetEnemyPosition(Vector3 position)
-        {
-            _enemyPosition = position;
-        }
+        public void SetPosition(Vector3 position) =>
+            Transform.position = position;
 
-        public override void Shoot()
-        {
-            StopFire();
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource = new CancellationTokenSource();
+        public void SetParent(Transform parent) => 
+            Transform.SetParent(parent, false);
+        
+        public void SetDirection(Vector3 direction) =>
+            Transform.forward = direction.normalized;
 
-            FlyAsync(_cancellationTokenSource.Token);
-        }
+        public Vector3 Position => Transform.position;
 
-        private async UniTask FlyAsync(CancellationToken cancellationToken)
-        {
-            Transform.parent = null;
-            Vector3 startPosition = Transform.position;
-            Vector3 endPosition = _enemyPosition;
-            endPosition.y = 0;
-            
-            Vector3 flyDirection = endPosition - startPosition;
-            Vector3 lastPosition = startPosition;
+        public void Shoot() =>
+            Presenter?.Shoot();
 
-            float progress = 0;
-            
-            RunFire();
-
-            while (progress < 1)
-            {
-                progress += Time.deltaTime / _flyDuration * (1 + _speedCurve.Evaluate(progress));
-
-                progress = Mathf.Clamp01(progress);
-                
-                Vector3 position = startPosition + flyDirection * progress + Vector3.up * _flyHeight * _heightCurve.Evaluate(progress);
-                Transform.position = position;
-                Transform.forward = (position - lastPosition).normalized;
-                lastPosition = position;
-                
-                await UniTask.Yield(cancellationToken);
-            }
-            
-            StopFire();
-            OnReachTarget();
-        }
-
-        private void RunFire()
-        {
-            _fireParticleSystem.Play();
-        }
-
-        private void StopFire()
-        {
-            _fireParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        }
-
-        private void OnReachTarget()
-        {
-            print("OnReachTarget");
+        public void Explode() =>
             _explosionParticleSystem.Play();
-        }
+
+        public void StartFireEngine() =>
+            _fireParticleSystem.Play();
+
+        public void FinishFireEngine() =>
+            _fireParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        public void Detach() =>
+            Transform.parent = null;
+
+        public IEnumerable<IDamageable> GetTargets(float radius) =>
+            Physics.OverlapSphere(Position, radius)
+                .Where(collider => collider.GetComponent<IDamageable>() != null)
+                .Select(collider => collider.GetComponent<IDamageable>());
     }
 }

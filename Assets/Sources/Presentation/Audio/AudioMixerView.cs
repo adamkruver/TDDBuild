@@ -11,5 +11,10 @@ namespace Sources.Presentation.Audio
         {
             Presenter?.Play(audioPoint);
         }
+
+        public void Stop(AudioPoint audioPoint)
+        {
+            Presenter?.Stop(audioPoint);
+        }
     }
 }

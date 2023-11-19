@@ -6,7 +6,7 @@ namespace Sources.Presentation.Views.Turrets
 {
     public class TurretView : GridCellView, ITurretView
     {
-        public void SetWeapon(CompositeWeaponView weaponView) =>
+        public void SetWeapon(WeaponView weaponView) =>
             weaponView.SetParent(Transform);
     }
 }
